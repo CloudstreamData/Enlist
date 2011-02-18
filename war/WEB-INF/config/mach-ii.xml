@@ -21,7 +21,7 @@
 		<property name="coldspring" type="MachII.properties.ColdspringProperty">
 			<parameters>
 				<parameter name="beanFactoryPropertyName" value="serviceFactory"/>
-				<parameter name="configFile" value="/Enlist/config/coldspring.xml"/>
+				<parameter name="configFile" value="/Enlist/config/services.xml"/>
 				<parameter name="configFilePathIsRelative" value="true"/>
 				<parameter name="placeFactoryInApplicationScope" value="true"/>
 				<parameter name="generateRemoteProxies" value="true"/>
