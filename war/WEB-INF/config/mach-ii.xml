@@ -11,7 +11,7 @@
 	
 	<!-- PROPERTIES -->
 	<properties>
-		<property name="applicationRoot" value="/" />
+		<property name="applicationRoot" value="/Enlist" />
 		<property name="defaultEvent" value="home" />
 		<property name="eventParameter" value="event" />
 		<property name="parameterPrecedence" value="form" />
