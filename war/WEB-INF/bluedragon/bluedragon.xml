@@ -13,6 +13,20 @@
     <buffersize>0</buffersize>
     <defaultcharset>utf-8</defaultcharset>
   </system>
+  <cfmappings>
+    <mapping name="/Enlist">
+      <directory>../</directory>
+      <name>/Enlist</name>
+    </mapping>
+    <mapping name="/MachII">
+      <directory>/WEB-INF/MachII</directory>
+      <name>/MachII</name>
+    </mapping>
+    <mapping name="/MachII">
+      <directory>/WEB-INF/coldspring</directory>
+      <name>/coldspring</name>
+    </mapping>
+  </cfmappings>
   <file>
     <maxfiles>1000</maxfiles>
     <trustcache>false</trustcache>
