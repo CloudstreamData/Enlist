@@ -1,0 +1,42 @@
+	The software in this package is distributed under the GNU General Public
+	License (with a special exception described below).  The term "library"
+	is a reference to the entire Enlist package and all files in which
+	the GNU General Public License applies.
+
+	A copy of GNU General Public License (GPL) is included in this distribution,
+	in the file COPYING.  If you do not have the source code, it is available at:
+
+    	http://trac.mach-ii.com/enlist
+
+	Linking this library statically or dynamically with other modules is
+	making a combined work based on this library.  Thus, the terms and
+	conditions of the GNU General Public License cover the whole
+	combination.
+
+Enlist also contains other (example) code distributed under other
+terms.  External libraries included with Enlist may also be distributed 
+under different licensing terms. The location and the exact terms of this 
+other code is mentioned below if applicable.
+
+Build JARs
+----------
+Name: Various
+Location: ./build
+
+All the .jar files in the ./build directory are licensed under their
+individual licenses.  See that directory for more information.
+
+Third-Party Libraries
+----------
+Name: Mach-II Framework
+Location: ./war/WEB-INF/MachII
+
+All files in this location are licensed under the GPLv3 with classpath
+exception.  Please the license files associated with this library for
+more information.
+
+Name: ColdSpring
+Location: ./war/WEB-INF/coldspring  
+
+All files in this location are licensed under the Apache 2.0 license.
+Please the license files associated with this library for more information
