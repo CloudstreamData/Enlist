@@ -26,6 +26,8 @@
 	
 	Notes:
 	--->
+	<cfimport prefix="view" taglib="/MachII/customtags/view" />
+	<view:meta type="title" content="Home" />
 </cfsilent>
 <cfoutput>
 <h3>Welcome to Enlist</h3>

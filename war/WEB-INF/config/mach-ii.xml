@@ -81,6 +81,7 @@ Notes:
 						<key name="servers" value="localhost"/>
 						<key name="properties">
 							<struct>
+								<key name="modules:lazyLoad" value="*"/>
 							</struct>
 						</key>
 					</struct>
@@ -91,6 +92,7 @@ Notes:
 						<key name="servers" value="enlist.appspot.com"/>
 						<key name="properties">
 							<struct>
+								<key name="modules:disable" value="dashboard"/>
 							</struct>
 						</key>
 					</struct>
@@ -119,14 +121,40 @@ Notes:
 		</property>
 		
 		<property name="html" type="MachII.properties.HtmlHelperProperty">
-			
+			<parameters>
+				<parameter name="metaTitleSuffix" value=" | Enlist" />
+				<parameter name="cacheAssetPaths">
+					<struct>
+						<key name="development" value="true" />
+						<key name="production" value="true" />
+					</struct>
+				</parameter>
+				<parameter name="assetPackages">
+					<struct>
+						<key name="jquery">
+							<array>
+								<element value="libraries/jquery/jquery-1-5.js" />
+							</array>
+						</key>
+					</struct>
+				</parameter>
+			</parameters>
 		</property>
 		
 		<!-- CACHING RELATED -->
 		<property name="caching" type="MachII.caching.CachingProperty" />
 		
 		<!-- LOGGING RELATED -->
-		<property name="logging" type="MachII.logging.LoggingProperty" />
+		<property name="Logging" type="MachII.logging.LoggingProperty">
+			<parameters>
+				<parameter name="loggingEnabled">
+					<struct>
+						<key name="group:development" value="true" />
+						<key name="group:production" value="false" />
+					</struct>
+				</parameter>
+			</parameters>
+		</property>
 	</properties>
 
 	<!-- LISTENERS -->
