@@ -1,12 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Enlist - Volunteer Management Software
+    Copyright (C) 2011 GreatBizTools, LLC
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    
+    Linking this library statically or dynamically with other modules is
+    making a combined work based on this library.  Thus, the terms and
+    conditions of the GNU General Public License cover the whole
+    combination.
+
+$Id: $
+
+Notes:
+-->
 
 <!DOCTYPE mach-ii PUBLIC "-//Mach-II//DTD Mach-II Configuration 1.9.0//EN"
 	"http://www.mach-ii.com/dtds/mach-ii_1_9_0.dtd" >
 
 <mach-ii version="1.9">
+
+	<!-- MODULES -->
+	<modules>
+		<module name="dashboard" file="/MachII/dashboard/config/mach-ii_dashboard.xml">
+			<mach-ii>
+				<properties>
+					<property name="password" value="enlist"/>
+					<property name="enableLogin">
+						<struct>
+							<key name="group:development" value="false"/>
+							<key name="group:production" value="true"/>
+						</struct>
+					</property>
+					<property name="logoutPromptTimeout">
+						<struct>
+							<key name="group:production" value="10"/>							
+						</struct>
+					</property>
+				</properties>
+			</mach-ii>
+		</module>
+	</modules>
+
 	<!-- INCLUDES -->
 	<includes>
-		<!-- <include file="./mach-ii_coldspringProperty.xml" /> -->
 	</includes>
 	
 	<!-- PROPERTIES -->
@@ -17,7 +66,38 @@
 		<property name="parameterPrecedence" value="form" />
 		<property name="maxEvents" value="10" />
 		<property name="exceptionEvent" value="exception" />
-		
+		<property name="urlBase" value="/index.cfm" />
+		<property name="urlParseSES" value="true"/>
+		<property name="urlDelimiters" value="/|/|/"/>
+		<property name="urlExcludeEventParameter" value="true"/>
+
+	<!-- Begin APPLICATION -->
+		<property name="Environment" type="MachII.properties.EnvironmentProperty">
+			<parameters>
+				<parameter name="defaultEnvironmentName" value="production"/>
+				<parameter name="development">
+					<struct>
+						<key name="environmentGroup" value="development"/>
+						<key name="servers" value="localhost"/>
+						<key name="properties">
+							<struct>
+							</struct>
+						</key>
+					</struct>
+				</parameter>
+				<parameter name="production">
+					<struct>
+						<key name="environmentGroup" value="production"/>
+						<key name="servers" value="enlist.appspot.com"/>
+						<key name="properties">
+							<struct>
+							</struct>
+						</key>
+					</struct>
+				</parameter>
+			</parameters>
+		</property>
+
 		<property name="coldspring" type="MachII.properties.ColdspringProperty">
 			<parameters>
 				<parameter name="beanFactoryPropertyName" value="serviceFactory"/>
@@ -29,13 +109,17 @@
 				<!-- Struct of bean names and corresponding Mach-II property names for injecting back into Mach-II Default: does nothing if struct is not defined -->
 				<parameter name="beansToMachIIProperties">
 					<struct>
+						<key name="udfs" value="udfs" />
 						<!-- 
-						<key name="ColdSpringBeanName1" value="MachIIPropertyName1" />
 						<key name="ColdSpringBeanName2" value="MachIIPropertyName2" />
-						 -->
+						-->
 					</struct>
 				</parameter>
 			</parameters>
+		</property>
+		
+		<property name="html" type="MachII.properties.HtmlHelperProperty">
+			
 		</property>
 		
 		<!-- CACHING RELATED -->
@@ -113,22 +197,27 @@
 		-->
 	
 		<event-handler event="exception" access="private">
-			<view-page name="exception" />
+			<view-page name="sys.exception" />
 		</event-handler>
 	</event-handlers>
 	
 	<!-- SUBROUTINES -->
 	<subroutines>
-		<!--
-		<subroutine name="yourSubroutineName">
+		<subroutine name="doMainLayout">
+			<view-page name="alyto" contentArg="layout.header" />
 		</subroutine>
-		-->
 	</subroutines>
 	
 	<!-- PAGE-VIEWS -->
 	<page-views>
 		<page-view name="home" page="/views/home.cfm" />
-		<page-view name="exception" page="/views/exception.cfm" />
+		
+		<!-- LAYOUT -->
+		<page-view name="layout.header" page="/views/layout/header.cfm"/>
+		<page-view name="layout.footer" page="/views/layout/footer.cfm"/>
+		
+		<!-- SYS -->
+		<page-view name="sys.exception" page="/views/sys/exception.cfm" />
 	</page-views>
 	
 </mach-ii>

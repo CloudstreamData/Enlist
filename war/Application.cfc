@@ -1,3 +1,30 @@
+<!---
+
+    Enlist - Volunteer Management Software
+    Copyright (C) 2011 GreatBizTools, LLC
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    
+    Linking this library statically or dynamically with other modules is
+    making a combined work based on this library.  Thus, the terms and
+    conditions of the GNU General Public License cover the whole
+    combination.
+
+$Id: $
+
+Notes:
+--->
 <cfcomponent
 	displayname="Application"
 	extends="MachII.mach-ii"
@@ -13,7 +40,10 @@
 	<cfset this.setDomainCookies = false />
 	<cfset this.sessionTimeOut = CreateTimeSpan(0,0,30,0) />
 	<cfset this.applicationTimeOut = CreateTimeSpan(1,0,0,0) />
-	
+
+	<!---
+	PROPERTIES - MACH-II SPECIFIC
+	--->	
 	<cfset MACHII_CONFIG_PATH = ExpandPath("/Enlist/config/mach-ii.xml") />
 
 	<!---
@@ -29,4 +59,19 @@
 		* onApplicationStart(): this must call loadFramework()
 		* onRequestStart(): this must call handleRequest()
 	--->
+
+	<!---
+	PUBLIC FUNCTIONS
+	--->
+	<cffunction name="onRequestStart" access="public" returntype="void" output="true"
+		hint="Overrides the Mach-II bootstrapper and then calls the super method.">
+		<cfargument name="targetPage" type="string" required="true" />
+		
+		<cfif StructKeyExists(url, "reloadApp")>
+			<cfset reloadConfig() />
+		</cfif>
+		
+		<cfset super.onRequestStart(arguments.targetPage) />
+	</cffunction>	
+
 </cfcomponent>
