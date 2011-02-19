@@ -65,7 +65,7 @@ Notes:
 		<property name="eventParameter" value="event" />
 		<property name="parameterPrecedence" value="form" />
 		<property name="maxEvents" value="10" />
-		<property name="exceptionEvent" value="exception" />
+		<property name="exceptionEvent" value="sys.exception" />
 		<property name="urlBase" value="/index.cfm" />
 		<property name="urlParseSES" value="true"/>
 		<property name="urlDelimiters" value="/|/|/"/>
@@ -217,15 +217,15 @@ Notes:
 		</event-handler>
 		-->
 		
-		<!-- sample event handler that uses message/subscriber listener notification -->
-		<!--
-		<event-handler event="messagePublisher" access="public">
-			<publish message="needStuff" />
+		
+		<!-- SYS -->
+		<event-handler event="sys.about" access="public">
+			<view-page name="sys.about" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
 		</event-handler>
-		-->
-	
-		<event-handler event="exception" access="private">
-			<view-page name="sys.exception" />
+		<event-handler event="sys.exception" access="private">
+			<view-page name="sys.exception" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
 		</event-handler>
 	</event-handlers>
 	
@@ -248,6 +248,7 @@ Notes:
 		<page-view name="layout.wrapper" page="/views/layout/wrapper.cfm"/>
 		
 		<!-- SYS -->
+		<page-view name="sys.about" page="/views/sys/about.cfm" />
 		<page-view name="sys.exception" page="/views/sys/exception.cfm" />
 	</page-views>
 	

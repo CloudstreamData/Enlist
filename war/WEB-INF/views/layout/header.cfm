@@ -27,12 +27,13 @@
 	Notes:
 	--->
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
+	<cfset copyToScope("eventName=${event.getName()},${properties.udfs}") />
 </cfsilent>
 <cfoutput>
 <h2><view:a event="home" title="Back to Home">Enlist</view:a></h2>
 <div id="menu">
 	<ul>
-		<li><a href="##" class="current">Home</a></li>
+		<li><view:a event="home" class="#variables.udfs.highlightLevel("home", variables.eventName)#">Home</view:a></li>
 		<li><a href="##">Login</a></li>
 	</ul>
 </div>

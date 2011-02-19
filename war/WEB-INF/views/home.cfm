@@ -30,6 +30,6 @@
 	<view:meta type="title" content="Home" />
 </cfsilent>
 <cfoutput>
-<h3>Welcome to Enlist</h3>
+<h2>Welcome to Enlist</h2>
 
 </cfoutput>
