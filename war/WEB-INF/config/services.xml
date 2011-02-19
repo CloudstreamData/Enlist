@@ -29,22 +29,15 @@ Notes:
 
 <beans>
 
-
 	<!-- SYS -->
 	<bean id="udfs" class="Enlist.model.sys.Udfs" />
-
 
 	<!-- USER -->
 	<bean id="UserService" class="Enlist.model.user.UserService">
 		<property name="UserGateway"><ref bean="UserGateway" /></property>
 	</bean>
 	<bean id="UserGateway" class="Enlist.model.user.UserGateway" />
-
-	<!-- 
-	<bean id="yourBeanName" class="fully.Qualified.Dot.Delimited.Path.To.CFC">
-		<property name="Property">
-			<value>Value</value>
-		</property>
-	</bean>
-	 -->
+	
+	<bean id="googleUserService" factory-bean="UserService" factory-method="getGoogleUserService" />
+	
 </beans>

@@ -32,6 +32,7 @@ Notes:
 	<!---
 	PROPERTIES
 	--->
+	<cfset variables.googleUserService = "" />
 	<cfset variables.userGateway = "" />
 	
 	<!---
@@ -39,12 +40,21 @@ Notes:
 	--->
 	<cffunction name="init" access="public" returntype="UserService" output="false"
 		hint="Initializes the service.">
+
+		<cfset var googleUserFactory = CreateObject("java", "com.google.appengine.api.users.UserServiceFactory") />
+		
+		<cfset variables.googleUserService = googleUserFactory.getUserService() />
+			
 		<cfreturn this />
 	</cffunction>
 	
 	<cffunction name="setUserGateway" access="public" returntype="UserService" output="false">
 		<cfargument name="userGateway" type="any" required="true" />
 		<cfset variables.userGateway = arguments.userGateway />
+	</cffunction>
+	
+	<cffunction name="getGoogleUserService" access="public" returntype="any" output="false">
+		<cfreturn variables.googleUserService />
 	</cffunction>
 	
 	<!---

@@ -32,4 +32,6 @@
 <cfoutput>
 <h2>Welcome to Enlist</h2>
 
+
+<cfdump var="#getProperty("serviceFactory").getBean("googleUserService")#">
 </cfoutput>
