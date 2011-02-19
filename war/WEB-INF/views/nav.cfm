@@ -26,8 +26,26 @@
 	
 	Notes:
 	--->
-	<cfimport prefix="view" taglib="/MachII/customtags/view" />
 </cfsilent>
 <cfoutput>
-<p><view:a href="http://trac.mach-ii.com/enlist/wiki/">Powered by Enlist - Volunteer Management</view:a></p>
+<ul id="nav">
+	<li><a href="#Home">Home</a></li>
+	<li><a href="#Archive">Archive</a></li>
+	<li><a href="#Link">Links</a></li>
+	<li><a href="#download">Download</a></li>
+	<li><a href="#support">Support</a></li>
+	<li><a href="#contact">Contact</a></li>
+</ul>
+<!---
+<div class="box">
+	<h2 style="margin-top:17px">Recent Entries</h2>
+	<ul>
+		<li><a href="#">Recent Entries1</a> <i>01 Des 06</i></li>
+		<li><a href="#">Recent Entries2</a> <i>01 Des 06</i></li>
+		<li><a href="#">Recent Entries3</a> <i>01 Des 06</i></li>
+		<li><a href="#">Recent Entries4</a> <i>01 Des 06</i></li>
+		<li><a href="#">Recent Entries5</a> <i>01 Des 06</i></li>
+	</ul>
+</div>
+--->
 </cfoutput>

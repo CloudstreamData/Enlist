@@ -1,95 +1,33 @@
 <cfsilent>
-	<cfset variables.coldSpringWorks = false />
-	<cfset variables.csProp = getProperty("coldSpringProperty")>
-	<cfif IsStruct(variables.csProp)>
-		<cfset variables.beanFactory = getProperty(variables.csProp.getParameter("beanFactoryPropertyName")) />
-		<cfif IsStruct(variables.beanFactory) AND StructKeyExists(variables.beanFactory, "getBean" )>
-			<cfset variables.coldSpringWorks = true />
-		</cfif>
-	</cfif>
+	<!---
+	
+	    Enlist - Volunteer Management Software
+	    Copyright (C) 2011 GreatBizTools, LLC
+	
+	    This program is free software: you can redistribute it and/or modify
+	    it under the terms of the GNU General Public License as published by
+	    the Free Software Foundation, either version 3 of the License, or
+	    (at your option) any later version.
+	
+	    This program is distributed in the hope that it will be useful,
+	    but WITHOUT ANY WARRANTY; without even the implied warranty of
+	    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	    GNU General Public License for more details.
+	
+	    You should have received a copy of the GNU General Public License
+	    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	    
+	    Linking this library statically or dynamically with other modules is
+	    making a combined work based on this library.  Thus, the terms and
+	    conditions of the GNU General Public License cover the whole
+	    combination.
+	
+	$Id: $
+	
+	Notes:
+	--->
 </cfsilent>
 <cfoutput>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>Home | Mach-II Skeleton</title>
+<h3>Welcome to Enlist</h3>
 
-	<style type="text/css">
-		html {
-			background-color: ##D0D0D0;
-			width:600px;
-			margin: 0 auto 0 auto;
-			padding: 0;
-			font: 0.75em/1.5em Arial, Helvetica, sans-serif; /* the font size in EM */
-		}
-		body {
-			margin:0;
-			padding: 1em;
-			background-color: ##FFF;
-		}
-		hr {
-			padding: 0;
-			border: 0;
-			color: ##D0D0D0;
-			background-color: ##D0D0D0;
-			height: 1px;
-		}
-		.success { color:##33FF00; }
-		.warn { color:##FF0000; }
-	</style>
-</head>
-
-<body>
-	<img src="img/machiiLogo.gif" width="229" height="60" alt="Mach-II" />
-	<h1>Skeleton Installation Success!</h1>
-	<p>You have successfully installed the Mach-II application skeleton.</p>
-	
-	<hr />
-	
-	<h3>ColdSpring Configuration Status</h3>
-	<cfif coldSpringWorks>
-		<h4 class="success">Success</h4>
-		<p>You have successfully configured Mach-II to use ColdSpring. Use 
-			<code>getProperty("#csProp.getParameter('beanFactoryPropertyName')#")</code> to access the ColdSpring bean factory.
-	<cfelse>
-		<h4 class="warn">Warning</h4>
-		<p>ColdSpring is not installed or incorrectly configured. If you expected ColdSpring to work, check 
-			your configuration. This Mach-II skeleton is compatible with <a href="http://coldspringframework.org/index.cfm?objectid=2DD544DF-E8F4-83AA-E2D7FED1F1B53FAE" target="_new">ColdSpring 1.2RC1</a> or
-			higher. If you didn't install ColdSpring, maybe you should <a href="http://www.coldspringframework.org/" target="_new">download and install ColdSpring</a>.</p>
-	</cfif>
-	
-	<hr />
-	
-	<h3>Next Steps</h3>
-	<p>Just a few more thing to convert this skeleton to your application.</p>
-	<ul>
-		<li>Open the Application.cfc file and change <code>this.name</code> to the name of your application.</li>
-	</ul>
-	<p>Start building your Mach-II application. The Mach-II configuration file is found at <code>/config/mach-ii.xml</code></p>
-	<ul>
-		<li>Add and edit any event-handlers.
-			<ul>
-				<li>Note: The current defaultEvent property is <code>#getProperty("defaultEvent")#<code>.</li>
-				<li>Note: The <code>#getProperty("defaultEvent")#</code> event-handler simply calls the <code>home</code> view. This view is found at <code>/views/home.cfm</code></li>
-			</ul>
-		</li>
-		<li>Add any listeners.</li>
-		<li>Add any event-filters.</li>
-		<li>Add any plugins.</li>
-	</ul>
-	
-	<hr />
-	
-	<h3>Need Help?</h3>
-	<ul>
-		<li>Check out the Mach-II Frequently Asked Questions (FAQs) at the 
-			<a href="http://www.mach-ii.com" target="_blank">Mach-II website</a>.</li>
-		<li>Join the <a href="http://groups-beta.google.com/group/mach-ii-for-coldfusion?hl=en">Mach-II 
-			listserv</a> at Google Groups where you can ask questions and seek 
-			advice from other Mach-II developers.</li>
-	</ul>
-</body>
-</html>
 </cfoutput>

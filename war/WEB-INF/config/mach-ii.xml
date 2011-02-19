@@ -176,8 +176,8 @@ Notes:
 	<!-- EVENT-HANDLERS -->
 	<event-handlers>
 		<event-handler event="home" access="public">
-			<!-- <notify listener="SomeListener" method="doSomething" resultArg="resultOfSomething" />  -->
-			<view-page name="home" />
+			<view-page name="home" contentArg="layout.content" />
+			<execute subroutine="doMainLayout" />
 		</event-handler>
 		
 		<!-- sample event handler that uses caching and the default cache (data cached for 1 hour in application scope) -->
@@ -204,7 +204,9 @@ Notes:
 	<!-- SUBROUTINES -->
 	<subroutines>
 		<subroutine name="doMainLayout">
-			<view-page name="alyto" contentArg="layout.header" />
+			<view-page name="layout.header" contentArg="layout.header" />
+			<view-page name="layout.footer" contentArg="layout.footer" />
+			<view-page name="layout.wrapper" />
 		</subroutine>
 	</subroutines>
 	
@@ -215,6 +217,7 @@ Notes:
 		<!-- LAYOUT -->
 		<page-view name="layout.header" page="/views/layout/header.cfm"/>
 		<page-view name="layout.footer" page="/views/layout/footer.cfm"/>
+		<page-view name="layout.wrapper" page="/views/layout/wrapper.cfm"/>
 		
 		<!-- SYS -->
 		<page-view name="sys.exception" page="/views/sys/exception.cfm" />

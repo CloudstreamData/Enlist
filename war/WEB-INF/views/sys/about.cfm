@@ -29,5 +29,4 @@
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
 </cfsilent>
 <cfoutput>
-<p><view:a href="http://trac.mach-ii.com/enlist/wiki/">Powered by Enlist - Volunteer Management</view:a></p>
 </cfoutput>
