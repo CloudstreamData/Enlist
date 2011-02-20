@@ -30,7 +30,6 @@ Notes:
 	<!---
 	PROPERTIES
 	--->
-	<cfset variables.googleUserService = "" />
 	<cfset variables.userGateway = "" />
 	
 	<!---

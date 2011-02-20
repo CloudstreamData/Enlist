@@ -36,7 +36,7 @@ Notes:
 	<cfset variables.instance.id = "" />
 	<cfset variables.name = "" />
 	<cfset variables.startDate = "" />
-	<cfset variables.endDTate = "" />
+	<cfset variables.endDate = "" />
 	<cfset variables.location = "" />
 	<cfset variables.status = "" />
 	
