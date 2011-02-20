@@ -195,20 +195,23 @@ Notes:
 
 	<!-- EVENT-HANDLERS -->
 	<event-handlers>
+		<!-- BASE -->
 		<event-handler event="home" access="public">
 			<view-page name="home" contentArg="layout.content" />
 			<execute subroutine="doMainLayout" />
 		</event-handler>
-		
-		<!-- sample event handler that uses caching and the default cache (data cached for 1 hour in application scope) -->
-		<!--
-		<event-handler event="useCache" access="public">
-			<cache>
-				<notify listener="SomeListener" method="getDataForCache" resultArg="cachedData" />
-			</cache>
+		<event-handler event="register" access="public">
+			<view-page name="register" contentArg="layout.content" />
+			<execute subroutine="doMainLayout" />
 		</event-handler>
-		-->
 		
+		<!-- VOLUNTEER -->
+		
+		<!-- ADMIN -->
+		<event-handler event="admin.index" access="public">
+			<view-page name="admin.index" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
+		</event-handler>
 		
 		<!-- SYS -->
 		<event-handler event="sys.about" access="public">
@@ -232,7 +235,12 @@ Notes:
 	
 	<!-- PAGE-VIEWS -->
 	<page-views>
+		<!-- ADMIN -->
+		<page-view name="admin.index" page="/views/admin/index.cfm" />
+		
+		<!-- BASE -->
 		<page-view name="home" page="/views/home.cfm" />
+		<page-view name="register" page="/views/register.cfm" />
 		
 		<!-- LAYOUT -->
 		<page-view name="layout.header" page="/views/layout/header.cfm"/>
@@ -242,6 +250,9 @@ Notes:
 		<!-- SYS -->
 		<page-view name="sys.about" page="/views/sys/about.cfm" />
 		<page-view name="sys.exception" page="/views/sys/exception.cfm" />
+		
+		<!-- VOLUNTEER -->
+		<page-view name="volunteer.index" page="/views/volunteer/index.cfm" />
 	</page-views>
 	
 </mach-ii>
