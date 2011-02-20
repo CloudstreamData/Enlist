@@ -23,11 +23,10 @@ h2 {
 	color: #9f9f9f;
 	margin:0px;
 	padding:0px;
-	font-size: 15px;
+	font-size: 1em;
 }
 
 ul {
-	font-size: 10px;
 	margin:0;
 	padding:0;
 	list-style-image: url(../img/bullet.gif);

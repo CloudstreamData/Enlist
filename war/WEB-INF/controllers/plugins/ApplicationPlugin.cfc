@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
+<!---
 
     Enlist - Volunteer Management Software
     Copyright (C) 2011 GreatBizTools, LLC
@@ -25,20 +24,42 @@
 $Id: $
 
 Notes:
--->
+--->
+<cfcomponent 
+	displayname="ApplicationPlugin" 
+	extends="MachII.framework.Plugin" 
+	depends="googleUserService,sessionFacade"
+	output="false"
+	hint="An ApplicationPlugin.">
 
-<beans>
-
-	<!-- SYS -->
-	<bean id="sessionFacade" class="Enlist.model.sys.SessionFacade"/>
-	<bean id="udfs" class="Enlist.model.sys.Udfs" />
-
-	<!-- USER -->
-	<bean id="UserService" class="Enlist.model.user.UserService">
-		<property name="UserGateway"><ref bean="UserGateway" /></property>
-	</bean>
-	<bean id="UserGateway" class="Enlist.model.user.UserGateway" />
+	<!---
+	PROPERTIES
+	--->
 	
-	<bean id="googleUserService" factory-bean="UserService" factory-method="getGoogleUserService" />
+	<!---
+	INITIALIZATION / CONFIGURATION
+	--->
+	<cffunction name="configure" access="public" returntype="void" output="false"
+		hint="Configures the plugin.">
+	</cffunction>
 	
-</beans>
+	<!---
+	PUBLIC FUNCTIONS
+	--->
+	<cffunction name="preProcess" access="public" returntype="void" output="false">
+		<cfargument name="eventContext" type="MachII.framework.EventContext" required="true" />
+
+		<cfif getGoogleUserService().isUserLoggedIn() AND NOT getSessionFacade().isUserDefined()>
+			<!--- Load in our User object based off the Google Email as the ID --->
+		</cfif>
+	</cffunction>
+
+	<!---
+	PROTECTED FUNCTIONS
+	--->
+
+	<!---
+	ACCESSORS
+	--->
+
+</cfcomponent>

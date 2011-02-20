@@ -112,9 +112,7 @@ Notes:
 				<parameter name="beansToMachIIProperties">
 					<struct>
 						<key name="udfs" value="udfs" />
-						<!-- 
-						<key name="ColdSpringBeanName2" value="MachIIPropertyName2" />
-						-->
+						<key name="googleUserService" value="googleUserService" />
 					</struct>
 				</parameter>
 			</parameters>
@@ -192,13 +190,7 @@ Notes:
 
 	<!-- PLUGINS -->
 	<plugins>
-		<!--
-		<plugin name="yourPluginName" type="fully.Qualified.Dot.Delimited.Path.To.CFC">
-			<parameters>
-				<parameter name="yourParameterName" value="yourParameterValue" />
-			</parameters>
-		</plugin>
-		-->
+		<plugin name="application" type="Enlist.controllers.plugins.ApplicationPlugin"/>
 	</plugins>
 
 	<!-- EVENT-HANDLERS -->
