@@ -25,3 +25,89 @@ $Id: $
 
 Notes:
 --->
+<cfcomponent output="false">
+
+	<cfset variables.id = "">
+	<cfset variables.name = "">
+	<cfset variables.startDate = "">
+	<cfset variables.endDTate = "">
+	<cfset variables.location = "">
+	<cfset variables.status = "">
+	
+	<cffunction name="init" access="public" returntype="Enlist.model.event.Event" output="false">
+		<cfargument name="id" type="string" required="false" default="" />
+		<cfargument name="name" type="string" required="false" default="" />
+		<cfargument name="startDate" type="string" required="false" default="" />
+		<cfargument name="endDate" type="string" required="false" default="" />
+		<cfargument name="location" type="string" required="false" default="" />
+		<cfargument name="status" type="string" required="false" default="" />
+		<cfset setInstanceMemento(arguments) />
+		<cfreturn this />
+	</cffunction>
+
+	<cffunction name="getInstanceMemento" access="public" returntype="struct" output="false">
+		<cfreturn variables />	
+	</cffunction>
+	<cffunction name="setInstanceMemento" access="private" returntype="void" output="false">
+		<cfargument name="data" type="struct" required="true" />
+		<cfset setId(data.id) />
+		<cfset setName(data.name) />
+		<cfset setStartDate(data.startDate) />
+		<cfset setEndDate(data.endDate) />
+		<cfset setLocation(data.location) />
+		<cfset setStatus(data.status) />
+ 	</cffunction>
+ 
+ 	<cffunction name="getId" access="public" returntype="string" output="false"> 
+	 	<cfif variables.id eq "">
+	     	<cfreturn googleKey(this) />     
+	 	<cfelse>
+		 	<cfreturn variables.id />
+	 	</cfif>    
+     </cffunction>     
+     <cffunction name="setId" access="public" returntype="void" output="false">     
+     	<cfargument name="id" type="string" required="true" />     
+     	<cfset variables.id = arguments.id />     
+     </cffunction>
+     
+     <cffunction name="getName" access="public" returntype="string" output="false">     
+     	<cfreturn variables.name />     
+     </cffunction>     
+     <cffunction name="setName" access="public" returntype="void" output="false">     
+     	<cfargument name="name" type="string" required="true" />     
+     	<cfset variables.name = arguments.name />     
+     </cffunction>
+     
+     <cffunction name="getstartDate" access="public" returntype="string" output="false">     
+     	<cfreturn variables.startDate />     
+     </cffunction>     
+     <cffunction name="setstartDate" access="public" returntype="void" output="false">     
+     	<cfargument name="startDate" type="string" required="true" />     
+     	<cfset variables.startDate = arguments.startDate />     
+     </cffunction>
+	
+	<cffunction name="getendDate" access="public" returntype="string" output="false">        
+    	<cfreturn variables.endDate />        
+    </cffunction>        
+    <cffunction name="setendDate" access="public" returntype="void" output="false">        
+    	<cfargument name="endDate" type="string" required="true" />        
+    	<cfset variables.endDate = arguments.endDate />        
+    </cffunction>
+    
+    <cffunction name="getlocation" access="public" returntype="string" output="false">    
+    	<cfreturn variables.location />    
+    </cffunction>    
+    <cffunction name="setlocation" access="public" returntype="void" output="false">    
+    	<cfargument name="location" type="string" required="true" />    
+    	<cfset variables.location = arguments.location />    
+    </cffunction>
+    
+    <cffunction name="getstatus" access="public" returntype="string" output="false">    
+    	<cfreturn variables.status />    
+    </cffunction>    
+    <cffunction name="setstatus" access="public" returntype="void" output="false">    
+    	<cfargument name="status" type="string" required="true" />    
+    	<cfset variables.status = arguments.status />    
+    </cffunction>
+	
+</cfcomponent>

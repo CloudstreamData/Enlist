@@ -25,3 +25,26 @@ $Id: $
 
 Notes:
 --->
+<cfcomponent output="false">
+
+	<cffunction name="getEvent" access="public" returntype="Enlist.model.event.Event" output="false">
+		<cfargument name="eventID" type="string" required="false" default="">
+		<cfif arguments.eventID eq "">
+			<cfreturn createObject("component", "Enlist.model.event.Event").init() />
+		<cfelse>
+			<cfreturn GoogleRead(arguments.eventID) />
+		</cfif>
+	</cffunction> 
+	
+	<cffunction name="getEvents" access="public" returntype="array" output="false">
+		<cfreturn googleQuery("select from event") />
+	</cffunction>
+	
+	<cffunction name="saveEvent" access="public" returntype="void" output="false">
+		<cfargument name="event" type="Enlist.model.event.Event" required="true">
+		<cfset var key = "" />
+		<cfset key = arguments.event.googleWrite("event") />
+		<cfset arguments.event.setId(key) />
+	</cffunction> 
+	
+</cfcomponent>
