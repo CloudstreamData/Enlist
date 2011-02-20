@@ -27,9 +27,27 @@ Notes:
 --->
 <cfcomponent output="false">
 
+	<!---
+	PROPERTIES
+	--->
+	<cfset variables.googleUserService = "" />
+	<cfset variables.userGateway = "" />
+	
+	<!---
+	INITIALIZATION / CONFIGURATION
+	--->
+	<cffunction name="init" access="public" returntype="EventService" output="false"
+		hint="Initializes the service.">
+		<cfreturn this />
+	</cffunction>
+
+	<!---
+	PUBLIC FUNCTIONS
+	--->
 	<cffunction name="getEvent" access="public" returntype="Enlist.model.event.Event" output="false">
 		<cfargument name="eventID" type="string" required="false" default="">
-		<cfif arguments.eventID eq "">
+		
+		<cfif NOT Len(arguments.eventID)>
 			<cfreturn createObject("component", "Enlist.model.event.Event").init() />
 		<cfelse>
 			<cfreturn GoogleRead(arguments.eventID) />
@@ -42,7 +60,9 @@ Notes:
 	
 	<cffunction name="saveEvent" access="public" returntype="void" output="false">
 		<cfargument name="event" type="Enlist.model.event.Event" required="true">
+
 		<cfset var key = "" />
+
 		<cfset key = arguments.event.googleWrite("event") />
 		<cfset arguments.event.setId(key) />
 	</cffunction> 
