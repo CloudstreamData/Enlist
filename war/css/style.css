@@ -10,7 +10,7 @@ body {
 	background: url(../img/top_bg.gif);
 	background-repeat: repeat-x;
 	font-family: Verdana, Arial, sans-serif;
-    font-size: .8em;
+    font-size: .9em;
 }
 
 p {
@@ -46,6 +46,20 @@ blockquote{
 	padding: 10px;
 }
 
+table{
+	width:100%;
+}
+
+th {
+	text-align: right;
+	padding: 5px;
+	color: #666;
+	background-color: #F7FDE3;
+}
+
+td {
+	padding: 5px;
+}
 
 /**** Main Container ***/
 
@@ -53,7 +67,7 @@ blockquote{
 #wrap {
        margin-left: auto;
        margin-right: auto;
-       width: 730px;
+       width: 920px;
 }
 
 
@@ -163,10 +177,10 @@ blockquote{
 }
 
 #left {
-	width: 390px;
+	width: 590px;
 	float:left;
 	display: block;
-       margin-left: 20px;
+    margin-left: 20px;
 	display: inline;
 }
 
