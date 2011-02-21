@@ -32,8 +32,6 @@ Notes:
 	<!---
 	PROPERTIES
 	--->
-	<cfset variables.instance = StructNew() />
-	<cfset variables.instance.id = "" />
 	<cfset variables.name = "" />
 	<cfset variables.startDate = "" />
 	<cfset variables.endDate = "" />
@@ -69,21 +67,26 @@ Notes:
 		<cfset setStatus(arguments.data.status) />
  	</cffunction>
 	<cffunction name="getInstanceMemento" access="public" returntype="struct" output="false">
-		<cfreturn variables />	
+		<cfset var data = structnew() />
+		<cfset var fieldname = "" />
+		
+		<cfset data.id = getID() />
+		<cfloop list="name,startdate,enddate,location,status" index="fieldname">
+			<cfset data[fieldname] = variables[fieldname]>
+		</cfloop>
+		
+		<cfreturn data />	
 	</cffunction>
 	
 	<!---
 	ACCESSORS
 	--->
  	<cffunction name="getId" access="public" returntype="string" output="false">	 	
-	 	<cfif NOT Len(variables.instance.id)>
-		 	<cfset variables.instance.id = googleKey(this) />
-	 	</cfif>
-		<cfreturn variables.instance.id />
+		<cfreturn googleKey(this) />
      </cffunction>     
      <cffunction name="setId" access="public" returntype="void" output="false">     
      	<cfargument name="id" type="string" required="true" />     
-     	<cfset variables.id = arguments.id />     
+     	<!--- <cfset variables.id = arguments.id /> --->   
      </cffunction>
      
      <cffunction name="getName" access="public" returntype="string" output="false">     

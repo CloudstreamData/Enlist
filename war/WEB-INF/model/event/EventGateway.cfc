@@ -25,3 +25,37 @@ $Id: $
 
 Notes:
 --->
+<cfcomponent output="false">
+	
+	<cffunction name="getEvent" access="public" returntype="Enlist.model.event.Event" output="false">
+		<cfargument name="eventID" type="string" required="false" default="">
+		
+		<cfset var event = 0>
+		
+		<cfif NOT Len(arguments.eventID)>
+			<cfset event = createObject("component", "Enlist.model.event.Event").init() />
+		<cfelse>
+			<cfset event = GoogleRead(arguments.eventID) />
+			<!---<cfset event.setID(arguments.eventID) />--->
+		</cfif>
+		
+		<cfreturn event />
+	</cffunction> 
+	
+	<cffunction name="getEvents" access="public" returntype="array" output="false">
+		<cfreturn googleQuery("select from event") />
+	</cffunction>
+
+	<cffunction name="saveEvent" access="public" returntype="void" output="false">
+		<cfargument name="event" type="Enlist.model.event.Event" required="true">
+
+		<cfset var key = "" />
+		<!---<cfdump var="#event.getInstanceMemento()#" label="event before">--->
+		<cfset key = arguments.event.googleWrite("event") />
+		<!---<cfdump var="#key#" label="key">--->
+		<!---<cfset arguments.event.setId(key) />--->
+		<!---<cfdump var="#event.getInstanceMemento()#" label="event after save">
+		<cfabort>--->
+	</cffunction> 
+	
+</cfcomponent>

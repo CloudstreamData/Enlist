@@ -30,7 +30,7 @@ Notes:
 	<!---
 	PROPERTIES
 	--->
-	<cfset variables.userGateway = "" />
+	<cfset variables.eventGateway = "" />
 	
 	<!---
 	INITIALIZATION / CONFIGURATION
@@ -39,31 +39,30 @@ Notes:
 		hint="Initializes the service.">
 		<cfreturn this />
 	</cffunction>
+	
+	<cffunction name="getEventGateway" access="public" returntype="Enlist.model.event.EventGateway" output="false">
+		<cfreturn variables.eventGateway />
+	</cffunction> 
+	<cffunction name="setEventGateway" access="public" returntype="void" output="false">
+		<cfargument name="eventGateway" type="Enlist.model.event.EventGateway" required="true" /> 
+		<cfset variables.eventGateway = arguments.eventGateway />
+	</cffunction> 
 
 	<!---
 	PUBLIC FUNCTIONS
 	--->
 	<cffunction name="getEvent" access="public" returntype="Enlist.model.event.Event" output="false">
 		<cfargument name="eventID" type="string" required="false" default="">
-		
-		<cfif NOT Len(arguments.eventID)>
-			<cfreturn createObject("component", "Enlist.model.event.Event").init() />
-		<cfelse>
-			<cfreturn GoogleRead(arguments.eventID) />
-		</cfif>
+		<cfreturn getEventGateway().getEvent(arguments.eventID) />
 	</cffunction> 
 	
 	<cffunction name="getEvents" access="public" returntype="array" output="false">
-		<cfreturn googleQuery("select from event") />
+		<cfreturn getEventGateway().getEvents() />
 	</cffunction>
 	
 	<cffunction name="saveEvent" access="public" returntype="void" output="false">
 		<cfargument name="event" type="Enlist.model.event.Event" required="true">
-
-		<cfset var key = "" />
-
-		<cfset key = arguments.event.googleWrite("event") />
-		<cfset arguments.event.setId(key) />
+		<cfset getEventGateway().saveEvent(arguments.event) />
 	</cffunction> 
 	
 </cfcomponent>

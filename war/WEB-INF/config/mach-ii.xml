@@ -213,6 +213,32 @@ Notes:
 			<execute subroutine="doMainLayout"/>
 		</event-handler>
 		
+		<!-- EVENTS -->
+		<event-handler event="event.list" access="public">
+			<call-method bean="eventService" method="getEvents" resultArg="events" />
+			<view-page name="event.list" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
+		</event-handler>
+		<event-handler event="event.edit" access="public">
+			<call-method bean="eventService" method="getEvent" resultArg="event">
+				<arg name="eventID" value="${event.id:''}" />
+			</call-method>
+			<view-page name="event.edit" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
+		</event-handler>
+		<event-handler event="event.save" access="public">
+			<call-method bean="eventService" method="getEvent" resultArg="event">
+				<arg name="eventID" value="${event.id}" />
+			</call-method>
+			<event-bean name="event" type="Enlist.model.event.Event" autopopulate="true" reinit="false"  />
+			<call-method bean="eventService" method="saveEvent">
+				<arg name="event" value="${event.event}" />
+			</call-method>
+			<event-arg name="message" value="Event saved" />
+			<view-page name="event.edit" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
+		</event-handler>
+		
 		<!-- SYS -->
 		<event-handler event="sys.about" access="public">
 			<view-page name="sys.about" contentArg="layout.content"/>
@@ -235,24 +261,7 @@ Notes:
 	
 	<!-- PAGE-VIEWS -->
 	<page-views>
-		<!-- ADMIN -->
-		<page-view name="admin.index" page="/views/admin/index.cfm" />
-		
-		<!-- BASE -->
-		<page-view name="home" page="/views/home.cfm" />
-		<page-view name="register" page="/views/register.cfm" />
-		
-		<!-- LAYOUT -->
-		<page-view name="layout.header" page="/views/layout/header.cfm"/>
-		<page-view name="layout.footer" page="/views/layout/footer.cfm"/>
-		<page-view name="layout.wrapper" page="/views/layout/wrapper.cfm"/>
-		
-		<!-- SYS -->
-		<page-view name="sys.about" page="/views/sys/about.cfm" />
-		<page-view name="sys.exception" page="/views/sys/exception.cfm" />
-		
-		<!-- VOLUNTEER -->
-		<page-view name="volunteer.index" page="/views/volunteer/index.cfm" />
+		<view-loader type="PatternViewLoader" />
 	</page-views>
 	
 </mach-ii>
