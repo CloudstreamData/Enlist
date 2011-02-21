@@ -32,6 +32,7 @@ Notes:
 	<!---
 	PROPERTIES
 	--->
+	<cfset variables.id = "" />
 	<cfset variables.name = "" />
 	<cfset variables.startDate = "" />
 	<cfset variables.endDate = "" />
@@ -70,8 +71,7 @@ Notes:
 		<cfset var data = structnew() />
 		<cfset var fieldname = "" />
 		
-		<cfset data.id = getID() />
-		<cfloop list="name,startdate,enddate,location,status" index="fieldname">
+		<cfloop list="id,name,startdate,enddate,location,status" index="fieldname">
 			<cfset data[fieldname] = variables[fieldname]>
 		</cfloop>
 		
@@ -82,11 +82,11 @@ Notes:
 	ACCESSORS
 	--->
  	<cffunction name="getId" access="public" returntype="string" output="false">	 	
-		<cfreturn googleKey(this) />
+		<cfreturn variables.id />
      </cffunction>     
      <cffunction name="setId" access="public" returntype="void" output="false">     
      	<cfargument name="id" type="string" required="true" />     
-     	<!--- <cfset variables.id = arguments.id /> --->   
+     	<cfset variables.id = arguments.id />   
      </cffunction>
      
      <cffunction name="getName" access="public" returntype="string" output="false">     

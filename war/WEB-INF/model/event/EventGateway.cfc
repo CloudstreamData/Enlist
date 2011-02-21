@@ -30,13 +30,14 @@ Notes:
 	<cffunction name="getEvent" access="public" returntype="Enlist.model.event.Event" output="false">
 		<cfargument name="eventID" type="string" required="false" default="">
 		
-		<cfset var event = 0>
+		<cfset var events = 0 />
+		<cfset var event = 0 />
 		
 		<cfif NOT Len(arguments.eventID)>
 			<cfset event = createObject("component", "Enlist.model.event.Event").init() />
 		<cfelse>
-			<cfset event = GoogleRead(arguments.eventID) />
-			<!---<cfset event.setID(arguments.eventID) />--->
+			<cfset events = GoogleQuery("select from event where id == '#arguments.eventID#'") />
+			<cfset event = events[1] />
 		</cfif>
 		
 		<cfreturn event />
@@ -50,12 +51,13 @@ Notes:
 		<cfargument name="event" type="Enlist.model.event.Event" required="true">
 
 		<cfset var key = "" />
-		<!---<cfdump var="#event.getInstanceMemento()#" label="event before">--->
+		
+		<cfif event.getID() eq "">
+			<cfset event.setID(createUUID()) />
+		<cfelse>
+			<cfset googleDelete(arguments.event) />
+		</cfif>
 		<cfset key = arguments.event.googleWrite("event") />
-		<!---<cfdump var="#key#" label="key">--->
-		<!---<cfset arguments.event.setId(key) />--->
-		<!---<cfdump var="#event.getInstanceMemento()#" label="event after save">
-		<cfabort>--->
 	</cffunction> 
 	
 </cfcomponent>

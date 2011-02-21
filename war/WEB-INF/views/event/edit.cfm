@@ -4,9 +4,6 @@
 <cfif event.getArg("message") neq "">
 	<p class="alert">#event.getArg("message")#</p>	
 </cfif>
-GoogleKey(event) = '#GoogleKey(event.getarg("event"))#'<br />
-event.id = '#event.getArg("event").getID()#'
-	
 </cfoutput>
 
 <form:form actionEvent="event.save" bind="event">
