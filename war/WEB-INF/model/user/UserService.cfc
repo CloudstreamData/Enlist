@@ -60,5 +60,10 @@ Notes:
 	<!---
 	PUBLIC FUNCTIONS
 	--->
+	<cffunction name="getUserByGoogleEmail" access="public" returntype="User" output="false"
+		hint="Gets an User from the datastore by Google Email.">
+		<cfargument name="googleEmail" type="string" required="true" />
+		<cfreturn variables.userGateway.getUserByGoogleEmail(arguments.googleEmail) />
+	</cffunction>
 	
 </cfcomponent>

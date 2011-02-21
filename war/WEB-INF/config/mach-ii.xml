@@ -201,6 +201,7 @@ Notes:
 			<execute subroutine="doMainLayout" />
 		</event-handler>
 		<event-handler event="register" access="public">
+			<event-bean name="user" type="Enlist.model.user.User" />
 			<view-page name="register" contentArg="layout.content" />
 			<execute subroutine="doMainLayout" />
 		</event-handler>

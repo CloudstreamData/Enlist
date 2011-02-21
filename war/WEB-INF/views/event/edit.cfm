@@ -7,22 +7,25 @@
 </cfoutput>
 
 <form:form actionEvent="event.save" bind="event">
-	<form:hidden name="id" path="id" />
-	<table style="width: 100%">
+	<table>
 		<tr>
 			<th>Name:</th>
 			<td><form:input path="name" size="40" maxlength="200" /></td>
+		</tr>
+		<tr>
 			<th>Location:</th>
 			<td><form:input path="location" size="40" maxlength="200" /></td>
 		</tr>
 		<tr>
 			<th nowrap="nowrap">Start Date:</th>
 			<td><form:input path="startDate" size="10" maxlength="200" /></td>
+		</tr>
+		<tr>
 			<th nowrap="nowrap">End Date:</th>
 			<td><form:input path="endDate" size="10" maxlength="200" /></td>
 		</tr>
 		<tr>
-			<td></td>
+			<td><form:hidden name="id" path="id" /></td>
 			<td colspan="3"><form:button type="submit" name="save" value="Save Event" /></td>
 		</tr>
 	</table>

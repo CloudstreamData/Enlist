@@ -44,5 +44,18 @@ Notes:
 	<!---
 	PUBLIC FUNCTIONS
 	--->
+	<cffunction name="getUserByGoogleEmail" access="public" returntype="User" output="false"
+		hint="Gets an User from the datastore by Google Email.">
+		<cfargument name="googleEmail" type="string" required="true" />
+		
+		<cfset var qryRead = "" />
+		
+		<cfquery name="qryRead">
+			select from Users
+			where googleEmail == '#arguments.googleEmail#' 
+		</cfquery>
+		
+		<!--- Still need to return a single element which is an array of object (either 0 or 1 elements long) --->
+	</cffunction>
 	
 </cfcomponent>

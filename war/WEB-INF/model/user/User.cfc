@@ -91,7 +91,7 @@ Notes:
 		<cfset variables.instance.id = trim(arguments.id) />
 	</cffunction>
 	<cffunction name="getId" access="public" returntype="string" output="false">
-		<cfreturn variables.instance.id />
+		<cfreturn googleKey(this) />
 	</cffunction>
 
 	<cffunction name="setStatus" access="public" returntype="void" output="false">

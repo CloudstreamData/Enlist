@@ -32,4 +32,25 @@
 </cfsilent>
 <cfoutput>
 <h2>Register</h2>
+
+<form:form actionEvent="register_process" bind="user">
+	<table>
+		<tr>
+			<th style="width:40%;">First Name</th>
+			<td style="width:60%;"><form:input path="firstName" size="40" maxlength="200" /></td>
+		</tr>
+		<tr>
+			<th>Last Name</th>
+			<td><form:input path="lastName" size="40" maxlength="200" /></td>
+		</tr>
+		<tr>
+			<th>Alternative Email</th>
+			<td><form:input path="altEmail" size="40" maxlength="200" /></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><form:button type="submit" name="save" value="Save Event" /></td>
+		</tr>
+	</table>
+</form:form>
 </cfoutput>
