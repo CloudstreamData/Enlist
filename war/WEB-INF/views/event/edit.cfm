@@ -6,6 +6,17 @@
 </cfif>
 </cfoutput>
 
+<cfsavecontent variable="js">
+	<script>
+		$(function() {
+			$( "#startDate" ).datepicker();
+			$( "#endDate" ).datepicker();
+		});
+	</script>
+
+</cfsavecontent>
+<cfhtmlhead text="#js#">
+
 <form:form actionEvent="event.save" bind="event">
 	<table>
 		<tr>

@@ -132,6 +132,7 @@ Notes:
 						<key name="jquery">
 							<array>
 								<element value="libraries/jquery/jquery-1-5.js" />
+								<element value="libraries/jquery/jquery-ui-1.8.9.custom.min.js" />
 							</array>
 						</key>
 					</struct>

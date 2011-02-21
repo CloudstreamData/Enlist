@@ -41,6 +41,7 @@
 <head>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 	<view:style href="style.css" media="screen"/>
+	<view:style href="south-street/jquery-ui-1.8.9.custom.css" media="screen"/>
 	<view:link type="icon" href="/favicon.ico" />
 	<view:asset package="jquery" outputType="inline" />
 </head>
