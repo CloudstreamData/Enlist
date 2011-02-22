@@ -3,8 +3,16 @@
 	<cffunction name="setup" returntype="void" access="private" output="false">
 		<cfset var config = structNew()/>
 
+		<cfset config.coldspring = structNew()/>
+		<cfset config.coldspring.configFile = "/Enlist/config/services.xml"/>
+		<cfset config.coldspring.attributes = structNew()/>
+		<cfset config.coldspring.properties = structNew()/>
+		<cfset config.coldspring.factory = createObject("component", "coldspring.beans.DefaultXmlBeanFactory").init(config.coldspring.attributes, config.coldspring.properties)/>
+		<cfset config.coldspring.factory.loadBeansFromXmlFile(config.coldspring.configFile)/>
+
 		<cfset config.testData = getTestData()/>
 		<cfset setConfig(config)/>
+
 		<cfset addAssertDecorator("tests.mxunit.assert.BeanPropertyAssertion")/>
 	</cffunction>
 
@@ -14,6 +22,14 @@
 	<cffunction name="setConfig" returntype="void" access="private" output="false">
 		<cfargument name="config" type="struct" required="true"/>
 		<cfset variables.config = arguments.config/>
+	</cffunction>
+
+	<cffunction name="getServiceBean" returntype="any" access="private" output="false">
+		<cfargument name="name" type="string" required="true"/>
+
+		<cfset var cfg = getConfig()/>
+
+		<cfreturn cfg.coldspring.factory.getBean(arguments.name)/>
 	</cffunction>
 
 	<cffunction name="getTestData" returntype="struct" access="private" output="false">
