@@ -96,13 +96,16 @@ Notes:
 
 	<cffunction name="getActivityVolunteerHistoryByUser" returntype="array" access="public" output="false">
 		<cfargument name="userId" type="string" required="true" />
-		<cfset var volunteerActivities = GoogleQuery("select from activityvolunteer where userid == '#arguments.userId#'") />
+
+		<cfset var volunteerActivities = GoogleQuery("select from activityvolunteer where userId == '#arguments.userId#' order by scheduledEnd desc") />
 		<cfset var volunteerActivity = "" />
 		<cfset var user = getUserService().getUser( arguments.userId ) />
+
 		<cfloop array="#volunteerActivities#" index="volunteerActivity">
-			<cfset volunteerActivity.setActivity( getActivity( volunteerActivity.getActivity().getId() ) ) />
+			<cfset volunteerActivity.setActivity( getActivity( volunteerActivity.getActivityId() ) ) />
 			<cfset volunteerActivity.setUser( user ) />
 		</cfloop>
+
 		<cfreturn volunteerActivities />
 	</cffunction>
 

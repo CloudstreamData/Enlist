@@ -2,7 +2,7 @@
 	displayname="ActivityListener"
 	extends="MachII.framework.Listener"
 	output="false"
-	depends="ActivityService,EventService">
+	depends="ActivityService,EventService,sessionFacade">
 
 	<!---
 	PROPERTIES
@@ -19,5 +19,11 @@
 	<!---
 	PUBLIC FUNCTIONS
 	--->
+	<cffunction name="getActivityVolunteerHistoryForUser" returntype="array" access="public" output="false">
+		<cfargument name="event" type="MachII.framework.Event" />
+		
+		<cfset var user = getSessionFacade().getUser() />
+		<cfreturn getActivityService().getActivityVolunteerHistoryByUser( user.getId() ) />
+	</cffunction>
 
 </cfcomponent>

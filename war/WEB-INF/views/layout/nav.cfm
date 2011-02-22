@@ -33,11 +33,13 @@
 	
 	link1 = createObject("component", "Enlist.model.navigation.NavigationLink").init(1,'Events','event.list');
 	link2 = createObject("component", "Enlist.model.navigation.NavigationLink").init(1,'Activities','activity.list');
+	link3 = createObject("component", "Enlist.model.navigation.NavigationLink").init(1,'My Activities','activityvolunteer.list');
 	
 	//array of NavigationLink objects should come from user.getNavigaiton() or somethinglike that
 	navLinks = arrayNew(1); //event.getArg('User').getNavigation(); 
 	navLinks[1] = link1;
 	navLinks[2] = link2;
+	navLinks[3] = link3;
 	displayNavigation(navLinks);
 </cfscript>
 

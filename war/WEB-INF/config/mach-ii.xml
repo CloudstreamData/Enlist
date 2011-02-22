@@ -291,6 +291,13 @@ Notes:
 			<redirect event="activity.list" persist="true" />
 		</event-handler>		
 		
+		<!-- ACTIVITY VOLUNTEER -->
+		<event-handler event="activityvolunteer.list" access="public">
+			<notify listener="activityListener" method="getActivityVolunteerHistoryForUser" resultArg="activityVolunteerEntities" />
+			<view-page name="activityvolunteer.list" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
+		</event-handler>
+		
 		<!-- CHAPTERS -->
 		<event-handler event="chapter.list" access="public">
 			<call-method bean="chapterService" method="getChapters" resultArg="chapters" />
@@ -316,7 +323,7 @@ Notes:
 			<view-page name="chapter.edit" contentArg="layout.content"/>
 			<execute subroutine="doMainLayout"/>
 		</event-handler>
-		
+			
 		<!-- USERS -->
 		<event-handler event="user.list" access="public">
 			<call-method bean="userService" method="getUsers" resultArg="users" />

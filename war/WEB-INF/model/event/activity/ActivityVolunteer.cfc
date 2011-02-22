@@ -7,9 +7,9 @@
 	<cfproperty name="user" type="Enlist.model.user.User" />
 	<cfproperty name="activity" type="Enlist.model.event.activity.Activity" />
 	<cfproperty name="volunteeredOn" type="date" />
-	<cfproperty name="scheduledStart" type="date" />
-	<cfproperty name="scheduledEnd" type="date" />
-	<cfproperty name="cancelledOn" type="date" />
+	<cfproperty name="scheduledStart" type="string" />
+	<cfproperty name="scheduledEnd" type="string" />
+	<cfproperty name="cancelledOn" type="string" />
 	<cfproperty name="actualHours" type="numeric" />
 	<cfproperty name="actualBones" type="numeric" />
 	<cfproperty name="status" type="string" />
@@ -30,8 +30,6 @@
 	--->
 	<cffunction name="init" access="public" returntype="Enlist.model.event.activity.ActivityVolunteer" output="false">
 		<cfargument name="id" type="string" required="false" default="" />
-		<cfargument name="userId" type="string" required="false" default="" />
-		<cfargument name="activityId" type="string" required="false" default="" />
 		<cfargument name="volunteeredOn" type="string" required="false" default="" />
 		<cfargument name="scheduledStart" type="string" required="false" default="" />
 		<cfargument name="scheduledEnd" type="string" required="false" default="" />
@@ -39,6 +37,8 @@
 		<cfargument name="actualHours" type="string" required="false" default="" />
 		<cfargument name="actualBones" type="string" required="false" default="" />
 		<cfargument name="status" type="string" required="false" default="" />
+		<cfargument name="user" type="Enlist.model.user.User" required="false" />
+		<cfargument name="activity" type="Enlist.model.event.activity.Activity" required="false" />
 
 		<cfset setInstanceMemento(arguments) />
 
@@ -49,8 +49,6 @@
 	<cffunction name="setInstanceMemento" access="public" returntype="void" output="false">
 		<cfargument name="data" type="struct" required="true" />	
 		<cfset setId( arguments.data.id ) />
-		<cfset setUserId( arguments.data.userId ) />
-		<cfset setActivityId( arguments.data.activityId ) />
 		<cfset setVolunteeredOn( arguments.data.volunteeredOn ) />
 		<cfset setScheduledStart( arguments.data.scheduledStart ) />
 		<cfset setScheduledEnd( arguments.data.scheduledEnd ) />
@@ -58,6 +56,12 @@
 		<cfset setActualHours( arguments.data.actualHours ) />
 		<cfset setActualBones( arguments.data.actualBones ) />
 		<cfset setStatus( arguments.data.status ) />
+		<cfif structKeyExists( arguments.data, "user")>
+			<cfset setUser( arguments.data.user ) />
+		</cfif>
+		<cfif structKeyExists( arguments.data, "activity")>
+			<cfset setActivity( arguments.data.activity ) />
+		</cfif>
 	</cffunction>
 	
 	<cffunction name="getInstanceMemento" access="public" returntype="struct" output="false">
@@ -97,6 +101,7 @@
 	<cffunction name="setUser" returntype="void" access="public" output="false">
 		<cfargument name="user" type="Enlist.model.user.User" required="true" />
 		<cfset variables.user = arguments.user />
+		<cfset variables.userId = arguments.user.getId() />
 	</cffunction>
 		
 	<cffunction name="getUser" returntype="Enlist.model.user.User" access="public" output="false">
@@ -116,6 +121,7 @@
 	<cffunction name="setActivity" returntype="void" access="public" output="false">
 		<cfargument name="activity" type="Enlist.model.event.activity.Activity" required="true" />
 		<cfset variables.activity = arguments.activity />
+		<cfset variables.activityId = arguments.activity.getId() />
 	</cffunction>
 		
 	<cffunction name="getActivity" returntype="Enlist.model.event.activity.Activity" access="public" output="false">
