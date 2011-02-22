@@ -15,7 +15,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Linking this library statically or dynamically with other modules is
     making a combined work based on this library.  Thus, the terms and
     conditions of the GNU General Public License cover the whole
@@ -25,32 +25,45 @@ $Id: $
 
 Notes:
 --->
-<cfcomponent 
-	displayname="ApplicationPlugin" 
-	extends="MachII.framework.Plugin" 
-	depends="googleUserService,sessionFacade"
+<cfcomponent
+	displayname="ApplicationPlugin"
+	extends="MachII.framework.Plugin"
+	depends="googleUserService,sessionFacade,userService"
 	output="false"
 	hint="An ApplicationPlugin.">
 
 	<!---
 	PROPERTIES
 	--->
-	
+
 	<!---
 	INITIALIZATION / CONFIGURATION
 	--->
 	<cffunction name="configure" access="public" returntype="void" output="false"
 		hint="Configures the plugin.">
 	</cffunction>
-	
+
 	<!---
 	PUBLIC FUNCTIONS
 	--->
 	<cffunction name="preProcess" access="public" returntype="void" output="false">
 		<cfargument name="eventContext" type="MachII.framework.EventContext" required="true" />
 
+		<cfset var event = arguments.eventContext.getNextEvent() />
+
 		<cfif getGoogleUserService().isUserLoggedIn() AND NOT getSessionFacade().isUserDefined()>
 			<!--- Load in our User object based off the Google Email as the ID --->
+			<cfset var googleEmail = getGoogleUserService().getCurrentUser().getEmail() />
+			<cfset var userByGoogleEmail = getUserService().getUserByGoogleEmail( googleEmail ) />
+			<cfif len(userByGoogleEmail.getID())>
+				<cfset getSessionFacade().setUser( userByGoogleEmail ) />
+			<cfelseif event.getName() NEQ "register_process">
+				<!--- if the user is logged in with there google account, but not in this system, send them to the registration event --->
+				<cfset eventContext.clearEventQueue() />
+				<cfset event.setArg("message", "Please register before continuing") />
+				<cfset event.setArg("googleEmail",googleEmail) />
+				<cfset announceEvent("register", event.getArgs()) />
+			</cfif>
 		</cfif>
 	</cffunction>
 
