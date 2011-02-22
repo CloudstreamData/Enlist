@@ -320,6 +320,24 @@ Notes:
 			<view-page name="user.edit" contentArg="layout.content"/>
 			<execute subroutine="doMainLayout"/>
 		</event-handler>
+		<event-handler event="user.search" access="public">
+			<call-method bean="chapterService" method="getChapters" resultArg="chapters" />
+			<view-page name="user.search" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
+		</event-handler>
+		<event-handler event="user.doSearch" access="public">
+			<call-method bean="userService" method="getUsersBySearch" resultArg="users">
+				<arg name="firstName" value="${event.firstName:''}" />
+				<arg name="lastName" value="${event.lastName:''}" />
+				<arg name="googleEmail" value="${event.googleEmail:''}" />
+				<arg name="altEmail" value="${event.altEmail:''}" />
+				<arg name="role" value="${event.role:''}" />
+				<arg name="chapterId" value="${event.chapterId:''}" />
+				<arg name="status" value="${event.status:''}" />
+			</call-method>
+			<view-page name="user.list" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
+		</event-handler>
 		
 		<!-- SYS -->
 		<event-handler event="sys.about" access="public">
