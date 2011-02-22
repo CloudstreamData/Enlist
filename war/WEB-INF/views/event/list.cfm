@@ -11,6 +11,7 @@
 	<th>End Date</th>
 	<th>Location</th>
 	<th>Options</th>
+	<th>Status</th>
 </tr>
 <cfoutput>
 <cfloop from="1" to="#arrayLen(events)#" index="i">
@@ -20,6 +21,7 @@
 		<td>#events[i].getEndDate()#</td>
 		<td>#events[i].getLocation()#</td>
 		<td><view:a event="event.edit" p:id="#events[i].getID()#">Edit</view:a></td>
+		<td>#events[i].getStatus()#</td>
 	</tr>	
 </cfloop> 
 </cfoutput>

@@ -36,6 +36,16 @@
 			<td><form:input path="endDate" size="10" maxlength="200" /></td>
 		</tr>
 		<tr>
+			<th nowrap="nowrap">Status:</th>
+			<td><form:select path="status">
+				<form:option value="-" label="Choose a status" />
+				<form:option value="pending" label="Pending" />
+				<form:option value="open" label="Open" />
+				<form:option value="closed" label="Closed" />
+				<form:option value="archived" label="Archived" />
+			</form:select></td>
+		</tr>
+		<tr>
 			<td><form:hidden name="id" path="id" /></td>
 			<td colspan="3"><form:button type="submit" name="save" value="Save Event" /></td>
 		</tr>
