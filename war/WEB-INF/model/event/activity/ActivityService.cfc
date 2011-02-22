@@ -56,7 +56,7 @@ Notes:
 
 
 	<cffunction name="getActivityVolunteer" returntype="Enlist.model.event.activity.ActivityVolunteer" access="public" output="false">
-		<cfargument name="id" type="numeric" required="true" />
+		<cfargument name="id" type="string" required="true" />
 		<cfreturn getActivityGateway().getActivityVolunteer( arguments.id ) />
 	</cffunction>
 	
@@ -67,7 +67,7 @@ Notes:
 	
 
 	<cffunction name="saveActivity" access="public" returntype="void" output="false">
-		<cfargument name="activity" type="Enlist.model.event.activity.Activity" required="true">
+		<cfargument name="activity" type="Enlist.model.event.activity.Activity" required="true" />
 		<cfset getActivityGateway().saveActivity( arguments.activity ) />
 	</cffunction> 
 	
