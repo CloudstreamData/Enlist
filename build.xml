@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Enlist" default="test" basedir=".">
+
+	<property file="${user.home}/build.properties"/>
+	<property file="${user.name}.properties"/>
+
+	<property name="project.mxunit" value="war/WEB-INF/mxunit"/>
+	<property name="project.build" value="build"/>
+	
+	<property name="server.name" value="localhost"/>
+	<property name="server.port" value="8888"/>
+
+	<taskdef name="mxunittask" classname="org.mxunit.ant.MXUnitAntTask" classpath="${project.mxunit}/ant/lib/mxunit-ant.jar"/> 
+
+	<target name="usage" description="Usage instructions">
+		<echo message="Instructions for Usage:"/>
+	</target>
+
+	<target name="test" description="Run MXUnit Tests">
+		<mxunittask server="${server.name}" port="${server.port}" defaultrunner="/tests/mxunit/Runner.cfc" verbose="true">
+			<directory remoteMethod="run" path="/tests/mxunit/event" componentPath="tests.mxunit.event"/>
+		</mxunittask>
+	</target>
+
+</project>
