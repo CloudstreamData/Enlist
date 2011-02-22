@@ -85,11 +85,11 @@ Notes:
 	<!---
 	ACCESSORS
 	--->
-	<cffunction name="getDAO" returntype="any" access="public" output="false">
+	<cffunction name="getDAO" returntype="Enlist.model.GenericDAO" access="public" output="false">
 		<cfreturn variables.dao />
 	</cffunction>
 	<cffunction name="setDAO" returntype="void" access="public" output="false">
-		<cfargument name="dao" type="any" required="true" />
+		<cfargument name="dao" type="Enlist.model.GenericDAO" required="true" />
 		<cfset variables.dao = arguments.dao />
 	</cffunction>
 
