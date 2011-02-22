@@ -37,7 +37,7 @@ Notes:
 	<cfset variables.instance = StructNew() />
 	<cfset variables.instanace.id = "" />
 	<cfset variables.status = "" />
-	<cfset variables.role = "" />
+	<cfset variables.role = "" /><!--- valid values: Volunteer, Coordinator, Admin --->
 	<cfset variables.chapterId = "" />
 	<cfset variables.firstName = "" />
 	<cfset variables.lastName = "" />

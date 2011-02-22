@@ -47,7 +47,7 @@ Notes:
 		<cfset structDelete(session, "user") />
 	</cffunction>
 	<cffunction name="setUser" access="public" returntype="void" output="false">
-		<cfargument name="user" type="Enlist.model.User" required="true" />
+		<cfargument name="user" type="Enlist.model.user.User" required="true" />
 		<cfset session.user = arguments.user />
 	</cffunction>
 	<cffunction name="isUserDefined" access="public" returntype="void" output="false">

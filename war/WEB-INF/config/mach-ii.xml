@@ -208,6 +208,20 @@ Notes:
 			<view-page name="register" contentArg="layout.content" />
 			<execute subroutine="doMainLayout" />
 		</event-handler>
+		<event-handler event="register_process" access="public">
+			<call-method bean="userService" method="getUser" resultArg="user">
+				<arg name="id" value="" />
+			</call-method>
+			<event-bean name="user" type="Enlist.model.user.User" autopopulate="true" reinit="false">
+				<field name="role" value="Volunteer" />
+			</event-bean>
+			<call-method bean="userService" method="registerUser">
+				<arg name="user" value="${event.user}" />
+			</call-method>
+			<event-arg name="message" value="Registration successful." />
+			<view-page name="home" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
+		</event-handler>
 		
 		<!-- VOLUNTEER -->
 		

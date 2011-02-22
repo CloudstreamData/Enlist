@@ -87,4 +87,16 @@ Notes:
 		<cfreturn variables.userGateway.getUserByGoogleEmail(arguments.googleEmail) />
 	</cffunction>
 	
+	<cffunction name="registerUser" access="public" returntype="void" output="false">
+		<cfargument name="user" type="Enlist.model.user.User" required="true">
+		<cfset saveUser( arguments.user )>
+		<cfset variables.sessionFacade.setUser( arguments.user )>
+	</cffunction> 
+	
+	<cffunction name="saveUser" access="public" returntype="void" output="false">
+		<cfargument name="user" type="Enlist.model.user.User" required="true">
+		<cfset variables.userGateway.saveUser( arguments.user ) />
+		<cfset variables.sessionFacade.setUser( arguments.user )>
+	</cffunction> 
+	
 </cfcomponent>
