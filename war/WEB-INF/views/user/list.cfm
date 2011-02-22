@@ -15,6 +15,7 @@
 	<th>Status</th>
 </tr>
 <cfoutput>
+<cfif arrayLen(users)>
 <cfloop from="1" to="#arrayLen(users)#" index="i">
 	<tr>
 		<td>#users[i].getFirstName()#</td>
@@ -25,6 +26,11 @@
 		<td><view:a event="user.edit" p:id="#users[i].getID()#">Edit</view:a></td>
 	</tr>
 </cfloop>
+<cfelse>
+	<tr>
+		<td colspan="6">No users found</td>
+	</tr>
+</cfif>
 </cfoutput>
 </table>
 
