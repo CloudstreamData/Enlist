@@ -15,7 +15,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Linking this library statically or dynamically with other modules is
     making a combined work based on this library.  Thus, the terms and
     conditions of the GNU General Public License cover the whole
@@ -34,8 +34,7 @@ Notes:
 	<!---
 	PROPERTIES
 	--->
-	<cfset variables.instance = StructNew() />
-	<cfset variables.instance.id = "" />
+	<cfset variables.id = "" />
 	<cfset variables.status = "" />
 	<cfset variables.role = "" /><!--- valid values: Volunteer, Coordinator, Admin --->
 	<cfset variables.chapterId = "" />
@@ -43,7 +42,7 @@ Notes:
 	<cfset variables.lastName = "" />
 	<cfset variables.googleEmail = "" />
 	<cfset variables.altEmail = "" />
-	<cfset variables.importHashCode = "" />	
+	<cfset variables.importHashCode = "" />
 
 	<!---
 	INITIALIZATION / CONFIGURATION
@@ -88,10 +87,10 @@ Notes:
 	--->
 	<cffunction name="setId" access="public" returntype="void" output="false">
 		<cfargument name="id" type="string" required="true" />
-		<cfset variables.instance.id = trim(arguments.id) />
+		<cfset variables.id = trim(arguments.id) />
 	</cffunction>
 	<cffunction name="getId" access="public" returntype="string" output="false">
-		<cfreturn googleKey(this) />
+		<cfreturn variables.id />
 	</cffunction>
 
 	<cffunction name="setStatus" access="public" returntype="void" output="false">
