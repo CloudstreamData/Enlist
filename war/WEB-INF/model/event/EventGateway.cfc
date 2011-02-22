@@ -27,35 +27,45 @@ Notes:
 --->
 <cfcomponent output="false">
 	
+	<!---
+	PROPERTIES
+	--->
+	<cfset variables.dao = "" />
+	
+	<!---
+	INITIALIZATION / CONFIGURATION
+	--->
+	<cffunction name="init" access="public" returntype="EventGateway" output="false"
+		hint="Initializes the gateway.">
+		<cfreturn this />
+	</cffunction>
+
+	<!---
+	PUBLIC FUNCTIONS
+	--->
 	<cffunction name="getEvent" access="public" returntype="Enlist.model.event.Event" output="false">
 		<cfargument name="eventID" type="string" required="false" default="">
-		
-		<cfif len( arguments.eventID )>
-			<cfset var events = GoogleQuery("select from event where id == '#arguments.eventID#'") />
-			<cfif arrayLen( events )>
-				<cfreturn events[1] />
-			</cfif>
-		</cfif>
-		
-		<cfreturn createObject("component", "Enlist.model.event.Event").init() />
+		<cfreturn getDAO().read( arguments.eventID ) />
 	</cffunction> 
 	
 	<cffunction name="getEvents" access="public" returntype="array" output="false">
-		<cfreturn googleQuery("select from event") />
+		<cfreturn getDAO().list() />
 	</cffunction>
 
 	<cffunction name="saveEvent" access="public" returntype="void" output="false">
 		<cfargument name="event" type="Enlist.model.event.Event" required="true">
-
-		<cfset var key = "" />
-		
-		<cfif event.getID() eq "">
-			<cfset event.setID(createUUID()) />
-		<cfelse>
-			<!--- Peter said this is a necessary workaround, because googleWrite() will not currently update, but always insert a new record: --->
-			<cfset googleDelete(arguments.event) />
-		</cfif>
-		<cfset key = arguments.event.googleWrite("event") />
+		<cfset getDAO().save( arguments.event ) />
 	</cffunction> 
+	
+	<!---
+	ACCESSORS
+	--->
+	<cffunction name="getDAO" returntype="Enlist.model.GenericDAO" access="public" output="false">
+		<cfreturn variables.dao />
+	</cffunction>
+	<cffunction name="setDAO" returntype="void" access="public" output="false">
+		<cfargument name="dao" type="Enlist.model.GenericDAO" required="true" />
+		<cfset variables.dao = arguments.dao />
+	</cffunction>
 	
 </cfcomponent>
