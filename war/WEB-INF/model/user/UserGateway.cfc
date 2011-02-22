@@ -15,7 +15,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Linking this library statically or dynamically with other modules is
     making a combined work based on this library.  Thus, the terms and
     conditions of the GNU General Public License cover the whole
@@ -28,11 +28,11 @@ Notes:
 <cfcomponent
 	displayname="UserGateway"
 	output="false">
-	
+
 	<!---
 	PROPERTIES
 	--->
-	
+
 	<!---
 	INITIALIZATION / CONFIGURATION
 	--->
@@ -40,46 +40,47 @@ Notes:
 		hint="Initializes the gateway.">
 		<cfreturn this />
 	</cffunction>
-	
+
 	<!---
 	PUBLIC FUNCTIONS
 	--->
 	<cffunction name="getUser" access="public" returntype="User" output="false">
 		<cfargument name="id" type="string" required="true" />
-		
+
 		<cfset var users = "" />
-		
+
 		<cfquery dbtype="google" name="users">
 			select from user
-			where id == '#arguments.id#' 
+			where id == '#trim(arguments.id)#'
 		</cfquery>
-		
+
+
 		<cfif arrayLen( users )>
 			<cfreturn users[1] />
 		</cfif>
-		
+
 		<!--- without null, we need a convention--I'm going with returning a new object --->
 		<cfreturn createObject("component", "Enlist.model.user.User").init() />
 	</cffunction>
-	
+
 	<cffunction name="getUserByGoogleEmail" access="public" returntype="User" output="false"
 		hint="Gets an User from the datastore by Google Email.">
 		<cfargument name="googleEmail" type="string" required="true" />
-		
+
 		<cfset var users = "" />
-		
+
 		<cfquery dbtype="google" name="users">
 			select from user
-			where googleEmail == '#arguments.googleEmail#' 
+			where googleEmail == '#arguments.googleEmail#'
 		</cfquery>
-		
+
 		<cfif arrayLen( users )>
 			<cfreturn users[1] />
 		</cfif>
-		
+
 		<cfreturn createObject("component", "Enlist.model.user.User").init() />
 	</cffunction>
-	
+
 	<cffunction name="getUsers" access="public" returntype="array" output="false">
 		<cfreturn googleQuery("select from user") />
 	</cffunction>
@@ -99,6 +100,6 @@ Notes:
 			<cfset googleDelete( arguments.user ) />
 		</cfif>
 		<cfset googleWrite( user ) />
-	</cffunction> 
-	
+	</cffunction>
+
 </cfcomponent>
