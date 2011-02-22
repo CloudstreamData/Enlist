@@ -67,26 +67,6 @@ Notes:
 	PUBLIC FUNCTIONS
 	--->
 	
-	<cffunction name="checkUserSession" access="public" returntype="boolean" output="false">
-		<cfif not hasCurrentUser()>
-			<!--- TODO: figure out how to _actually_ check for Google account using googleUserService --->
-			<cfset var googleEmail = "" />
-			<cfset var userByGoogleEmail = getUserByGoogleEmail( googleEmail ) />
-			<cfif arrayLen( userByGoogleEmail )>
-				<cfset variables.sessionFacade.setUser( userByGoogleEmail[1] ) />
-			</cfif>
-		</cfif>
-		<cfreturn hasCurrentUser() />
-	</cffunction>
-	
-	<cffunction name="hasCurrentUser" access="public" returntype="boolean" output="false">
-		<cfreturn variables.sessionFacade.isUserDefined() />
-	</cffunction>
-	
-	<cffunction name="getCurrentUser" access="public" returntype="User" output="false">
-		<cfreturn variables.sessionFacade.getUser() />
-	</cffunction>
-	
 	<cffunction name="getUser" access="public" returntype="User" output="false">
 		<cfargument name="id" type="string" required="true" />
 		<cfreturn variables.userGateway.getUser( arguments.id ) />
@@ -105,11 +85,6 @@ Notes:
 		hint="Gets an User from the datastore by Google Email.">
 		<cfargument name="googleEmail" type="string" required="true" />
 		<cfreturn variables.userGateway.getUserByGoogleEmail(arguments.googleEmail) />
-	</cffunction>
-	
-	<cffunction name="setCurrentUser" access="public" returntype="void" output="false">
-		<cfargument name="user" type="string" required="true" />
-		<cfreturn variables.sessionFacade.setUser( user ) />
 	</cffunction>
 	
 </cfcomponent>
