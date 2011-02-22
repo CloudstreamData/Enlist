@@ -81,6 +81,19 @@ Notes:
 		<cfreturn variables.userGateway.getUsersByRole( arguments.role ) />
 	</cffunction>
 
+	<cffunction name="getUsersBySearch" access="public" returntype="array" output="false">
+		<cfargument name="id" type="string" required="false" default="" />
+		<cfargument name="status" type="string" required="false" default="" />
+		<cfargument name="role" type="string" required="false" default="" />
+		<cfargument name="chapterId" type="string" required="false" default="" />
+		<cfargument name="firstName" type="string" required="false" default="" />
+		<cfargument name="lastName" type="string" required="false" default="" />
+		<cfargument name="googleEmail" type="string" required="false" default="" />
+		<cfargument name="altEmail" type="string" required="false" default="" />
+		<cfreturn variables.userGateway.getUsersBySearch(argumentCollection=arguments) />
+	</cffunction>
+
+
 	<cffunction name="getUserByGoogleEmail" access="public" returntype="User" output="false"
 		hint="Gets an User from the datastore by Google Email.">
 		<cfargument name="googleEmail" type="string" required="true" />

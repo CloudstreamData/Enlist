@@ -85,6 +85,35 @@ Notes:
 		<cfreturn googleQuery("select from user") />
 	</cffunction>
 
+	<cffunction name="getUsersBySearch" access="public" returntype="array" output="false">
+		<cfargument name="id" type="string" required="false" default="" />
+		<cfargument name="status" type="string" required="false" default="" />
+		<cfargument name="role" type="string" required="false" default="" />
+		<cfargument name="chapterId" type="string" required="false" default="" />
+		<cfargument name="firstName" type="string" required="false" default="" />
+		<cfargument name="lastName" type="string" required="false" default="" />
+		<cfargument name="googleEmail" type="string" required="false" default="" />
+		<cfargument name="altEmail" type="string" required="false" default="" />
+		<cfscript>
+			var qry = "";
+			var qs = "select from user where";
+			var argument = "";
+			var count = 0;
+			for(argument in arguments) {
+				if (len(arguments[argument])) {
+					count = count + 1;
+					if (count NEQ 1)
+						qs = qs & " &&";
+
+					qs = qs & " #argument# == '#trim(arguments[argument])#'";
+				}
+			}
+
+			qry = googleQuery(qs);
+			return qry;
+		</cfscript>
+	</cffunction>
+
 	<cffunction name="getUsersByRole" access="public" returntype="array" output="false">
 		<cfargument name="role" type="string" required="true" />
 		<cfreturn googleQuery( "select from user where role == '#arguments.role#'" ) />
