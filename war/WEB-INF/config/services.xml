@@ -92,4 +92,18 @@ Notes:
 	</bean>
 	<bean id="UserGroupGateway" class="Enlist.model.usergroup.UserGroupGateway" />
 	
+	<!-- SETTING -->
+	<bean id="SettingService" class="Enlist.model.setting.SettingService">
+		<property name="SettingGateway"><ref bean="SettingGateway" /></property>
+	</bean>
+	<bean id="SettingGateway" class="Enlist.model.setting.SettingGateway">
+		<property name="dao">
+			<bean id="settingDAO" class="Enlist.model.GenericDAO">
+				<constructor-arg name="entityComponentPath">
+					<value>Enlist.model.setting.Setting</value>
+				</constructor-arg>
+			</bean>
+		</property>
+	</bean>
+	
 </beans>
