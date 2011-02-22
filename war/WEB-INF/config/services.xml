@@ -38,7 +38,16 @@ Notes:
 		<property name="UserGateway"><ref bean="UserGateway" /></property>
 		<property name="sessionFacade"><ref bean="sessionFacade" /></property>
 	</bean>
-	<bean id="UserGateway" class="Enlist.model.user.UserGateway" />
+	<bean id="UserGateway" class="Enlist.model.user.UserGateway">
+		<property name="dao">
+			<ref bean="userDAO" />
+		</property>
+	</bean>
+	<bean id="userDAO" class="Enlist.model.GenericDAO">
+		<constructor-arg name="entityComponentPath">
+			<value>Enlist.model.user.User</value>
+		</constructor-arg>
+	</bean>
 	
 	<bean id="googleUserService" factory-bean="UserService" factory-method="getGoogleUserService" />
 	
