@@ -35,7 +35,15 @@ Notes:
     <cffunction name="setEventService" access="public" returntype="void" output="false">
         <cfargument name="eventService" type="Enlist.model.event.EventService" required="true" /> 
         <cfset variables.eventService = arguments.eventService />
-    </cffunction> 
+    </cffunction>
+	
+	<cffunction name="getUserService" returntype="Enlist.model.user.UserService" access="public" output="false">
+		<cfreturn variables.userService />
+	</cffunction>
+	<cffunction name="setUserService" returntype="void" access="public" output="false">
+		<cfargument name="userService" type="Enlist.model.user.UserService" required="true" />
+		<cfset variables.userService = arguments.userService />
+	</cffunction>
 	
 	<cffunction name="getActivity" access="public" returntype="Enlist.model.event.activity.Activity" output="false">
 		<cfargument name="id" type="string" required="false" default="">
@@ -63,7 +71,22 @@ Notes:
 		</cfloop>
 		<cfreturn activities />
 	</cffunction>
+	
+	
 
+	<cffunction name="getActivityVolunteerHistoryByUser" returntype="Enlist.model.event.activity.ActivityVolunteer[]" access="public" output="false">
+		<cfargument name="userId" type="numeric" required="true" />
+		<cfset var volunteerActivities = GoogleQuery("select from activityvolunteer where userid == '#arguments.userId#'") />
+		<cfset var volunteerActivity = "" />
+		<cfset var user = getUserService().getUser( volunteerActivity.getUserId() ) />
+		<cfloop array="#volunteerActivities#" index="volunteerActivity">
+			<cfset volunteerActivity.setEvent( getEventService().getEvent( volunteerActivity.getEventId() ) ) />
+			<cfset volunteerActivity.setUser( user ) />
+		</cfloop>
+		<cfreturn volunteerActivities />
+	</cffunction>
+
+	
 	<cffunction name="saveActivity" access="public" returntype="void" output="false">
 		<cfargument name="activity" type="Enlist.model.event.activity.Activity" required="true">
 

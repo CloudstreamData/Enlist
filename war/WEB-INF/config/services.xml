@@ -53,7 +53,8 @@ Notes:
     <property name="ActivityGateway"><ref bean="ActivityGateway" /></property>
   </bean>
   <bean id="ActivityGateway" class="Enlist.model.event.activity.ActivityGateway">
-    <property name="EventService"><ref bean="EventService" /></property> 	
+    <property name="EventService"><ref bean="EventService" /></property>
+    <property name="UserService"><ref bean="UserService" /></property>
   </bean>
   	
 </beans>
