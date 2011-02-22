@@ -6,6 +6,7 @@
 	<cfset testCases = arrayNew(1)/>
 	<cfset arrayAppend(testCases, createTestCase("EventTest", "#testsPath#/event/EventTest.cfc"))/>
 	<cfset arrayAppend(testCases, createTestCase("ActivityTest", "#testsPath#/event/ActivityTest.cfc"))/>
+	<cfset arrayAppend(testCases, createTestCase("SecurityManagerTest", "#testsPath#/security/SecurityManagerTest.cfc"))/>
 
 	<cffunction name="createTestCase">
 		<cfargument name="name"/>

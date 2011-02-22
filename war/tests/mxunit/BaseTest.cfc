@@ -36,6 +36,8 @@
 		<cfset var data = structNew()/>
 		<cfset var activity = structNew()/>
 		<cfset var event = structNew()/>
+		<cfset var volunteer = structNew()/>
+		<cfset var admin = structNew()/>
 
 		<cfset event.name = "Test Event"/>
 		<cfset event.startDate = createDateTime(2011, 7, 4, 7, 0, 0)/>
@@ -52,6 +54,26 @@
 		<cfset activity.pointHours = 4/>
 		<cfset activity.location = "Minneapolis, MN"/>
 		<cfset data.activity = activity/>
+
+		<cfset volunteer.id = createUUID()/>
+		<cfset volunteer.status = "valid"/>
+		<cfset volunteer.role = "volunteer"/>
+		<cfset volunteer.firstName = "Test"/>
+		<cfset volunteer.lastName = "Volunteer"/>
+		<cfset volunteer.googleEmail = "enlist-volunteer@gmail.com"/>
+		<cfset volunteer.altEmail = ""/>
+		<cfset volunteer.importHashCaod = createUUID()/>
+		<cfset data.volunteer = data/>
+
+		<cfset admin.id = createUUID()/>
+		<cfset admin.status = "valid"/>
+		<cfset admin.role = "admin"/>
+		<cfset admin.firstName = "Test"/>
+		<cfset admin.lastName = "Administrator"/>
+		<cfset admin.googleEmail = "enlist-admin@gmail.com"/>
+		<cfset admin.altEmail = ""/>
+		<cfset admin.importHashCaod = createUUID()/>
+		<cfset data.admin = data/>
 
 		<cfreturn data/>
 	</cffunction>
