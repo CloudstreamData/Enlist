@@ -30,17 +30,14 @@ Notes:
 	<cffunction name="getEvent" access="public" returntype="Enlist.model.event.Event" output="false">
 		<cfargument name="eventID" type="string" required="false" default="">
 		
-		<cfset var events = 0 />
-		<cfset var event = 0 />
-		
-		<cfif NOT Len(arguments.eventID)>
-			<cfset event = createObject("component", "Enlist.model.event.Event").init() />
-		<cfelse>
-			<cfset events = GoogleQuery("select from event where id == '#arguments.eventID#'") />
-			<cfset event = events[1] />
+		<cfif len( arguments.eventID )>
+			<cfset var events = GoogleQuery("select from event where id == '#arguments.eventID#'") />
+			<cfif arrayLen( events )>
+				<cfreturn events[1] />
+			</cfif>
 		</cfif>
 		
-		<cfreturn event />
+		<cfreturn createObject("component", "Enlist.model.event.Event").init() />
 	</cffunction> 
 	
 	<cffunction name="getEvents" access="public" returntype="array" output="false">
@@ -55,6 +52,7 @@ Notes:
 		<cfif event.getID() eq "">
 			<cfset event.setID(createUUID()) />
 		<cfelse>
+			<!--- Peter said this is a necessary workaround, because googleWrite() will not currently update, but always insert a new record: --->
 			<cfset googleDelete(arguments.event) />
 		</cfif>
 		<cfset key = arguments.event.googleWrite("event") />
