@@ -17,6 +17,7 @@
 	<th>Point Hours</th>
 	<th>Location</th>
 	<th>Event</th>
+	<th>Options</th>
 </tr>
 <cfoutput>
 <cfloop from="1" to="#arrayLen(activities)#" index="i">
@@ -29,6 +30,7 @@
 		<td>#activities[i].getPointHours()#</td>
 		<td>#activities[i].getLocation()#</td>
 		<td>#activities[i].getEvent().getName()#</td>
+		<td><view:a event="activity.edit" p:id="#activities[i].getId()#" label="Edit" /></td>
 	</tr>	
 </cfloop> 
 </cfoutput>

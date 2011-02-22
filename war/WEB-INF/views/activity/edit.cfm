@@ -7,6 +7,16 @@
 </cfif>
 </cfoutput>
 
+<cfsavecontent variable="js">
+	<script>
+		$(function() {
+			$( "#startDate" ).datepicker();
+			$( "#endDate" ).datepicker();
+		});
+	</script>
+
+</cfsavecontent>
+<cfhtmlhead text="#js#">
 
 <form:form actionEvent="activity.save" bind="event">
 	<form:hidden name="id" path="id" />
@@ -14,7 +24,7 @@
 	<table style="width: 100%">
 		<tr>
 			<th>Title:</th>
-			<td><form:input path="name" size="40" maxlength="200" value="#event.getArg( "activity" ).getTitle()#" /></td>
+			<td><form:input path="title" size="40" maxlength="200" value="#event.getArg( "activity" ).getTitle()#" /></td>
 		</tr>
  		<tr>
 			<th>Description:</th>

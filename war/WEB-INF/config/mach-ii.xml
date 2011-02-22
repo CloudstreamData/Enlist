@@ -269,7 +269,7 @@ Notes:
 		</event-handler>		
 		<event-handler event="activity.edit" access="public">
 			<call-method bean="ActivityService" method="getActivity" resultArg="activity">
-				<arg name="activityID" value="${activity.id}" />
+				<arg name="id" value="${event.id:''}" />
 			</call-method>
 			<notify listener="EventListener" method="getEventsAsStruct" resultArg="events" />
 			<view-page name="activity.edit" contentArg="layout.content"/>
@@ -277,7 +277,7 @@ Notes:
 		</event-handler>
 		<event-handler event="activity.save" access="public">
 			<call-method bean="activityService" method="getActivity" resultArg="activity">
-				<arg name="activityID" value="${activity.id}" />
+				<arg name="id" value="${event.id}" />
 			</call-method>
 			<call-method bean="eventService" method="getEvent" resultArg="event">
 				<arg name="eventID" value="${event.eventID:''}" />
