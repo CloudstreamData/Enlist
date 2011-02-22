@@ -95,6 +95,12 @@ Notes:
 
 	<cffunction name="saveUser" access="public" returntype="void" output="false">
 		<cfargument name="user" type="Enlist.model.user.User" required="true">
+		<cfif not len( arguments.user.getGoogleEmail() )>
+			<cfif not variables.googleUserService.isUserLoggedIn()>
+				<cfthrow message="Unable to save user without googleEmail." />
+			</cfif>
+			<cfset arguments.user.setGoogleEmail( variables.googleUserService.getCurrentUser().getEmail() ) />
+		</cfif>
 		<cfset variables.userGateway.saveUser( arguments.user ) />
 		<cfset variables.sessionFacade.setUser( arguments.user )>
 	</cffunction>
