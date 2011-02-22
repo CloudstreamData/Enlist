@@ -217,6 +217,9 @@ Notes:
 			<view-page name="home" contentArg="layout.content"/>
 			<execute subroutine="doMainLayout"/>
 		</event-handler>
+		<event-handler event="logout" access="public">
+			<call-method bean="sessionFacade" method="removeUser" />
+		</event-handler>
 		
 		
 		<!-- VOLUNTEER -->
