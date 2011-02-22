@@ -56,6 +56,15 @@ Notes:
 		<cfreturn variables.settingGateway.getSetting( arguments.id ) />
 	</cffunction>
 
+	<cffunction name="getLastSetting" access="public" returntype="any" output="false">
+		<cfset var settings = variables.settingGateway.getSettings() />
+		<cfset var setting = getSetting(id='') />
+		<cfif arrayLen(settings)>
+			<cfset setting = settings[1] />
+		</cfif>
+		<cfreturn setting />
+	</cffunction>
+
 	<cffunction name="getSettings" access="public" returntype="array" output="false">
 		<cfreturn variables.settingGateway.getSettings() />
 	</cffunction>

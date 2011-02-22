@@ -56,7 +56,7 @@ Notes:
 
 	<cffunction name="saveSetting" access="public" returntype="void" output="false">
 		<cfargument name="setting" type="Enlist.model.setting.Setting" required="true">
-		<cfset getDAO().save( arguments.user ) />
+		<cfset getDAO().save( arguments.setting ) />
 	</cffunction>
 
 	<!---
