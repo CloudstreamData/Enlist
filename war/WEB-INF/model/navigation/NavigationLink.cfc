@@ -34,7 +34,7 @@ Notes:
 	--->
 	<cfset variables.id = "" />
 	<cfset variables.name = "" />
-	<cfset variables.event = "" />
+	<cfset variables.eventName = "" />
 	
 	<!---
 	INITIALIZATION / CONFIGURATION
@@ -42,7 +42,7 @@ Notes:
 	<cffunction name="init" access="public" returntype="Enlist.model.navigation.NavigationLink" output="false">
 		<cfargument name="id" type="string" required="false" default="" />
 		<cfargument name="name" type="string" required="false" default="" />
-		<cfargument name="event" type="string" required="false" default="" />
+		<cfargument name="eventName" type="string" required="false" default="" />
 
 		<cfset setInstanceMemento(arguments) />
 
@@ -56,13 +56,13 @@ Notes:
 		<cfargument name="data" type="struct" required="true" />	
 		<cfset setId(arguments.data.id) />
 		<cfset setName(arguments.data.name) />
-		<cfset setEvent(arguments.data.event) />
+		<cfset seteventName(arguments.data.eventName) />
  	</cffunction>
 	<cffunction name="getInstanceMemento" access="public" returntype="struct" output="false">
 		<cfset var data = structnew() />
 		<cfset var fieldname = "" />
 		
-		<cfloop list="id,name,event" index="fieldname">
+		<cfloop list="id,name,eventName" index="fieldname">
 			<cfset data[fieldname] = variables[fieldname] />
 		</cfloop>
 		
@@ -88,12 +88,12 @@ Notes:
      	<cfset variables.name = Trim(arguments.name) />
      </cffunction>
      
-     <cffunction name="getEvent" access="public" returntype="string" output="false">     
-     	<cfreturn variables.startDate />     
+     <cffunction name="geteventName" access="public" returntype="string" output="false">     
+     	<cfreturn variables.eventName />     
      </cffunction>     
-     <cffunction name="setEvent" access="public" returntype="void" output="false">     
-     	<cfargument name="startDate" type="string" required="true" />     
-     	<cfset variables.startDate = Trim(arguments.startDate) />     
+     <cffunction name="seteventName" access="public" returntype="void" output="false">     
+     	<cfargument name="eventName" type="string" required="true" />     
+     	<cfset variables.eventName = Trim(arguments.eventName) />     
      </cffunction>
 	
 </cfcomponent>

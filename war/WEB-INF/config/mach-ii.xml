@@ -322,6 +322,41 @@ Notes:
 			<execute subroutine="doMainLayout"/>
 		</event-handler>
 			
+		<!-- NAVIGATIONS -->
+		<event-handler event="navigation.list" access="public">
+			<call-method bean="navigationLinkService" method="getNavigationLinks" resultArg="navigations" />
+			<view-page name="navigation.list" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
+		</event-handler>
+		<event-handler event="navigation.edit" access="public">
+			<call-method bean="navigationLinkService" method="getNavigationLink" resultArg="navigation">
+				<arg name="id" value="${event.id:''}" />
+			</call-method>
+			<view-page name="navigation.edit" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
+		</event-handler>
+		<event-handler event="navigation.delete" access="public">
+			<event-arg name="message" value="Navigation Link deleted" />
+			<call-method bean="navigationLinkService" method="deleteNavigationLink">
+				<arg name="id" value="${event.id:''}" />
+			</call-method>
+			<announce event="navigation.list" copyEventArgs="true" />
+		</event-handler>
+		<event-handler event="navigation.save" access="public">
+			<call-method bean="navigationLinkService" method="getNavigationLink" resultArg="navigation">
+				<arg name="id" value="${event.id:''}" />
+			</call-method>
+			<event-bean name="navigationLink" type="Enlist.model.navigation.NavigationLink" autopopulate="true" reinit="false"  />
+			<call-method bean="navigationLinkService" method="saveNavigationLink">
+				<arg name="navigationLink" value="${event.navigationLink}" />
+			</call-method>
+			<event-arg name="message" value="Navigation Link saved" />
+			<view-page name="navigation.edit" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
+		</event-handler>
+		
+		
+		
 		<!-- USERS -->
 		<event-handler event="user.list" access="public">
 			<call-method bean="userService" method="getUsers" resultArg="users" />
@@ -384,6 +419,7 @@ Notes:
 	<subroutines>
 		<subroutine name="doMainLayout">
 			<view-page name="layout.header" contentArg="layout.header" />
+			<call-method bean="navigationLinkService" method="getNavigationLinks" resultArg="navigations" />
 			<view-page name="layout.nav" contentArg="layout.nav" />
 			<view-page name="layout.footer" contentArg="layout.footer" />
 			<view-page name="layout.wrapper" />

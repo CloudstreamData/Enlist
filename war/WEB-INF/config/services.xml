@@ -80,4 +80,16 @@ Notes:
 	</bean>
 	<bean id="ChapterGateway" class="Enlist.model.chapter.ChapterGateway" />
 	
+	<!-- NAVIGATION -->
+	<bean id="NavigationLinkService" class="Enlist.model.navigation.NavigationLinkService">
+		<property name="NavigationLinkGateway"><ref bean="NavigationLinkGateway" /></property>
+	</bean>
+	<bean id="NavigationLinkGateway" class="Enlist.model.navigation.NavigationLinkGateway" />
+	
+	<!-- USERGROUP -->
+	<bean id="UserGroupService" class="Enlist.model.usergroup.UserGroupGateway">
+		<property name="UserGroupGateway"><ref bean="UserGroupGateway" /></property>
+	</bean>
+	<bean id="UserGroupGateway" class="Enlist.model.usergroup.UserGroupGateway" />
+	
 </beans>
