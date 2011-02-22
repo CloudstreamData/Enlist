@@ -24,6 +24,11 @@
       <name>/machii</name>
       <displayname>/MachII</displayname>
     </mapping>
+    <mapping name="/mxunit">
+      <directory>/WEB-INF/mxunit/</directory>
+      <name>/mxunit</name>
+      <displayname>/mxunit</displayname>
+    </mapping>
     <mapping name="/coldspring">
       <directory>/WEB-INF/cs</directory>
       <name>/coldspring</name>
