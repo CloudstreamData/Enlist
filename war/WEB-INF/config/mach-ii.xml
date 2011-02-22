@@ -321,6 +321,25 @@ Notes:
 			<view-page name="chapter.edit" contentArg="layout.content"/>
 			<execute subroutine="doMainLayout"/>
 		</event-handler>
+		
+		<!-- SETTING -->
+		<event-handler event="setting.edit" access="public">
+			<call-method bean="settingService" method="getSetting" resultArg="setting">
+				<arg name="ID" value="${event.id:''}" />
+			</call-method>
+			<view-page name="setting.edit" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
+		</event-handler>
+		<event-handler event="setting.save" access="public">
+			<call-method bean="settingService" method="getLastSetting" resultArg="setting" />
+			<event-bean name="setting" type="Enlist.model.setting.Setting" autopopulate="true" reinit="false"  />
+			<call-method bean="settingService" method="saveSetting">
+				<arg name="setting" value="${event.setting}" />
+			</call-method>
+			<event-arg name="message" value="Settings saved" />
+			<view-page name="setting.edit" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
+		</event-handler>
 			
 		<!-- NAVIGATIONS -->
 		<event-handler event="navigation.list" access="public">
