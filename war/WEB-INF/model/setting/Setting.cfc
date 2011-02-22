@@ -47,8 +47,8 @@ Notes:
 	--->
 	<cffunction name="init" access="public" returntype="Setting" output="false">
 		<cfargument name="id" type="string" required="false" default="" />
-		<cfargument name="pointName" type="string" required="false" default="valid" />
-		<cfargument name="defaultPointValue" type="string" required="false" default="volunteer" />
+		<cfargument name="pointName" type="string" required="false" default="" />
+		<cfargument name="defaultPointValue" type="string" required="false" default="" />
 		<cfargument name="orgName" type="string" required="false" default="" />
 		<cfargument name="orgDesc" type="string" required="false" default="" />
 		<cfargument name="orgAddress" type="string" required="false" default="" />
