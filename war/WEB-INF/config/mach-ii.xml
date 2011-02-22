@@ -250,7 +250,32 @@ Notes:
 			<execute subroutine="doMainLayout"/>
 		</event-handler>
 		
-	
+		<!-- CHAPTERS -->
+		<event-handler event="chapter.list" access="public">
+			<call-method bean="chapterService" method="getChapters" resultArg="chapters" />
+			<view-page name="chapter.list" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
+		</event-handler>
+		<event-handler event="chapter.edit" access="public">
+			<call-method bean="chapterService" method="getChapter" resultArg="chapter">
+				<arg name="chapterID" value="${event.id:''}" />
+			</call-method>
+			<view-page name="chapter.edit" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
+		</event-handler>
+		<event-handler event="chapter.save" access="public">
+			<call-method bean="chapterService" method="getChapter" resultArg="chapter">
+				<arg name="chapterID" value="${event.id}" />
+			</call-method>
+			<event-bean name="chapter" type="Enlist.model.chapter.Chapter" autopopulate="true" reinit="false"  />
+			<call-method bean="chapterService" method="saveChapter">
+				<arg name="chapter" value="${event.chapter}" />
+			</call-method>
+			<event-arg name="message" value="Chapter saved" />
+			<view-page name="chapter.edit" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
+		</event-handler>
+		
 		<!-- SYS -->
 		<event-handler event="sys.about" access="public">
 			<view-page name="sys.about" contentArg="layout.content"/>

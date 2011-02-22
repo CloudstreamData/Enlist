@@ -57,4 +57,10 @@ Notes:
     <property name="UserService"><ref bean="UserService" /></property>
   </bean>
   	
+	<!-- CHAPTER -->
+	<bean id="ChapterService" class="Enlist.model.chapter.ChapterService">
+		<property name="ChapterGateway"><ref bean="ChapterGateway" /></property>
+	</bean>
+	<bean id="ChapterGateway" class="Enlist.model.chapter.ChapterGateway" />
+	
 </beans>
