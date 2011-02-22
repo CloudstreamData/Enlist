@@ -60,6 +60,7 @@
 					</cfloop>
 				</form:select>
 			</td>
+		</tr>
 		<tr>
 			<td><form:hidden name="googleEmail" path="googleEmail" /></td>
 			<td><form:button type="submit" name="save" value="Save Registration Info" /></td>
