@@ -58,7 +58,7 @@ Notes:
 			<cfset activity = activity[ 1 ] />
 		</cfif>
 		
-		<cfset setEventFromEventStub( activity ) />
+		<cfset activity.setEvent( getEventService().getEvent( activity.getEventId() ) ) />
 		
 		<cfreturn activity />
 	</cffunction> 
@@ -105,12 +105,12 @@ Notes:
     <!--- 
 	PRIVATE 
 	--->
-    <cffunction name="setEventFromEventStub" access="private" output="false" returntype="void">
+<!---     <cffunction name="setEventFromEventStub" access="private" output="false" returntype="void">
 	   <cfargument name="activity" type="Enlist.model.event.activity.Activity" required="true" />
         <!--- The base Activity class comes back with an Event instance that *should* be populated with an ID.  This will populated it with an instance of the Event of that ID --->
         <cfif Len(arguments.activity.getEvent().getId()) >
            <cfset arguments.activity.setEvent( getEventService().getEvent( arguments.activity.getId() ) ) />
         </cfif>     
 		<cfreturn />
-	</cffunction>
+	</cffunction> --->
 </cfcomponent>

@@ -159,6 +159,7 @@ Notes:
 	<!-- LISTENERS -->
 	<listeners>
 	  <listener name="ActivityListener" type="Enlist.controllers.listeners.ActivityListener" />
+	  <listener name="EventListener" type="Enlist.controllers.listeners.EventListener" />
 		<!--
 		<listener name="yourListenerName" type="fully.Qualified.Dot.Delimited.Path.To.CFC">
 			<parameters>
@@ -265,6 +266,14 @@ Notes:
 			<call-method bean="ActivityService" method="getActivities" resultArg="activities" />
 			<view-page name="activity.list" contentArg="layout.content"/>
 			<execute subroutine="doMainLayout"/>
+		</event-handler>		
+		<event-handler event="activity.edit" access="public">
+			<call-method bean="ActivityService" method="getActivity" resultArg="activity">
+				<arg name="activityID" value="${activity.id}" />
+			</call-method>
+			<notify listener="EventListener" method="getEventsAsStruct" resultArg="events" />
+			<view-page name="activity.edit" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
 		</event-handler>
 		
 		<!-- CHAPTERS -->
@@ -318,24 +327,6 @@ Notes:
 			<event-arg name="message" value="User saved" />
 			<call-method bean="chapterService" method="getChapters" resultArg="chapters" />
 			<view-page name="user.edit" contentArg="layout.content"/>
-			<execute subroutine="doMainLayout"/>
-		</event-handler>
-		<event-handler event="user.search" access="public">
-			<call-method bean="chapterService" method="getChapters" resultArg="chapters" />
-			<view-page name="user.search" contentArg="layout.content"/>
-			<execute subroutine="doMainLayout"/>
-		</event-handler>
-		<event-handler event="user.doSearch" access="public">
-			<call-method bean="userService" method="getUsersBySearch" resultArg="users">
-				<arg name="firstName" value="${event.firstName:''}" />
-				<arg name="lastName" value="${event.lastName:''}" />
-				<arg name="googleEmail" value="${event.googleEmail:''}" />
-				<arg name="altEmail" value="${event.altEmail:''}" />
-				<arg name="role" value="${event.role:''}" />
-				<arg name="chapterId" value="${event.chapterId:''}" />
-				<arg name="status" value="${event.status:''}" />
-			</call-method>
-			<view-page name="user.list" contentArg="layout.content"/>
 			<execute subroutine="doMainLayout"/>
 		</event-handler>
 		

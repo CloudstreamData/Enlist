@@ -50,6 +50,7 @@ Notes:
 	<cfset variables.endDate = ""/>
 	<cfset variables.pointHours = ""/>
 	<cfset variables.location = ""/>
+	<cfset variables.eventId = "" />
 
 
 	<!---
