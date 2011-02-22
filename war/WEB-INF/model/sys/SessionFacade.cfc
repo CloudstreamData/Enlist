@@ -15,7 +15,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Linking this library statically or dynamically with other modules is
     making a combined work based on this library.  Thus, the terms and
     conditions of the GNU General Public License cover the whole
@@ -28,7 +28,7 @@ Notes:
 <cfcomponent
 	displayname="SessionFacade"
 	output="false">
-	
+
 	<!---
 	INITIALIZATION / CONFIGURATION
 	--->
@@ -40,7 +40,7 @@ Notes:
 	<!---
 	PUBLIC FUNCTIONS
 	--->
-	<cffunction name="getUser" access="public" returntype="Enlist.model.User" output="false">
+	<cffunction name="getUser" access="public" returntype="Enlist.model.user.User" output="false">
 		<cfreturn session.user />
 	</cffunction>
 	<cffunction name="removeUser" access="public" returntype="void" output="false">
@@ -53,5 +53,5 @@ Notes:
 	<cffunction name="isUserDefined" access="public" returntype="void" output="false">
 		<cfreturn StructKeyExists(session, "user") />
 	</cffunction>
-	
+
 </cfcomponent>

@@ -29,7 +29,10 @@
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
 	<cfimport prefix="form" taglib="/MachII/customtags/form" />
 	<view:meta type="title" content="Register" />
-	<cfset chapters = event.getArg("chapters")>
+	<cfset chapters = event.getArg("chapters") />
+	<cfset user = event.getArg("user") />
+	<cfset googleEmail = event.getArg("googleEmail") />
+	<cfset user.setgoogleEmail(googleEmail) />
 </cfsilent>
 <cfoutput>
 <h2>Register</h2>
@@ -58,7 +61,7 @@
 				</form:select>
 			</td>
 		<tr>
-			<td></td>
+			<td><form:input name="googleEmail" path="googleEmail" /></td>
 			<td><form:button type="submit" name="save" value="Save Registration Info" /></td>
 		</tr>
 	</table>

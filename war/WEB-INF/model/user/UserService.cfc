@@ -15,7 +15,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Linking this library statically or dynamically with other modules is
     making a combined work based on this library.  Thus, the terms and
     conditions of the GNU General Public License cover the whole
@@ -28,14 +28,14 @@ Notes:
 <cfcomponent
 	displayname="UserService"
 	output="false">
-	
+
 	<!---
 	PROPERTIES
 	--->
 	<cfset variables.googleUserService = "" />
 	<cfset variables.userGateway = "" />
 	<cfset variables.sessionFacade = "" />
-	
+
 	<!---
 	INITIALIZATION / CONFIGURATION
 	--->
@@ -43,60 +43,60 @@ Notes:
 		hint="Initializes the service.">
 
 		<cfset var googleUserFactory = CreateObject("java", "com.google.appengine.api.users.UserServiceFactory") />
-		
+
 		<cfset variables.googleUserService = googleUserFactory.getUserService() />
-			
+
 		<cfreturn this />
 	</cffunction>
-	
+
 	<cffunction name="setUserGateway" access="public" returntype="UserService" output="false">
 		<cfargument name="userGateway" type="any" required="true" />
 		<cfset variables.userGateway = arguments.userGateway />
 	</cffunction>
-	
+
 	<cffunction name="setSessionFacade" access="public" returntype="SessionFacade" output="false">
 		<cfargument name="sessionFacade" type="any" required="true" />
 		<cfset variables.sessionFacade = arguments.sessionFacade />
 	</cffunction>
-	
+
 	<cffunction name="getGoogleUserService" access="public" returntype="any" output="false">
 		<cfreturn variables.googleUserService />
 	</cffunction>
-	
+
 	<!---
 	PUBLIC FUNCTIONS
 	--->
-	
+
 	<cffunction name="getUser" access="public" returntype="User" output="false">
 		<cfargument name="id" type="string" required="true" />
 		<cfreturn variables.userGateway.getUser( arguments.id ) />
 	</cffunction>
-	
+
 	<cffunction name="getUsers" access="public" returntype="array" output="false">
 		<cfreturn variables.userGateway.getUsers() />
 	</cffunction>
-	
+
 	<cffunction name="getUsersByRole" access="public" returntype="array" output="false">
 		<cfargument name="role" type="string" required="true" />
 		<cfreturn variables.userGateway.getUsersByRole( arguments.role ) />
 	</cffunction>
-	
+
 	<cffunction name="getUserByGoogleEmail" access="public" returntype="User" output="false"
 		hint="Gets an User from the datastore by Google Email.">
 		<cfargument name="googleEmail" type="string" required="true" />
 		<cfreturn variables.userGateway.getUserByGoogleEmail(arguments.googleEmail) />
 	</cffunction>
-	
+
 	<cffunction name="registerUser" access="public" returntype="void" output="false">
 		<cfargument name="user" type="Enlist.model.user.User" required="true">
 		<cfset saveUser( arguments.user )>
 		<cfset variables.sessionFacade.setUser( arguments.user )>
-	</cffunction> 
-	
+	</cffunction>
+
 	<cffunction name="saveUser" access="public" returntype="void" output="false">
 		<cfargument name="user" type="Enlist.model.user.User" required="true">
 		<cfset variables.userGateway.saveUser( arguments.user ) />
 		<cfset variables.sessionFacade.setUser( arguments.user )>
-	</cffunction> 
-	
+	</cffunction>
+
 </cfcomponent>
