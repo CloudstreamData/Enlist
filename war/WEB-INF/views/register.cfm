@@ -61,7 +61,7 @@
 				</form:select>
 			</td>
 		<tr>
-			<td><form:input name="googleEmail" path="googleEmail" /></td>
+			<td><form:hidden name="googleEmail" path="googleEmail" /></td>
 			<td><form:button type="submit" name="save" value="Save Registration Info" /></td>
 		</tr>
 	</table>
