@@ -35,7 +35,7 @@
 	<ul>
 		<li><view:a event="home" class="#variables.udfs.highlightLevel("home", variables.eventName)#">Home</view:a></li>
 	<cfif variables.googleUserService.isUserLoggedIn()>
-		<li><a href="#variables.googleUserService.createLogoutUrl(BuildUrl(getProperty("defaultEvent")))#" id="logout">Logout</a></li>
+		<li><a href="#variables.googleUserService.createLogoutUrl(BuildUrl('logout'))#" id="logout">Logout</a></li>
 		<li><view:a event="register">Register</view:a></li>
 	<cfelse>
 		<li><a href="#variables.googleUserService.createLoginUrl(BuildUrl(getProperty("defaultEvent")))#">Login</a></li>
@@ -43,16 +43,3 @@
 	</ul>
 </div>
 </cfoutput>
-<cfsavecontent variable="js">
-<script>
-	$(document).ready(function(){
-		$('#logout').click(function(){
-			$.post("index.cfm?event=logout", {},
-			function(data) {
-			 return true;
-			});
-		})
-	});
-</script>
-</cfsavecontent>
-<cfhtmlhead text="#js#">
