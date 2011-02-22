@@ -275,6 +275,21 @@ Notes:
 			<view-page name="activity.edit" contentArg="layout.content"/>
 			<execute subroutine="doMainLayout"/>
 		</event-handler>
+		<event-handler event="activity.save" access="public">
+			<call-method bean="activityService" method="getActivity" resultArg="activity">
+				<arg name="activityID" value="${activity.id}" />
+			</call-method>
+			<call-method bean="eventService" method="getEvent" resultArg="event">
+				<arg name="eventID" value="${event.eventID:''}" />
+			</call-method>			
+			<event-bean name="activity" type="Enlist.model.event.activity.Activity" autopopulate="true" reinit="false"
+				fields="id,title,description,numPeople,startDate,endDate,pointHours,location,event"  />
+			<call-method bean="activityService" method="saveActivity">
+				<arg name="activity" value="${event.activity}" />
+			</call-method>
+			<event-arg name="message" value="Event saved" />
+			<redirect event="activity.list" persist="true" />
+		</event-handler>		
 		
 		<!-- CHAPTERS -->
 		<event-handler event="chapter.list" access="public">

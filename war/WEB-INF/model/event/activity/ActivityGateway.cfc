@@ -125,14 +125,6 @@ Notes:
     <!---
 	PRIVATE
 	--->
-<!---     <cffunction name="setEventFromEventStub" access="private" output="false" returntype="void">
-	   <cfargument name="activity" type="Enlist.model.event.activity.Activity" required="true" />
-        <!--- The base Activity class comes back with an Event instance that *should* be populated with an ID.  This will populated it with an instance of the Event of that ID --->
-        <cfif Len(arguments.activity.getEvent().getId()) >
-           <cfset arguments.activity.setEvent( getEventService().getEvent( arguments.activity.getId() ) ) /><!--- get event by activity.id? should this be activity.getEventId() instead? --->
-        </cfif>
-		<cfreturn />
-	</cffunction> --->
 
 	<!--- Accept a bean with a populated userId and set the User property with the instance of that userId --->
 	<cffunction name="setUserFromUserStub" access="private" output="false" returntype="void">
@@ -142,5 +134,6 @@ Notes:
 		</cfif>
 		<cfreturn />
 	</cffunction>
+
 
 </cfcomponent>

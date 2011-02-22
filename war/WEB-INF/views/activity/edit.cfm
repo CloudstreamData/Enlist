@@ -8,7 +8,7 @@
 </cfoutput>
 
 
-<form:form actionEvent="event.save" bind="event">
+<form:form actionEvent="activity.save" bind="event">
 	<form:hidden name="id" path="id" />
 	<cfoutput>
 	<table style="width: 100%">

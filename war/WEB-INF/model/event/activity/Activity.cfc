@@ -51,8 +51,13 @@ Notes:
 	<cfset variables.pointHours = ""/>
 	<cfset variables.location = ""/>
 	<cfset variables.eventId = "" />
-
-
+	<!--- This is an admitted hack that was discussed by Dave Shuck/Kurt Weirsma.  It will likely come out. 
+	Feel free to find and discuss an alternative! 
+	-dshuck --->
+	<cfset variables.event = CreateObject( "component", "Enlist.model.event.Event") />
+	
+	
+	
 	<!---
 	INITIALIZATION / CONFIGURATION
 	--->

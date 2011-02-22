@@ -4,6 +4,7 @@
 
 <cfset activities = event.getArg("activities")>
 
+
 <p><view:a event="activity.edit">Create a new activity</view:a></p>
 
 <table>
