@@ -2,6 +2,8 @@
 
 <cfset users = event.getArg("users")>
 
+<p><view:a event="user.search">Search Users</view:a></p>
+
 <p><view:a event="user.edit">Create a new user</view:a></p>
 
 <table>
