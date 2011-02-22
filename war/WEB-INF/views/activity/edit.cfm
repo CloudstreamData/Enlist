@@ -54,7 +54,7 @@
 			<th>Event:</th>
 			<td>
 				<form:select path="eventId" items="#event.getArg("events")#">
-				<form:option value="-" label="Choose an event" />
+				<form:option value="" label="Choose an event" />
 				</form:select>
 			</td>
 		</tr> 

@@ -71,7 +71,7 @@ Notes:
 		<cfset var activities = googleQuery( "select from activity" ) />
 		<cfset var activity = "" />
 		<cfloop array="#activities#" index="activity">
-			<cfset activity.setEvent( getEventService().getEvent( activity.getEventId() ) ) />
+			<cfset activity.setEvent( getEventService().getEvent( id = activity.getEventId() ) ) />
 		</cfloop>
 		<cfreturn activities />
 	</cffunction>
