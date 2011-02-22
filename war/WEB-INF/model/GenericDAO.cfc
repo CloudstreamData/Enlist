@@ -68,7 +68,8 @@ Notes:
 	<cffunction name="listByProperty" access="public" returntype="array" output="false">
 		<cfargument name="propertyName" type="string" required="true" />
 		<cfargument name="propertyValue" type="string" required="true" />
-		<cfset var map[ arguments.propertyName ] = arguments.propertyValue />
+		<cfset var map = structNew() />
+		<cfset map[ arguments.propertyName ] = arguments.propertyValue />
 		<cfreturn googleQuery( "select from #getKind()# #arguments.propertyName# == '#arguments.propertyValue#'" ) />
 	</cffunction>
 
