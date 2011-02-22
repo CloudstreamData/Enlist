@@ -72,7 +72,7 @@ Notes:
 		<cfset var fieldname = "" />
 		
 		<cfloop list="id,name,startdate,enddate,location,status" index="fieldname">
-			<cfset data[fieldname] = variables[fieldname]>
+			<cfset data[fieldname] = variables[fieldname] />
 		</cfloop>
 		
 		<cfreturn data />	
@@ -126,7 +126,7 @@ Notes:
     </cffunction>    
     <cffunction name="setstatus" access="public" returntype="void" output="false">    
     	<cfargument name="status" type="string" required="true" />    
-    	<cfset variables.status =Trim( arguments.status) />    
+    	<cfset variables.status = Trim(arguments.status) />    
     </cffunction>
 	
 </cfcomponent>
