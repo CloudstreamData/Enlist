@@ -46,5 +46,14 @@ Notes:
 		<property name="EventGateway"><ref bean="EventGateway" /></property>
 	</bean>
 	<bean id="EventGateway" class="Enlist.model.event.EventGateway" />
-	
+  
+  
+  <!-- ACTIVITY -->
+  <bean id="ActivityService" class="Enlist.model.event.activity.ActivityService">
+    <property name="ActivityGateway"><ref bean="ActivityGateway" /></property>
+  </bean>
+  <bean id="ActivityGateway" class="Enlist.model.event.activity.ActivityGateway">
+    <property name="EventService"><ref bean="EventService" /></property> 	
+  </bean>
+  	
 </beans>

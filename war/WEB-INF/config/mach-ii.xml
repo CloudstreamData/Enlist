@@ -158,6 +158,7 @@ Notes:
 
 	<!-- LISTENERS -->
 	<listeners>
+	  <listener name="ActivityListener" type="Enlist.controllers.listeners.ActivityListener" />
 		<!--
 		<listener name="yourListenerName" type="fully.Qualified.Dot.Delimited.Path.To.CFC">
 			<parameters>
@@ -209,6 +210,7 @@ Notes:
 		
 		<!-- VOLUNTEER -->
 		
+		
 		<!-- ADMIN -->
 		<event-handler event="admin.index" access="public">
 			<view-page name="admin.index" contentArg="layout.content"/>
@@ -241,6 +243,14 @@ Notes:
 			<execute subroutine="doMainLayout"/>
 		</event-handler>
 		
+		<!-- ACTIVITIES -->
+		<event-handler event="activity.list" access="public">
+			<call-method bean="ActivityService" method="getActivities" resultArg="activities" />
+			<view-page name="activity.list" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
+		</event-handler>
+		
+	
 		<!-- SYS -->
 		<event-handler event="sys.about" access="public">
 			<view-page name="sys.about" contentArg="layout.content"/>
