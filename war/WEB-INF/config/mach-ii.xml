@@ -333,6 +333,7 @@ Notes:
 	<subroutines>
 		<subroutine name="doMainLayout">
 			<view-page name="layout.header" contentArg="layout.header" />
+			<view-page name="layout.nav" contentArg="layout.nav" />
 			<view-page name="layout.footer" contentArg="layout.footer" />
 			<view-page name="layout.wrapper" />
 		</subroutine>

@@ -177,7 +177,6 @@ td {
 }
 
 #left {
-	width: 590px;
 	float:left;
 	display: block;
     margin-left: 20px;
@@ -189,7 +188,6 @@ td {
 
 
 #right {
-	width: 315px; 
 	float: right;
 	display:block;
 	margin-top: 10px;

@@ -26,26 +26,31 @@
 	
 	Notes:
 	--->
+	<cfimport prefix="view" taglib="/MachII/customtags/view" />
 </cfsilent>
-<cfoutput>
-<ul id="nav">
-	<li><a href="#Home">Home</a></li>
-	<li><a href="#Archive">Archive</a></li>
-	<li><a href="#Link">Links</a></li>
-	<li><a href="#download">Download</a></li>
-	<li><a href="#support">Support</a></li>
-	<li><a href="#contact">Contact</a></li>
-</ul>
-<!---
-<div class="box">
-	<h2 style="margin-top:17px">Recent Entries</h2>
-	<ul>
-		<li><a href="#">Recent Entries1</a> <i>01 Des 06</i></li>
-		<li><a href="#">Recent Entries2</a> <i>01 Des 06</i></li>
-		<li><a href="#">Recent Entries3</a> <i>01 Des 06</i></li>
-		<li><a href="#">Recent Entries4</a> <i>01 Des 06</i></li>
-		<li><a href="#">Recent Entries5</a> <i>01 Des 06</i></li>
+
+<cfscript>
+	
+	link1 = createObject("component", "Enlist.model.navigation.NavigationLink").init(1,'Events','event.list');
+	link2 = createObject("component", "Enlist.model.navigation.NavigationLink").init(1,'Activities','activity.list');
+	
+	//array of NavigationLink objects should come from user.getNavigaiton() or somethinglike that
+	navLinks = arrayNew(1); //event.getArg('User').getNavigation(); 
+	navLinks[1] = link1;
+	navLinks[2] = link2;
+	displayNavigation(navLinks);
+</cfscript>
+
+<cffunction name="displayNavigation" returntype="any" access="public" output="true">
+	<cfargument name="links" type="any" required="true" />
+	<cfset var link = '' />
+	
+	<ul id="nav">
+	<cfloop index="link" from="1" to="#arrayLen(arguments.links)#">
+		<cfoutput>
+		<li><view:a event="#arguments.links[link].getEvent()#">#arguments.links[link].getName()#</view:a></li>
+		</cfoutput>
+	</cfloop>
 	</ul>
-</div>
---->
-</cfoutput>
+</cffunction>
+
