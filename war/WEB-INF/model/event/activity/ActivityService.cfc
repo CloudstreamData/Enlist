@@ -54,9 +54,14 @@ Notes:
 		<cfreturn getActivityGateway().getActivities() />
 	</cffunction>
 
+
+	<cffunction name="getActivityVolunteer" returntype="Enlist.model.event.activity.ActivityVolunteer" access="public" output="false">
+		<cfargument name="id" type="numeric" required="true" />
+		<cfreturn getActivityGateway().getActivityVolunteer( arguments.id ) />
+	</cffunction>
 	
-	<cffunction name="getActivityVolunteerHistoryByUser" returntype="Enlist.model.event.ActivityVolunteer[]" access="public" output="false">
-		<cfargument name="userId" type="numeric" required="true" />
+	<cffunction name="getActivityVolunteerHistoryByUser" returntype="array" access="public" output="false">
+		<cfargument name="userId" type="string" required="true" />
 		<cfreturn getActivityGateway().getActivityVolunteerHistoryByUser( arguments.userId ) />
 	</cffunction>
 	

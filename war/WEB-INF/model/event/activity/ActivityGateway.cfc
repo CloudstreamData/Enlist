@@ -45,6 +45,10 @@ Notes:
 		<cfset variables.userService = arguments.userService />
 	</cffunction>
 	
+
+    <!---
+	PUBLIC
+	--->
 	<cffunction name="getActivity" access="public" returntype="Enlist.model.event.activity.Activity" output="false">
 		<cfargument name="id" type="string" required="false" default="">
 		
@@ -71,16 +75,32 @@ Notes:
 		</cfloop>
 		<cfreturn activities />
 	</cffunction>
-	
-	
 
-	<cffunction name="getActivityVolunteerHistoryByUser" returntype="Enlist.model.event.activity.ActivityVolunteer[]" access="public" output="false">
-		<cfargument name="userId" type="numeric" required="true" />
+
+	<cffunction name="getActivityVolunteer" returntype="Enlist.model.event.activity.ActivityVolunteer" access="public" output="false">
+		<cfargument name="id" type="string" required="false" default="" />
+		
+		<cfset var activityVolunteer = "" />
+		<cfif NOT len( arguments.id )>
+			<cfset activityVolunteer = createObject( "component", "Enlist.model.event.activity.ActivityVolunteer" ).init( argumentCollection = arguments ) />
+		<cfelse>
+			<cfset activityVolunteer = GoogleQuery( "select from activityvolunteer where id == '#arguments.id#'" ) />
+			<cfset activityVolunteer = activityVolunteer[1] />
+		</cfif>
+		
+		<cfset activityVolunteer.setActivity( getActivity( activityVolunteer.getActivity().getId() ) ) />
+		<cfset setUserFromUserStub( activityVolunteer ) />
+		
+		<cfreturn activityVolunteer />
+	</cffunction>
+
+	<cffunction name="getActivityVolunteerHistoryByUser" returntype="array" access="public" output="false">
+		<cfargument name="userId" type="string" required="true" />
 		<cfset var volunteerActivities = GoogleQuery("select from activityvolunteer where userid == '#arguments.userId#'") />
 		<cfset var volunteerActivity = "" />
-		<cfset var user = getUserService().getUser( volunteerActivity.getUserId() ) />
+		<cfset var user = getUserService().getUser( arguments.userId ) />
 		<cfloop array="#volunteerActivities#" index="volunteerActivity">
-			<cfset volunteerActivity.setEvent( getEventService().getEvent( volunteerActivity.getEventId() ) ) />
+			<cfset volunteerActivity.setActivity( getActivity( volunteerActivity.getActivity().getId() ) ) />
 			<cfset volunteerActivity.setUser( user ) />
 		</cfloop>
 		<cfreturn volunteerActivities />
@@ -109,8 +129,18 @@ Notes:
 	   <cfargument name="activity" type="Enlist.model.event.activity.Activity" required="true" />
         <!--- The base Activity class comes back with an Event instance that *should* be populated with an ID.  This will populated it with an instance of the Event of that ID --->
         <cfif Len(arguments.activity.getEvent().getId()) >
-           <cfset arguments.activity.setEvent( getEventService().getEvent( arguments.activity.getId() ) ) />
+           <cfset arguments.activity.setEvent( getEventService().getEvent( arguments.activity.getId() ) ) /><!--- get event by activity.id? should this be activity.getEventId() instead? --->
         </cfif>     
 		<cfreturn />
 	</cffunction> --->
+	
+	<!--- Accept a bean with a populated userId and set the User property with the instance of that userId --->
+	<cffunction name="setUserFromUserStub" access="private" output="false" returntype="void">
+		<cfargument name="aBean" type="any" required="true" />
+		<cfif Len(arguments.aBean.getUser().getId()) >
+			<cfset arguments.aBean.setEvent( getUserService().getUser( arguments.aBean.getUser().getId() ) ) />
+		</cfif>     
+		<cfreturn />
+	</cffunction>
+
 </cfcomponent>

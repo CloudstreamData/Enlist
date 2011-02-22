@@ -5,7 +5,7 @@
 	--->
 	<cfproperty name="id" type="string" />
 	<cfproperty name="user" type="Enlist.model.user.User" />
-	<cfproperty name="event" type="Enlist.model.event.Event" />
+	<cfproperty name="activity" type="Enlist.model.event.activity.Activity" />
 	<cfproperty name="volunteeredOn" type="date" />
 	<cfproperty name="scheduledStart" type="date" />
 	<cfproperty name="scheduledEnd" type="date" />
@@ -16,7 +16,7 @@
 	
 	<cfset variables.id = "" />
 	<cfset variables.userId = "" />
-	<cfset variables.eventId = "" />
+	<cfset variables.activityId = "" />
 	<cfset variables.volunteeredOn = "" />
 	<cfset variables.scheduledStart = "" />
 	<cfset variables.scheduledEnd = "" />
@@ -28,10 +28,10 @@
 	<!---
 	INITIALIZATION / CONFIGURATION
 	--->
-	<cffunction name="init" access="public" returntype="Enlist.model.event.Event" output="false">
+	<cffunction name="init" access="public" returntype="Enlist.model.event.activity.ActivityVolunteer" output="false">
 		<cfargument name="id" type="string" required="false" default="" />
 		<cfargument name="userId" type="string" required="false" default="" />
-		<cfargument name="eventId" type="string" required="false" default="" />
+		<cfargument name="activityId" type="string" required="false" default="" />
 		<cfargument name="volunteeredOn" type="string" required="false" default="" />
 		<cfargument name="scheduledStart" type="string" required="false" default="" />
 		<cfargument name="scheduledEnd" type="string" required="false" default="" />
@@ -50,7 +50,7 @@
 		<cfargument name="data" type="struct" required="true" />	
 		<cfset setId( arguments.data.id ) />
 		<cfset setUserId( arguments.data.userId ) />
-		<cfset setEventId( arguments.data.eventId ) />
+		<cfset setActivityId( arguments.data.activityId ) />
 		<cfset setVolunteeredOn( arguments.data.volunteeredOn ) />
 		<cfset setScheduledStart( arguments.data.scheduledStart ) />
 		<cfset setScheduledEnd( arguments.data.scheduledEnd ) />
@@ -74,7 +74,7 @@
 	<!---
 	ACCESSORS
 	--->
-	<cffunction name="setId" returnformat="void" access="public" output="false">
+	<cffunction name="setId" returntype="void" access="public" output="false">
 		<cfargument name="id" type="string" required="true" />
 		<cfset variables.id = arguments.id />
 	</cffunction>
@@ -84,7 +84,7 @@
 	</cffunction>
 	
 	
-	<cffunction name="setUserId" returnformat="void" access="public" output="false">
+	<cffunction name="setUserId" returntype="void" access="public" output="false">
 		<cfargument name="userId" type="string" required="true" />
 		<cfset variables.userId = arguments.userId />
 	</cffunction>
@@ -94,7 +94,7 @@
 	</cffunction>
 	
 	
-	<cffunction name="setUser" returnformat="void" access="public" output="false">
+	<cffunction name="setUser" returntype="void" access="public" output="false">
 		<cfargument name="user" type="Enlist.model.user.User" required="true" />
 		<cfset variables.user = arguments.user />
 	</cffunction>
@@ -104,26 +104,26 @@
 	</cffunction>
 	
 	
-	<cffunction name="setEventId" returnformat="void" access="public" output="false">
-		<cfargument name="eventId" type="string" required="true" />
-		<cfset variables.eventId = arguments.eventId />
+	<cffunction name="setActivityId" returntype="void" access="public" output="false">
+		<cfargument name="activityId" type="string" required="true" />
+		<cfset variables.activityId = arguments.activityId />
 	</cffunction>
 		
-	<cffunction name="getEventId" returntype="string" access="public" output="false">
-		<cfreturn variables.eventId />
+	<cffunction name="getActivityId" returntype="string" access="public" output="false">
+		<cfreturn variables.activityId />
 	</cffunction>
 	
-	<cffunction name="setEvent" returnformat="void" access="public" output="false">
-		<cfargument name="event" type="Enlist.model.event.Event" required="true" />
-		<cfset variables.event = arguments.event />
+	<cffunction name="setActivity" returntype="void" access="public" output="false">
+		<cfargument name="activity" type="Enlist.model.event.activity.Activity" required="true" />
+		<cfset variables.activity = arguments.activity />
 	</cffunction>
 		
-	<cffunction name="getEvent" returntype="Enlist.model.event.Event" access="public" output="false">
-		<cfreturn variables.event />
+	<cffunction name="getActivity" returntype="Enlist.model.event.activity.Activity" access="public" output="false">
+		<cfreturn variables.activity />
 	</cffunction>
 	
 	
-	<cffunction name="setVolunteeredOn" returnformat="void" access="public" output="false">
+	<cffunction name="setVolunteeredOn" returntype="void" access="public" output="false">
 		<cfargument name="volunteeredOn" type="string" required="true" />
 		<cfset variables.volunteeredOn = arguments.volunteeredOn />
 	</cffunction>
@@ -133,7 +133,7 @@
 	</cffunction>
 	
 	
-	<cffunction name="setScheduledStart" returnformat="void" access="public" output="false">
+	<cffunction name="setScheduledStart" returntype="void" access="public" output="false">
 		<cfargument name="scheduledStart" type="string" required="true" />
 		<cfset variables.scheduledStart = arguments.scheduledStart />
 	</cffunction>
@@ -143,7 +143,7 @@
 	</cffunction>
 	
 	
-	<cffunction name="setScheduledEnd" returnformat="void" access="public" output="false">
+	<cffunction name="setScheduledEnd" returntype="void" access="public" output="false">
 		<cfargument name="scheduledEnd" type="string" required="true" />
 		<cfset variables.scheduledEnd = arguments.scheduledEnd />
 	</cffunction>
@@ -153,7 +153,7 @@
 	</cffunction>
 	
 	
-	<cffunction name="setCancelledOn" returnformat="void" access="public" output="false">
+	<cffunction name="setCancelledOn" returntype="void" access="public" output="false">
 		<cfargument name="cancelledOn" type="string" required="true" />
 		<cfset variables.cancelledOn = arguments.cancelledOn />
 	</cffunction>
@@ -163,7 +163,7 @@
 	</cffunction>
 
 	
-	<cffunction name="setActualHours" returnformat="void" access="public" output="false">
+	<cffunction name="setActualHours" returntype="void" access="public" output="false">
 		<cfargument name="actualHours" type="string" required="true" />
 		<cfset variables.actualHours = arguments.actualHours />
 	</cffunction>
@@ -173,7 +173,7 @@
 	</cffunction>
 	
 	
-	<cffunction name="setActualBones" returnformat="void" access="public" output="false">
+	<cffunction name="setActualBones" returntype="void" access="public" output="false">
 		<cfargument name="actualBones" type="string" required="true" />
 		<cfset variables.actualBones = arguments.actualBones />
 	</cffunction>
@@ -183,7 +183,7 @@
 	</cffunction>
 	
 	
-	<cffunction name="setStatus" returnformat="void" access="public" output="false">
+	<cffunction name="setStatus" returntype="void" access="public" output="false">
 		<cfargument name="status" type="string" required="true" />
 		<cfset variables.status = arguments.status />
 	</cffunction>
