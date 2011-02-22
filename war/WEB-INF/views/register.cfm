@@ -29,6 +29,7 @@
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
 	<cfimport prefix="form" taglib="/MachII/customtags/form" />
 	<view:meta type="title" content="Register" />
+	<cfset chapters = event.getArg("chapters")>
 </cfsilent>
 <cfoutput>
 <h2>Register</h2>
@@ -47,6 +48,15 @@
 			<th>Alternative Email</th>
 			<td><form:input path="altEmail" size="40" maxlength="200" /></td>
 		</tr>
+		<tr>
+			<th>Chapter</th>
+			<td>
+				<form:select path="chapterId">
+					<cfloop from="1" to="#arrayLen(chapters)#" index="i">
+						<form:option value="#chapters[i].getID()#" label="#chapters[i].getName()#" />
+					</cfloop>
+				</form:select>
+			</td>
 		<tr>
 			<td></td>
 			<td><form:button type="submit" name="save" value="Save Registration Info" /></td>

@@ -204,6 +204,7 @@ Notes:
 		</event-handler>
 		<event-handler event="register" access="public">
 			<event-bean name="user" type="Enlist.model.user.User" />
+			<call-method bean="chapterService" method="getChapters" resultArg="chapters" />
 			<view-page name="register" contentArg="layout.content" />
 			<execute subroutine="doMainLayout" />
 		</event-handler>
