@@ -67,7 +67,7 @@ Notes:
 	PUBLIC FUNCTIONS
 	--->
 
-	<cffunction name="getUser" access="public" returntype="User" output="false">
+	<cffunction name="getUser" access="public" returntype="any" output="false">
 		<cfargument name="id" type="string" required="true" />
 		<cfreturn variables.userGateway.getUser( arguments.id ) />
 	</cffunction>
@@ -94,7 +94,7 @@ Notes:
 	</cffunction>
 
 
-	<cffunction name="getUserByGoogleEmail" access="public" returntype="User" output="false"
+	<cffunction name="getUserByGoogleEmail" access="public" returntype="any" output="false"
 		hint="Gets an User from the datastore by Google Email.">
 		<cfargument name="googleEmail" type="string" required="true" />
 		<cfreturn variables.userGateway.getUserByGoogleEmail(arguments.googleEmail) />

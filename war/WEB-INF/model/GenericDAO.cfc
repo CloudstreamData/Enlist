@@ -70,7 +70,7 @@ Notes:
 		<cfargument name="propertyValue" type="string" required="true" />
 		<cfset var map = structNew() />
 		<cfset map[ arguments.propertyName ] = arguments.propertyValue />
-		<cfreturn googleQuery( "select from #getKind()# #arguments.propertyName# == '#arguments.propertyValue#'" ) />
+		<cfreturn googleQuery( "select from #getKind()# where #arguments.propertyName# == '#arguments.propertyValue#'" ) />
 	</cffunction>
 
 	<cffunction name="listByPropertyMap" access="public" returntype="array" output="false">

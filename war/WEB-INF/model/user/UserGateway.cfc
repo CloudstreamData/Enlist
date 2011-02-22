@@ -45,15 +45,15 @@ Notes:
 	<!---
 	PUBLIC FUNCTIONS
 	--->
-	<cffunction name="getUser" access="public" returntype="User" output="false">
+	<cffunction name="getUser" access="public" returntype="any" output="false">
 		<cfargument name="id" type="string" required="true" />
 		<cfreturn getDAO().read( arguments.id ) />
 	</cffunction>
 
-	<cffunction name="getUserByGoogleEmail" access="public" returntype="User" output="false"
+	<cffunction name="getUserByGoogleEmail" access="public" returntype="any" output="false"
 		hint="Gets an User from the datastore by Google Email.">
 		<cfargument name="googleEmail" type="string" required="true" />
-		<cfreturn getDAO().listByProperty( "googleEmail", arguments.googleEmail ) />
+		<cfreturn getDAO().readByProperty( "googleEmail", arguments.googleEmail ) />
 	</cffunction>
 
 	<cffunction name="getUsers" access="public" returntype="array" output="false">
