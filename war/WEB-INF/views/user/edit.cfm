@@ -23,17 +23,19 @@
 		<tr>
 			<th>Alternative Email</th>
 			<td><form:input path="altEmail" size="40" maxlength="200" /></td>
-		</tr
-		<tr>
-			<th>Chapter</th>
-			<td>
-				<form:select path="chapterId">
-					<cfloop from="1" to="#arrayLen(chapters)#" index="i">
-						<form:option value="#chapters[i].getID()#" label="#chapters[i].getName()#" />
-					</cfloop>
-				</form:select>
-			</td>
 		</tr>
+		<cfif arrayLen( chapters )>
+			<tr>
+				<th>Chapter</th>
+				<td>
+					<form:select path="chapterId">
+						<cfloop from="1" to="#arrayLen(chapters)#" index="i">
+							<form:option value="#chapters[i].getID()#" label="#chapters[i].getName()#" />
+						</cfloop>
+					</form:select>
+				</td>
+			</tr>
+		</cfif>
 		<tr>
 			<th>Status:</th>
 			<td>
