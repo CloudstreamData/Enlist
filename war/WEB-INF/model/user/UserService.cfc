@@ -34,6 +34,7 @@ Notes:
 	--->
 	<cfset variables.googleUserService = "" />
 	<cfset variables.userGateway = "" />
+	<cfset variables.sessionFacade = "" />
 	
 	<!---
 	INITIALIZATION / CONFIGURATION
@@ -53,6 +54,11 @@ Notes:
 		<cfset variables.userGateway = arguments.userGateway />
 	</cffunction>
 	
+	<cffunction name="setSessionFacade" access="public" returntype="SessionFacade" output="false">
+		<cfargument name="sessionFacade" type="any" required="true" />
+		<cfset variables.sessionFacade = arguments.sessionFacade />
+	</cffunction>
+	
 	<cffunction name="getGoogleUserService" access="public" returntype="any" output="false">
 		<cfreturn variables.googleUserService />
 	</cffunction>
@@ -60,10 +66,50 @@ Notes:
 	<!---
 	PUBLIC FUNCTIONS
 	--->
+	
+	<cffunction name="checkUserSession" access="public" returntype="boolean" output="false">
+		<cfif not hasCurrentUser()>
+			<!--- TODO: figure out how to _actually_ check for Google account using googleUserService --->
+			<cfset var googleEmail = "" />
+			<cfset var userByGoogleEmail = getUserByGoogleEmail( googleEmail ) />
+			<cfif arrayLen( userByGoogleEmail )>
+				<cfset variables.sessionFacade.setUser( userByGoogleEmail[1] ) />
+			</cfif>
+		</cfif>
+		<cfreturn hasCurrentUser() />
+	</cffunction>
+	
+	<cffunction name="hasCurrentUser" access="public" returntype="boolean" output="false">
+		<cfreturn variables.sessionFacade.isUserDefined() />
+	</cffunction>
+	
+	<cffunction name="getCurrentUser" access="public" returntype="User" output="false">
+		<cfreturn variables.sessionFacade.getUser() />
+	</cffunction>
+	
+	<cffunction name="getUser" access="public" returntype="User" output="false">
+		<cfargument name="id" type="string" required="true" />
+		<cfreturn variables.userGateway.getUser( arguments.id ) />
+	</cffunction>
+	
+	<cffunction name="getUsers" access="public" returntype="array" output="false">
+		<cfreturn variables.userGateway.getUsers() />
+	</cffunction>
+	
+	<cffunction name="getUsersByRole" access="public" returntype="array" output="false">
+		<cfargument name="role" type="string" required="true" />
+		<cfreturn variables.userGateway.getUsersByRole( arguments.role ) />
+	</cffunction>
+	
 	<cffunction name="getUserByGoogleEmail" access="public" returntype="User" output="false"
 		hint="Gets an User from the datastore by Google Email.">
 		<cfargument name="googleEmail" type="string" required="true" />
 		<cfreturn variables.userGateway.getUserByGoogleEmail(arguments.googleEmail) />
+	</cffunction>
+	
+	<cffunction name="setCurrentUser" access="public" returntype="void" output="false">
+		<cfargument name="user" type="string" required="true" />
+		<cfreturn variables.sessionFacade.setUser( user ) />
 	</cffunction>
 	
 </cfcomponent>

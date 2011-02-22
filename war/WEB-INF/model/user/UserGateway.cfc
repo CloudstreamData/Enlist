@@ -44,18 +44,61 @@ Notes:
 	<!---
 	PUBLIC FUNCTIONS
 	--->
+	<cffunction name="getUser" access="public" returntype="User" output="false">
+		<cfargument name="id" type="string" required="true" />
+		
+		<cfset var users = "" />
+		
+		<cfquery dbtype="google" name="users">
+			select from user
+			where id == '#arguments.id#' 
+		</cfquery>
+		
+		<cfif arrayLen( users )>
+			<cfreturn users[1] />
+		</cfif>
+		
+		<!--- without null, we need a convention--I'm going with returning a new object --->
+		<cfreturn createObject("component", "Enlist.model.user.User").init() />
+	</cffunction>
+	
 	<cffunction name="getUserByGoogleEmail" access="public" returntype="User" output="false"
 		hint="Gets an User from the datastore by Google Email.">
 		<cfargument name="googleEmail" type="string" required="true" />
 		
-		<cfset var qryRead = "" />
+		<cfset var users = "" />
 		
-		<cfquery name="qryRead">
-			select from Users
+		<cfquery dbtype="google" name="users">
+			select from user
 			where googleEmail == '#arguments.googleEmail#' 
 		</cfquery>
 		
-		<!--- Still need to return a single element which is an array of object (either 0 or 1 elements long) --->
+		<cfif arrayLen( users )>
+			<cfreturn users[1] />
+		</cfif>
+		
+		<cfreturn createObject("component", "Enlist.model.user.User").init() />
 	</cffunction>
+	
+	<cffunction name="getUsers" access="public" returntype="array" output="false">
+		<cfreturn googleQuery("select from user") />
+	</cffunction>
+
+	<cffunction name="getUsersByRole" access="public" returntype="array" output="false">
+		<cfargument name="role" type="string" required="true" />
+		<cfreturn googleQuery( "select from user where role == '#arguments.role#'" ) />
+	</cffunction>
+
+	<cffunction name="saveUser" access="public" returntype="void" output="false">
+		<cfargument name="user" type="Enlist.model.user.User" required="true">
+
+		<cfif user.getID() eq "">
+			<cfset user.setID( createUUID() ) />
+		<cfelse>
+			<!--- Peter said this is a necessary workaround, because googleWrite() will not currently update, but always insert a new record: --->
+			<cfset googleDelete( arguments.user ) />
+		</cfif>
+		<cfset googleWrite( user ) />
+	</cffunction> 
 	
 </cfcomponent>
