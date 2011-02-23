@@ -49,9 +49,9 @@ Notes:
 		<cfargument name="id" type="string" required="false" default="" />
 		<cfargument name="pointName" type="string" required="false" default="Point" />
 		<cfargument name="defaultPointValue" type="string" required="false" default="1" />
-		<cfargument name="orgName" type="string" required="false" default="Your Orginazation Name" />
-		<cfargument name="orgDesc" type="string" required="false" default="Some text about your orginaztion" />
-		<cfargument name="orgAddress" type="string" required="false" default="Your orginazation address" />
+		<cfargument name="orgName" type="string" required="false" default="Your Organization Name" />
+		<cfargument name="orgDesc" type="string" required="false" default="Some text about your organization" />
+		<cfargument name="orgAddress" type="string" required="false" default="Your organization address" />
 		<cfargument name="sendEmail" type="string" required="false" default="true" />
 
 		<cfset setInstanceMemento(arguments) />
