@@ -79,7 +79,14 @@ Notes:
 		<cfset setImportHashCode(arguments.data.importHashCode) />
 	</cffunction>
 	<cffunction name="getInstanceMemento" access="public"returntype="struct" output="false" >
-		<cfreturn variables />
+		<cfset var data = structnew() />
+		<cfset var fieldname = "" />
+
+		<cfloop list="id,status,role,chapterId,firstName,lastName,googleEmail,altEmail,importHashCode" index="fieldname">
+			<cfset data[fieldname] = variables[fieldname] />
+		</cfloop>
+
+		<cfreturn data />
 	</cffunction>
 
 	<!---
