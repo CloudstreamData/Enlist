@@ -28,6 +28,7 @@ Notes:
 -->
 
 <beans>
+	<bean id="utilityConnector" class="MachII.util.UtilityConnector"/>
 
 	<!-- SYS -->
 	<bean id="sessionFacade" class="Enlist.model.sys.SessionFacade"/>
@@ -86,6 +87,25 @@ Notes:
 		<property name="ChapterGateway"><ref bean="ChapterGateway" /></property>
 	</bean>
 	<bean id="ChapterGateway" class="Enlist.model.chapter.ChapterGateway" />
+
+	<!-- SECURITY -->
+	<bean id="logFactory" factory-bean="utilityConnector" factory-method="getLogFactory"/>
+	<bean id="abstractSecurityObject" abstract="true">
+		<property name="logFactory">
+			<ref bean="logFactory"/>
+		</property>
+	</bean>
+	<bean id="securityManager" class="Enlist.model.security.SecurityManager">
+		<constructor-arg name="authenticationService">
+			<bean class="Enlist.model.security.AuthenticationService" parent="abstractSecurityObject"/>
+		</constructor-arg>
+		<constructor-arg name="authorizationService">
+			<bean class="Enlist.model.security.EventAuthorizationService" parent="abstractSecurityObject"/>
+		</constructor-arg>
+		<constructor-arg name="securityRuleParser">
+			<bean class="Enlist.model.security.EventSecurityRuleParser" parent="abstractSecurityObject"/>
+		</constructor-arg>
+	</bean>
 	
 	<!-- NAVIGATION -->
 	<bean id="NavigationLinkService" class="Enlist.model.navigation.NavigationLinkService">
