@@ -25,8 +25,8 @@
 		<cfargument name="event" type="MachII.framework.Event" required="true" />
 
 		<cfset getEmailService().send(
-			to:getProperty("defaultEmail"),
-			from:event.getArg("user").getGoogleEmail(),
+			to:event.getArg("user").getGoogleEmail(),
+			from:getProperty("defaultEmail"),
 			subject:"New User Notification",
 			message: event.getArg("email.message")
 		) />
@@ -35,18 +35,11 @@
 	<cffunction name="buildI18NArgs" output="false" access="public" returntype="string"
 		hint="I am a boilerplate function">
 		<cfargument name="event" type="MachII.framework.Event" required="true" />
-		
-		<cfset var user = createObject('component','Enlist.model.user.User') />
-		<cfset event.setArg('user', user) />
-
-		<cfset user.setFirstName("andrew")/>
-		<cfset user.setLastName("Leaf")/>
-		<cfset user.setGoogleEmail("andrew.leaf@gmail.com")/>
+		<cfset var strResult = "" />
 		<cftry>
-			<cfset t = getEmailService().buildI18NArgs(event.getArg('user')) />
-			<cfcatch><cfdump var="#cfcatch#"><cfabort></cfcatch>
-
+			<cfset strResult = getEmailService().buildI18NArgs(event.getArg('user'),event.getArg('activity')) />
+			<cfcatch><cflog application="true" text="Email Message was not able to be created."></cfcatch>
 		</cftry>
-		<cfreturn t />
+		<cfreturn strResult />
 	</cffunction>
 </cfcomponent>

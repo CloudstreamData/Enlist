@@ -4,17 +4,14 @@
 	<cffunction name="init" access="public" output="false" returntype="EmailService">
 		<cfreturn this/>
 	</cffunction>
-
-	
 	
 	<cffunction name="buildI18NArgs" access="public" output="false" returntype="string">
 		<cfargument name="user" required="true" type="any" hint="User object" />
 		<cfargument name="activity" required="false" type="any" hint="Activity object" />
 
-
 		<cfset var list = user.getFirstName() & ';' & user.getLastName() & ';' & user.getGoogleEmail() />
 
-		<cfif structKeyexists(arguments,"activity")>
+		<cfif structKeyexists(arguments,"activity") and isObject(arguments.activity)>
 			<cfset list = list & ';' & activity.getName() & ";" & activity.getEvent().getName() & ";" & activity.getEvent().description()  & ";" & activity.getEvent().getstartDate()>
 		</cfif>
 
@@ -22,20 +19,23 @@
 	</cffunction>
 
 	<cffunction name="send" access="public" output="false" returntype="void">
+		<cfargument name="to" 		required="true" type="string" hint="To email address" />
+		<cfargument name="from" 	required="true" type="string" hint="from email address" />
+		<cfargument name="subject" 	required="true" type="string" hint="subject of email" />
+		<cfargument name="message" 	required="true" type="string" hint="Message of mail" />
 		
-
 		<cftry>
-		 <cfmail to="#arguments.to#" from="#arguments.from#" subject="#arguments.subject#"> 
-                <cfmailpart type="text" wraptext="74"> 
-					#stripHTML(buildmessage(arguments.message))#
-			    </cfmailpart> 
-			    <cfmailpart type="html">
-					#buildmessage(arguments.message)#
-			    </cfmailpart>
-        </cfmail>
-		<cfcatch><cfdump var="#cfcatch#"><cfabort></cfcatch>
+			 <cfmail to="#arguments.to#" from="#arguments.from#" subject="#arguments.subject#"> 
+	                <cfmailpart type="text" wraptext="74"> 
+						#stripHTML(buildmessage(arguments.message))#
+				    </cfmailpart> 
+				    <cfmailpart type="html">
+						#buildmessage(arguments.message)#
+				    </cfmailpart>
+	        </cfmail>
+		<cfcatch><cflog application="true" text="Attempt so send email failed: message #cfcatch.message#"></cfcatch>
 		</cftry>
-		<cfdump var="test">
+
 		<cfreturn />
 	</cffunction>
 	
@@ -47,8 +47,7 @@
 	
 	<cffunction name="stripHTML" access="private" output="false" returntype="string">
 		<cfargument name="str" type="string" required="true" hint="email message." />
-		<cfabort>
-
+		
 		<cfscript>
 		/**
 		* Function to strip HTML tags, with options to preserve certain tags.

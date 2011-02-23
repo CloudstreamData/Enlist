@@ -73,6 +73,7 @@ Notes:
 		<property name="urlParseSES" value="true"/>
 		<property name="urlDelimiters" value="/|/|/"/>
 		<property name="urlExcludeEventParameter" value="true"/>
+		<property name="defaultEmail" value="enlist@mach-ii.com" />
 
 	<!-- Begin APPLICATION -->
 		<property name="Environment" type="MachII.properties.EnvironmentProperty">
@@ -192,7 +193,7 @@ Notes:
 	<!-- MESSAGE SUBSCRIBERS -->
 	<message-subscribers>
 		<!-- add a message/title arg in the .properties file of the message and title to be added in the event that will subscribe to this message. -->
-		<message name="email.newUserNotification" multithreaded="false" waitForThreads="true">
+		<message name="email.Notification" multithreaded="false" waitForThreads="true">
 			<subscribe  listener="EmailNotificationListener" method="buildI18NArgs" resultArg="args" />
 			<subscribe  listener="EmailNotificationListener" method="sendNotification"/>
 		</message>
@@ -233,6 +234,9 @@ Notes:
 				<arg name="user" value="${event.user}" />
 			</call-method>
 			<event-arg name="message" value="Registration saved" />
+			<event-arg name="email.title" value="welcomeNewVolunteerTitle"/>
+			<event-arg name="email.message" value="welcomeNewVolunteer"/>
+			<publish message="email.Notification"/>
 			<view-page name="home" contentArg="layout.content"/>
 			<execute subroutine="doMainLayout"/>
 		</event-handler>
