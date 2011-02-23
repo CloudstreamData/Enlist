@@ -50,7 +50,7 @@ Notes:
 	<cffunction name="init" access="public" returntype="User" output="false">
 		<cfargument name="id" type="string" required="false" default="" />
 		<cfargument name="status" type="string" required="false" default="valid" />
-		<cfargument name="role" type="string" required="false" default="volunteer" />
+		<cfargument name="role" type="string" required="false" default="" />
 		<cfargument name="chapterId" type="string" required="false" default="" />
 		<cfargument name="firstName" type="string" required="false" default="" />
 		<cfargument name="lastName" type="string" required="false" default="" />
