@@ -24,6 +24,16 @@
 $Id: $
 
 Notes:
+To get a reference to the current user, perform the following:
+
+	authentication = sessionFacade.getProperty("authentication");
+	if (authentication.hasUser() and authentication.isAuthenticated()) {
+		user = authentication.getUser();
+	}
+
+To effectively log a user out, delete the authentication:
+	sessionFacade.deleteProperty("authentication")
+
 --->
 <cfcomponent
 	displayname="SessionFacade"
@@ -32,8 +42,7 @@ Notes:
 	<!---
 	INITIALIZATION / CONFIGURATION
 	--->
-	<cffunction name="init" access="public" returntype="SessionFacade" output="false"
-		hint="Initializes the Udfs.">
+	<cffunction name="init" access="public" returntype="SessionFacade" output="false">
 		<cfargument name="sessionStoreName" type="string" required="false" default=""/>
 
 		<cfif arguments.sessionStoreName neq "">
@@ -47,20 +56,6 @@ Notes:
 	<!---
 	PUBLIC FUNCTIONS
 	--->
-	<cffunction name="getUser" access="public" returntype="Enlist.model.user.User" output="false">
-		<cfreturn getProperty("user") />
-	</cffunction>
-	<cffunction name="removeUser" access="public" returntype="void" output="false">
-		<cfset deleteProperty("user") />
-	</cffunction>
-	<cffunction name="setUser" access="public" returntype="void" output="false">
-		<cfargument name="user" type="Enlist.model.user.User" required="true" />
-		<cfset setProperty("user", arguments.user) />
-	</cffunction>
-	<cffunction name="isUserDefined" access="public" returntype="void" output="false">
-		<cfreturn isPropertyDefined("user") />
-	</cffunction>
-
 	<cffunction name="isPropertyDefined" returntype="boolean" access="public" output="false">
 		<cfargument name="name" type="string" required="true"/>
 
@@ -134,7 +129,7 @@ Notes:
 	</cffunction>
 
 	<!---
-	PUBLIC FUNCTIONS
+	PRIVATE FUNCTIONS
 	--->
 	<cffunction name="getSessionStore" access="private" returntype="struct" output="false">
 		<cfset var ss = structNew()/>

@@ -15,15 +15,22 @@
 		hint="Configures the listener.">
 		<!--- Put custom configuration for this listener here. --->
 	</cffunction>
-	
+
 	<!---
 	PUBLIC FUNCTIONS
 	--->
 	<cffunction name="getActivityVolunteerHistoryForUser" returntype="array" access="public" output="false">
 		<cfargument name="event" type="MachII.framework.Event" />
-		
-		<cfset var user = getSessionFacade().getUser() />
-		<cfreturn getActivityService().getActivityVolunteerHistoryByUser( user.getId() ) />
+
+		<cfset var authentication = getSessionFacade().getProperty("authentication")/>
+		<cfset var user = ""/>
+		<cfset var result = arrayNew(1)/>
+
+		<cfif authentication.hasUser() and authentication.isAuthenticated()>
+			<cfset user = authentication.getUser()/>
+			<cfset result = getActivityService().getActivityVolunteerHistoryByUser( user.getId() ) />
+		</cfif>
+		<cfreturn result/>
 	</cffunction>
 
 </cfcomponent>
