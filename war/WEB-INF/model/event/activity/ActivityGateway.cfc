@@ -69,11 +69,18 @@ Notes:
 	--->
 	<cffunction name="getActivity" access="public" returntype="Enlist.model.event.activity.Activity" output="false">
 		<cfargument name="id" type="string" required="false" default="">
-		<cfreturn getDAO().read( arguments.id ) />
+		<cfset var activity = getDAO().read( arguments.id ) />
+		<cfset activity.setEvent( getEventService().getEvent( activity.getEventId() ) ) />
+		<cfreturn activity />
 	</cffunction>
 
 	<cffunction name="getActivities" access="public" returntype="array" output="false">
-		<cfreturn getDAO().list() />
+		<cfset var activities = getDAO().list() />
+		<cfset var activity = "" />
+		<cfloop array="#activities#" index="activity">
+			<cfset activity.setEvent( getEventService().getEvent( id = activity.getEventId() ) ) />
+		</cfloop>
+		<cfreturn activities />		
 	</cffunction>
 
 
