@@ -25,8 +25,19 @@ $Id: $
 
 Notes:
 --->
-<cfcomponent output="false">
-
+<cfcomponent output="false">	
+	<!---
+	PROPERTIES
+	--->
+	<cfset variables.dao = "" />
+	
+	<!---
+	INITIALIZATION / CONFIGURATION
+	--->
+	<cffunction name="init" access="public" returntype="ActivityGateway" output="false"
+		hint="Initializes the gateway.">
+		<cfreturn this />
+	</cffunction>
 
     <!--- DEPENDENCIES --->
     <cffunction name="getEventService" access="public" returntype="Enlist.model.event.EventService" output="false">
@@ -45,35 +56,24 @@ Notes:
 		<cfset variables.userService = arguments.userService />
 	</cffunction>
 
+	<cffunction name="getDAO" returntype="Enlist.model.GenericDAO" access="public" output="false">
+		<cfreturn variables.dao />
+	</cffunction>
+	<cffunction name="setDAO" returntype="void" access="public" output="false">
+		<cfargument name="dao" type="Enlist.model.GenericDAO" required="true" />
+		<cfset variables.dao = arguments.dao />
+	</cffunction>
 
     <!---
 	PUBLIC
 	--->
 	<cffunction name="getActivity" access="public" returntype="Enlist.model.event.activity.Activity" output="false">
 		<cfargument name="id" type="string" required="false" default="">
-
-		<cfset var activities = 0 />
-		<cfset var activity = 0 />
-
-		<cfif NOT Len(arguments.id)>
-			<cfset activity = createObject("component", "Enlist.model.event.activity.Activity").init( argumentCollection = arguments ) />
-		<cfelse>
-			<cfset activities = GoogleQuery("select from activity where id == '#arguments.id#'") />
-			<cfset activity = activities[ 1 ] />
-		</cfif>
-
-		<cfset activity.setEvent( getEventService().getEvent( activity.getEventId() ) ) />
-
-		<cfreturn activity />
+		<cfreturn getDAO().read( arguments.id ) />
 	</cffunction>
 
 	<cffunction name="getActivities" access="public" returntype="array" output="false">
-		<cfset var activities = googleQuery( "select from activity" ) />
-		<cfset var activity = "" />
-		<cfloop array="#activities#" index="activity">
-			<cfset activity.setEvent( getEventService().getEvent( id = activity.getEventId() ) ) />
-		</cfloop>
-		<cfreturn activities />
+		<cfreturn getDAO().list() />
 	</cffunction>
 
 
@@ -112,15 +112,7 @@ Notes:
 
 	<cffunction name="saveActivity" access="public" returntype="void" output="false">
 		<cfargument name="activity" type="Enlist.model.event.activity.Activity" required="true">
-
-		<cfset var key = "" />
-
-		<cfif activity.getID() eq "">
-			<cfset activity.setID( createUUID() ) />
-		<cfelse>
-			<cfset googleDelete( arguments.activity ) />
-		</cfif>
-		<cfset key = arguments.activity.googleWrite( "activity" ) />
+		<cfset getDAO().save( arguments.activity ) />
 	</cffunction>
 
 

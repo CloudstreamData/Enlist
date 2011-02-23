@@ -180,16 +180,10 @@ Notes:
 	<cffunction name="setEvent" access="public" returntype="void" output="false">
 		<cfargument name="event" type="any" required="true" />
 		<cfset variables.event = arguments.event />
-		<cfset variables.eventId = arguments.event.getId() />
 	</cffunction>
 	
-	<cffunction name="getEventId" access="public" output="false" returntype="string">
+	<cffunction name="getEventId" access="public" returntype="string" output="false">
 		<cfreturn variables.eventId />
 	</cffunction>
-	<cffunction name="setEventId" access="public" output="false" returntype="void">
-		<cfargument name="eventId" type="string" required="true"/>
-		<cfset variables.eventId = arguments.eventId/>
-		<cfset getEvent().setId( arguments.eventId ) />
-	</cffunction>
-
+	
 </cfcomponent>

@@ -72,6 +72,13 @@ Notes:
   <bean id="ActivityGateway" class="Enlist.model.event.activity.ActivityGateway">
     <property name="EventService"><ref bean="EventService" /></property>
     <property name="UserService"><ref bean="UserService" /></property>
+	<property name="dao">
+		<bean id="eventDAO" class="Enlist.model.GenericDAO">
+			<constructor-arg name="entityComponentPath">
+				<value>Enlist.model.event.activity.Activity</value>
+			</constructor-arg>
+		</bean>
+	</property>
   </bean>
   	
 	<!-- CHAPTER -->
