@@ -7,29 +7,24 @@
 
 		<cfif not structKeyExists(arguments, "user")>
 			<cfset authentication = createObject("component", "Authentication").init()/>
-			<cfset authentication.setLogFactory(getLogFactory())/>
-			<cfreturn authentication/>
+		<cfelse>
+			<cfset authentication = createObject("component", "Authentication").init(arguments.user)/>
 		</cfif>
-
-		<cfset authentication = createObject("component", "Authentication").init(arguments.user)/>
+		<cfset authentication.setLogFactory(getLogFactory())/>
 		<cfreturn authentication/>
 	</cffunction>
 
 	<cffunction name="authenticate" returntype="Authentication" access="public" output="false">
-		<cfargument name="loginBean" type="Enlist.model.beans.Bean" required="true"/>
+		<cfargument name="username" type="string" required="true"/>
+		<cfargument name="password" type="string" required="true"/>
+
+		<!--- TODO: Since this is GAE, the traditional username/password authentication needs to be changed. --->
 
 		<cfset var user = createObject("component", "Enlist.model.user.User").init()/>
 		<cfset var authentication = createObject("component", "Authentication")/>
 
 		<cfset authentication.setUser(user)/>
 		<cfreturn authentication/>
-	</cffunction>
-
-	<cffunction name="penalty" returntype="Authentication" access="private" output="false">
-		<cfargument name="authentication" type="Authentication" required="true"/>
-
-		<cfset sleep(5000)/>
-		<cfreturn arguments.authentication/>
 	</cffunction>
 
 </cfcomponent>

@@ -42,7 +42,7 @@
 				</cfif>
 
 				<cfif action eq "requireAuthentication">
-					<cfif auth.getAuthentication().getIsAuthenticated()>
+					<cfif auth.hasAuthentication() and auth.getAuthentication().getIsAuthenticated()>
 						<cfset auth.setPermissionGranted(true)/>
 						<cfbreak/>
 					<cfelse>

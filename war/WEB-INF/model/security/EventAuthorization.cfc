@@ -6,7 +6,6 @@
 	<cfset variables.eventName = ""/>
 
 	<cffunction name="init" returntype="EventAuthorization" access="public" output="false">
-		<cfset super.init()/>
 		<cfreturn this/>
 	</cffunction>
 
