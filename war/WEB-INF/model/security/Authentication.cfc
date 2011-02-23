@@ -42,10 +42,17 @@
 	<cffunction name="hasRole" returntype="boolean" access="public" output="false">
 		<cfargument name="role" type="string" required="true"/>
 
+		<cfset var _role = ""/>
+
 		<cfif not hasUser()>
 			<cfreturn false/>
 		</cfif>
-		<cfreturn compareNoCase(getUser().getRole(), arguments.role) eq 0/>
+		<cfloop list="#getUser().getRole()#" index="_role">
+			<cfif compareNoCase(_role, arguments.role) eq 0>
+				<cfreturn true/>
+			</cfif>
+		</cfloop>
+		<cfreturn false/>
 	</cffunction>
 
 	<cffunction name="hasUser" returntype="boolean" access="public" output="false">
