@@ -28,7 +28,7 @@ Notes:
 <cfcomponent
 	displayname="ApplicationPlugin"
 	extends="MachII.framework.Plugin"
-	depends="googleUserService,sessionFacade,userService"
+	depends="googleUserService,sessionFacade,securityManager,userService"
 	output="false"
 	hint="An ApplicationPlugin.">
 
@@ -50,13 +50,20 @@ Notes:
 		<cfargument name="eventContext" type="MachII.framework.EventContext" required="true" />
 
 		<cfset var event = arguments.eventContext.getNextEvent() />
+		<cfset var sessionFacade = getProperty("sessionFacade")/>
 
-		<cfif getGoogleUserService().isUserLoggedIn() AND NOT getSessionFacade().isUserDefined()>
+		<cfif sessionFacade.isPropertyDefined("authentication")>
+			<cfset var authentication = sessionFacade.getProperty("authentication")/>
+		<cfelse>
+			<cfset var authentication = getSecurityManager().getAuthenticationService().create()/>
+		</cfif>
+
+		<cfif getGoogleUserService().isUserLoggedIn() AND NOT authentication.hasUser()>
 			<!--- Load in our User object based off the Google Email as the ID --->
 			<cfset var googleEmail = getGoogleUserService().getCurrentUser().getEmail() />
 			<cfset var userByGoogleEmail = getUserService().getUserByGoogleEmail( googleEmail ) />
 			<cfif len(userByGoogleEmail.getID())>
-				<cfset getSessionFacade().setUser( userByGoogleEmail ) />
+				<cfset authentication.setUser( userByGoogleEmail ) />
 			<cfelseif event.getName() NEQ "register_process">
 				<!--- if the user is logged in with there google account, but not in this system, send them to the registration event --->
 				<cfset eventContext.clearEventQueue() />
