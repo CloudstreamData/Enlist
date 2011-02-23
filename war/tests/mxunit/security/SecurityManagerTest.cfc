@@ -7,8 +7,25 @@
 	<cffunction name="tearDown" returntype="void" access="public" output="false">
 	</cffunction>
 
+	<cffunction name="testUserAccess" returntype="void" access="public" output="false">
+		<cfset var securityManager = getSecurityManager()/>
+		<cfset var environment = getEnvironmentByType("production")/>
+		<cfset var securityRules = getSecurityRulesByType("user")/>
+		<cfset var user = getUserByType("volunteer")/>
+		<cfset var authentication = "null"/>
+		<cfset var authorization = "null"/>
+
+		<cfset securityManager.load(securityRules, environment)/>
+		<cfset authentication = securityManager.getAuthenticationService().create(user)/>
+
+		<cfset authorization = securityManager.getAuthorizationService().create(authentication)/>
+		<cfset authorization.setEventName("user.home")/>
+		<cfset securityManager.getAuthorizationService().authorize(authorization)/>
+		<cfset assertTrue(authorization.getIsAuthorized(), "An authenticated user should have access to the user home page.")/>
+	</cffunction>
+
 	<cffunction name="testAdminAccess" returntype="void" access="public" output="false">
-		<cfset var securityManager = getSecurityManagerByType("production")/>
+		<cfset var securityManager = getSecurityManager()/>
 		<cfset var environment = getEnvironmentByType("production")/>
 		<cfset var securityRules = getSecurityRulesByType("admin")/>
 		<cfset var user = getUserByType("admin")/>
@@ -16,44 +33,77 @@
 		<cfset var authorization = "null"/>
 
 		<cfset securityManager.load(securityRules, environment)/>
-
 		<cfset authentication = securityManager.getAuthenticationService().create(user)/>
-
-		<cfset authorization = securityManager.getAuthorizationService().create(authentication)/>
-		<cfset authorization.setEventName("login")/>
-		<cfset securityManager.getAuthorizationService().authorize(authorization)/>
-		<cfset assertTrue(authorization.getIsAuthorized(), "All users should have access to the login page.")/>
 
 		<cfset authorization = securityManager.getAuthorizationService().create(authentication)/>
 		<cfset authorization.setEventName("admin.home")/>
 		<cfset securityManager.getAuthorizationService().authorize(authorization)/>
-		<cfset assertTrue(authorization.getIsAuthorized(), "The admin user should be granted permission to the home page.")/>
+		<cfset assertTrue(authorization.getIsAuthorized(), "The admin user should be granted access to the admin.home event.")/>
+	</cffunction>
+
+	<cffunction name="testVolunteerAccess" returntype="void" access="public" output="false">
+		<cfset var securityManager = getSecurityManager()/>
+		<cfset var environment = getEnvironmentByType("production")/>
+		<cfset var securityRules = getSecurityRulesByType("volunteer")/>
+		<cfset var user = getUserByType("volunteer")/>
+		<cfset var authentication = "null"/>
+		<cfset var authorization = "null"/>
+
+		<cfset securityManager.load(securityRules, environment)/>
+		<cfset authentication = securityManager.getAuthenticationService().create(user)/>
+
+		<cfset authorization = securityManager.getAuthorizationService().create(authentication)/>
+		<cfset authorization.setEventName("volunteer.home")/>
+		<cfset securityManager.getAuthorizationService().authorize(authorization)/>
+		<cfset assertTrue(authorization.getIsAuthorized(), "The volunteer user should have access to the volunteer home page.")/>
 	</cffunction>
 
 	<cffunction name="testAnonymousAccess" returntype="void" access="public" output="false">
-		<cfset var securityManager = getSecurityManagerByType("production")/>
+		<cfset var securityManager = getSecurityManager()/>
 		<cfset var environment = getEnvironmentByType("production")/>
-		<cfset var securityRules = getSecurityRulesByType("admin")/>
+		<cfset var securityRules = "null"/>
 		<cfset var user = getUserByType("anonymous")/>
 		<cfset var authentication = "null"/>
 		<cfset var authorization = "null"/>
 
+		<!--- Allow all --->
+		<cfset securityRules = getSecurityRulesByType("allowAll")/>
+		<cfset securityManager.load(securityRules, environment)/>
+
+		<cfset authorization = securityManager.getAuthorizationService().create()/>
+		<cfset authorization.setEventName("event")/>
+		<cfset securityManager.getAuthorizationService().authorize(authorization)/>
+		<cfset assertTrue(authorization.getIsAuthorized(), "All events should be authorized.")/>
+
+		<!--- Deny all --->
+		<cfset securityRules = getSecurityRulesByType("denyAll")/>
+		<cfset securityManager.load(securityRules, environment)/>
+
+		<cfset authorization = securityManager.getAuthorizationService().create()/>
+		<cfset authorization.setEventName("event")/>
+		<cfset securityManager.getAuthorizationService().authorize(authorization)/>
+		<cfset assertFalse(authorization.getIsAuthorized(), "No events should be authorized.")/>
+
+		<!--- Public event --->
+		<cfset securityRules = getSecurityRulesByType("user")/>
 		<cfset securityManager.load(securityRules, environment)/>
 
 		<cfset authorization = securityManager.getAuthorizationService().create()/>
 		<cfset authorization.setEventName("login")/>
 		<cfset securityManager.getAuthorizationService().authorize(authorization)/>
-		<cfset assertTrue(authorization.getIsAuthorized(), "All users should have access to the login page.")/>
+		<cfset assertTrue(authorization.getIsAuthorized(), "The anonymous user should have access to the login page.")/>
+
+		<!--- Require login --->
+		<cfset securityRules = getSecurityRulesByType("user")/>
+		<cfset securityManager.load(securityRules, environment)/>
 
 		<cfset authorization = securityManager.getAuthorizationService().create()/>
-		<cfset authorization.setEventName("home")/>
+		<cfset authorization.setEventName("user.home")/>
 		<cfset securityManager.getAuthorizationService().authorize(authorization)/>
 		<cfset assertFalse(authorization.getIsAuthorized(), "The anonymous user should be required to login.")/>
 	</cffunction>
 
-	<cffunction name="getSecurityManagerByType" returntype="Enlist.model.security.SecurityManager" access="private" output="false">
-		<cfargument name="type" type="string" required="true"/>
-
+	<cffunction name="getSecurityManager" returntype="Enlist.model.security.SecurityManager" access="private" output="false">
 		<cfset var securityManager = "null"/>
 		<cfset var authenticationService = createObject("component", "Enlist.model.security.AuthenticationService")/>
 		<cfset var authorizationService = createObject("component", "Enlist.model.security.EventAuthorizationService")/>
@@ -96,21 +146,43 @@
 			<cfset securityRule.eventPattern = ".*"/>
 			<cfset securityRule.action = "deny"/>
 			<cfset arrayAppend(securityRules, securityRule)/>
-		<cfelseif arguments.type eq "admin">
+		<cfelseif arguments.type eq "user">
+			<!--- Public events --->
 			<cfset securityRule = structNew()/>
-			<cfset securityRule.eventPattern = "admin.*"/>
-			<cfset securityRule.action = "requireAuthentication"/>
-			<cfset arrayAppend(securityRules, securityRule)/>
-
-			<cfset securityRule = structNew()/>
-			<cfset securityRule.events = "home"/>
+			<cfset securityRule.events = "home,login,logout"/>
 			<cfset securityRule.action = "allow"/>
 			<cfset arrayAppend(securityRules, securityRule)/>
 
+			<!--- User events --->
 			<cfset securityRule = structNew()/>
-			<cfset securityRule.eventPattern = ".*"/>
+			<cfset securityRule.eventName = "user.home"/>
+			<cfset securityRule.action = "requireAuthentication"/>
+			<cfset arrayAppend(securityRules, securityRule)/>
+		<cfelseif arguments.type eq "admin">
+			<!--- Public events --->
+			<cfset securityRule = structNew()/>
+			<cfset securityRule.events = "home,login,logout"/>
+			<cfset securityRule.action = "allow"/>
+			<cfset arrayAppend(securityRules, securityRule)/>
+
+			<!--- Admin events --->
+			<cfset securityRule = structNew()/>
+			<cfset securityRule.eventPattern = "admin.*"/>
 			<cfset securityRule.action = "requireRole"/>
 			<cfset securityRule.roleRequired = "admin"/>
+			<cfset arrayAppend(securityRules, securityRule)/>
+		<cfelseif arguments.type eq "volunteer">
+			<!--- Public events --->
+			<cfset securityRule = structNew()/>
+			<cfset securityRule.events = "home,login,logout"/>
+			<cfset securityRule.action = "allow"/>
+			<cfset arrayAppend(securityRules, securityRule)/>
+
+			<!--- Volunteer events --->
+			<cfset securityRule = structNew()/>
+			<cfset securityRule.eventPattern = "volunteer.*"/>
+			<cfset securityRule.action = "requireRole"/>
+			<cfset securityRule.roleRequired = "volunteer"/>
 			<cfset arrayAppend(securityRules, securityRule)/>
 		<cfelseif arguments.type eq "development">
 			<cfset securityRule = structNew()/>

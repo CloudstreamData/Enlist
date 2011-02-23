@@ -63,7 +63,7 @@
 		<cfset volunteer.googleEmail = "enlist-volunteer@gmail.com"/>
 		<cfset volunteer.altEmail = ""/>
 		<cfset volunteer.importHashCaod = createUUID()/>
-		<cfset data.volunteer = data/>
+		<cfset data.volunteer = volunteer/>
 
 		<cfset admin.id = createUUID()/>
 		<cfset admin.status = "valid"/>
@@ -73,7 +73,7 @@
 		<cfset admin.googleEmail = "enlist-admin@gmail.com"/>
 		<cfset admin.altEmail = ""/>
 		<cfset admin.importHashCaod = createUUID()/>
-		<cfset data.admin = data/>
+		<cfset data.admin = admin/>
 
 		<cfreturn data/>
 	</cffunction>
