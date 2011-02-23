@@ -71,8 +71,8 @@ Notes:
 
 	<cffunction name="registerSetting" access="public" returntype="void" output="false">
 		<cfargument name="setting" type="Enlist.model.setting.Setting" required="true">
-		<cfset saveSetting( arguments.setting )>
-		<cfset variables.sessionFacade.setSetting( arguments.setting )>
+		<cfset saveSetting( arguments.setting ) />
+		<cfset variables.sessionFacade.setSetting( arguments.setting ) />
 	</cffunction>
 
 	<cffunction name="saveSetting" access="public" returntype="void" output="false">

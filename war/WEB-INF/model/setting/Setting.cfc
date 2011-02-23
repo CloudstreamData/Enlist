@@ -52,7 +52,7 @@ Notes:
 		<cfargument name="orgName" type="string" required="false" default="Your Orginazation Name" />
 		<cfargument name="orgDesc" type="string" required="false" default="Some text about your orginaztion" />
 		<cfargument name="orgAddress" type="string" required="false" default="Your orginazation address" />
-		<cfargument name="sendEmail" type="string" required="false" default="" />
+		<cfargument name="sendEmail" type="string" required="false" default="true" />
 
 		<cfset setInstanceMemento(arguments) />
 

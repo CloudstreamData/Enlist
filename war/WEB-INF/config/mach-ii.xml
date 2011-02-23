@@ -113,10 +113,13 @@ Notes:
 					<struct>
 						<key name="udfs" value="udfs" />
 						<key name="googleUserService" value="googleUserService" />
+						<key name="settingService" value="settingService" />
 					</struct>
 				</parameter>
 			</parameters>
 		</property>
+		
+		<property name="settingProperty" type="Enlist.controllers.properties.SettingProperty" />
 		
 		<property name="html" type="MachII.properties.HtmlHelperProperty">
 			<parameters>
@@ -160,6 +163,7 @@ Notes:
 	<listeners>
 	  <listener name="ActivityListener" type="Enlist.controllers.listeners.ActivityListener" />
 	  <listener name="EventListener" type="Enlist.controllers.listeners.EventListener" />
+	  <listener name="SettingListener" type="Enlist.controllers.listeners.SettingListener" />
 		<!--
 		<listener name="yourListenerName" type="fully.Qualified.Dot.Delimited.Path.To.CFC">
 			<parameters>
@@ -336,6 +340,7 @@ Notes:
 			<call-method bean="settingService" method="saveSetting">
 				<arg name="setting" value="${event.setting}" />
 			</call-method>
+			<notify listener="settingListener" method="updateSettingProperty" />
 			<event-arg name="message" value="Settings saved" />
 			<view-page name="setting.edit" contentArg="layout.content"/>
 			<execute subroutine="doMainLayout"/>
@@ -373,8 +378,6 @@ Notes:
 			<view-page name="navigation.edit" contentArg="layout.content"/>
 			<execute subroutine="doMainLayout"/>
 		</event-handler>
-		
-		
 		
 		<!-- USERS -->
 		<event-handler event="user.list" access="public">
