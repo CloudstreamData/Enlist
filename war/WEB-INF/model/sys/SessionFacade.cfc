@@ -27,7 +27,7 @@ Notes:
 To get a reference to the current user, perform the following:
 
 	authentication = sessionFacade.getProperty("authentication");
-	if (authentication.hasUser() and authentication.isAuthenticated()) {
+	if (authentication.hasUser() and authentication.getIsAuthenticated()) {
 		user = authentication.getUser();
 	}
 

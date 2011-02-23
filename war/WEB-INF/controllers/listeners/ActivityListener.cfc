@@ -26,7 +26,7 @@
 		<cfset var user = ""/>
 		<cfset var result = arrayNew(1)/>
 
-		<cfif authentication.hasUser() and authentication.isAuthenticated()>
+		<cfif authentication.hasUser() and authentication.getIsAuthenticated()>
 			<cfset user = authentication.getUser()/>
 			<cfset result = getActivityService().getActivityVolunteerHistoryByUser( user.getId() ) />
 		</cfif>
