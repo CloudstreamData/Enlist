@@ -96,10 +96,14 @@ Notes:
 	<cffunction name="readByPropertyMap" access="public" returntype="any" output="false">
 		<cfargument name="map" type="struct" required="true" hint="Property key/value pairs to filter on." />
 
-		<cfset var qryResult = googleQuery( "select from #getKind()# #propertyMapToWhereClause( arguments.map )#" ) />
-
-		<cfif arrayLen( qryResult )>
-			<cfreturn qryResult[1] />
+		<cfset var whereClause = propertyMapToWhereClause( arguments.map ) />
+		
+		<cfif len( whereClause )>
+			<cfset var qryResult = googleQuery( "select from #getKind()# #whereClause#" ) />
+	
+			<cfif arrayLen( qryResult )>
+				<cfreturn qryResult[1] />
+			</cfif>
 		</cfif>
 
 		<!--- return new/empty object, if no match --->
