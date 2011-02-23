@@ -65,6 +65,16 @@
 		<cfset volunteer.importHashCaod = createUUID()/>
 		<cfset data.volunteer = volunteer/>
 
+		<cfset coordinator.id = createUUID()/>
+		<cfset coordinator.status = "valid"/>
+		<cfset coordinator.role = "volunteer,coordinator"/>
+		<cfset coordinator.firstName = "Test"/>
+		<cfset coordinator.lastName = "Coordinator"/>
+		<cfset coordinator.googleEmail = "enlist-coordinator@gmail.com"/>
+		<cfset coordinator.altEmail = ""/>
+		<cfset coordinator.importHashCaod = createUUID()/>
+		<cfset data.coordinator = coordinator/>
+
 		<cfset admin.id = createUUID()/>
 		<cfset admin.status = "valid"/>
 		<cfset admin.role = "admin"/>

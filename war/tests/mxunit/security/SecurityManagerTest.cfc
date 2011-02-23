@@ -7,6 +7,47 @@
 	<cffunction name="tearDown" returntype="void" access="public" output="false">
 	</cffunction>
 
+	<cffunction name="testUserRoles" returntype="void" access="public" output="false">
+		<cfset var securityManager = getSecurityManager()/>
+		<cfset var user = "null"/>
+		<cfset var authentication = "null"/>
+		<cfset var authorization = "null"/>
+
+		<!--- Anonymous user --->
+		<cfset authentication = securityManager.getAuthenticationService().create()/>
+		<cfset assertFalse(authentication.hasUser(), "The anonymous authentication should not have a user.")/>
+		<cfset assertFalse(authentication.getIsAuthenticated(), "The anonymous user should not be authenticated")/>
+
+		<!--- Volunteer user --->
+		<cfset user = getUserByType("volunteer")/>
+		<cfset authentication = securityManager.getAuthenticationService().create(user)/>
+		<cfset assertTrue(authentication.hasUser(), "The volunteer authentication should contain a user.")/>
+		<cfset assertTrue(authentication.getIsAuthenticated(), "The volunteer user should be authenticated.")/>
+		<cfset assertTrue(authentication.hasRole("volunteer"), "The volunteer user should have the volunteer role.")/>
+		<cfset assertFalse(authentication.hasRole("coordinator"), "The volunteer user should not have the coordinator role.")/>
+		<cfset assertFalse(authentication.hasRole("admin"), "The volunteer user should not have the admin role.")/>
+
+		<!--- Coordinator user --->
+		<cfset user = getUserByType("coordinator")/>
+		<cfset authentication = securityManager.getAuthenticationService().create(user)/>
+		<cfset assertTrue(authentication.hasUser(), "The coordinator authentication should contain a user.")/>
+		<cfset assertTrue(authentication.getIsAuthenticated(), "The coordinator user should be authenticated.")/>
+		<cfset assertTrue(authentication.hasRole("volunteer"), "The coordinator user should also have the volunteer role.")/>
+		<cfset assertTrue(authentication.hasRole("coordinator"), "The coordinator user should have the coordinator role.")/>
+		<cfset assertFalse(authentication.hasRole("admin"), "The coordinator user should not have the admin role.")/>
+
+		<!--- Admin user --->
+		<cfset user = getUserByType("admin")/>
+		<cfset authentication = securityManager.getAuthenticationService().create(user)/>
+		<cfset assertTrue(authentication.hasUser(), "The admin authentication should contain a user.")/>
+		<cfset assertTrue(authentication.getIsAuthenticated(), "The admin user should be authenticated.")/>
+		<cfset assertFalse(authentication.hasRole("volunteer"), "The admin user should not have the volunteer role.")/>
+		<cfset assertFalse(authentication.hasRole("coordinator"), "The admin user should not have the coordinator role.")/>
+		<cfset assertTrue(authentication.hasRole("admin"), "The admin user should have the admin role.")/>
+
+	</cffunction>
+
+
 	<cffunction name="testUserAccess" returntype="void" access="public" output="false">
 		<cfset var securityManager = getSecurityManager()/>
 		<cfset var environment = getEnvironmentByType("production")/>
@@ -62,7 +103,6 @@
 		<cfset var securityManager = getSecurityManager()/>
 		<cfset var environment = getEnvironmentByType("production")/>
 		<cfset var securityRules = "null"/>
-		<cfset var user = getUserByType("anonymous")/>
 		<cfset var authentication = "null"/>
 		<cfset var authorization = "null"/>
 
@@ -202,8 +242,12 @@
 
 		<cfif arguments.type eq "admin">
 			<cfset user = createObject("component", "Enlist.model.user.User").init(argumentCollection=cfg.testData.admin)/>
-		<cfelse arguments.type eq "volunteer">
+		<cfelseif arguments.type eq "coordinator">
+			<cfset user = createObject("component", "Enlist.model.user.User").init(argumentCollection=cfg.testData.coordinator)/>
+		<cfelseif arguments.type eq "volunteer">
 			<cfset user = createObject("component", "Enlist.model.user.User").init(argumentCollection=cfg.testData.volunteer)/>
+		<cfelse>
+			<cfset fail("A request for an unknown user type (" & arguments.type & ") was requested.")/>
 		</cfif>
 		<cfreturn user/>
 	</cffunction>
