@@ -39,9 +39,9 @@ Notes:
 	<!---
 	INITIALIZATION / CONFIGURATION
 	--->
-	<cffunction name="init" access="public" returntype="GenericDAO" output="false">
+	<cffunction name="init" access="public" returntype="any" output="false">
 		<cfargument name="entityComponentPath" type="string" required="true" hint="Component path for entity type (e.g., 'foo.model.user.User')." />
-		<cfargument name="kind" type="string" required="false" hint="Google BigTable 'kind' for all CRUD operations of this DAO instance." />
+		<cfargument name="kind" type="string" required="false" hint="Google BigTable 'kind' for all CRUD operations of this gateway instance." />
 
 		<cfset setEntityComponentPath( arguments.entityComponentPath ) />
 
@@ -57,8 +57,10 @@ Notes:
 	PUBLIC FUNCTIONS
 	--->
 	<cffunction name="delete" access="public" returntype="void" output="false">
-		<cfargument name="entity" type="any" required="true">
-		<cfset googleDelete( arguments.entity ) />
+		<cfargument name="entity" type="any" required="true" />
+		<!--- Workaround: googleDelete(entity) does not work unless entity has been read from googleQuery() --->
+		<cfset var readEntity = read( arguments.entity.getID() ) />
+		<cfset googleDelete( readEntity ) />
 	</cffunction>
 
 	<cffunction name="list" access="public" returntype="array" output="false">
@@ -111,7 +113,7 @@ Notes:
 			<cfset arguments.entity.setID( createUUID() ) />
 		<cfelse>
 			<!--- This is a necessary workaround, because googleWrite() will not currently update, but always insert a new record: --->
-			<cfset googleDelete( arguments.entity ) />
+			<cfset delete( arguments.entity ) />
 		</cfif>
 
 		<cfset googleWrite( arguments.entity ) />
