@@ -54,21 +54,29 @@ Notes:
 	--->
 	<cffunction name="getNavigationLink" access="public" returntype="Enlist.model.navigation.NavigationLink" output="false">
 		<cfargument name="id" type="string" required="false" default="">
-		<cfreturn getNavigationLinkGateway().getNavigationLink(arguments.id) />
+		<cfscript>
+			var navigationLink = '';
+			if(arguments.id NEQ '') {
+				navigationLink = getNavigationLinkGateway().read(arguments.id);	
+			} else {
+				navigationLink = createObject("component", "Enlist.model.navigation.NavigationLink").init();
+			}
+			return navigationLink;
+		</cfscript>
 	</cffunction> 
 	
 	<cffunction name="getNavigationLinks" access="public" returntype="array" output="false">
-		<cfreturn getNavigationLinkGateway().getNavigationLinks() />
+		<cfreturn getNavigationLinkGateway().list() />
 	</cffunction>
 	
 	<cffunction name="deleteNavigationLink" access="public" returntype="void" output="false">
 		<cfargument name="id" type="string" required="true">
-		<cfset getNavigationLinkGateway().deleteNavigationLink(getNavigationLink(arguments.id)) />
+		<cfset getNavigationLinkGateway().delete(getNavigationLink(arguments.id)) />
 	</cffunction> 
 	
 	<cffunction name="saveNavigationLink" access="public" returntype="void" output="false">
 		<cfargument name="navigationLink" type="Enlist.model.navigation.NavigationLink" required="true">
-		<cfset getNavigationLinkGateway().saveNavigationLink(arguments.navigationLink) />
+		<cfset getNavigationLinkGateway().save(arguments.navigationLink) />
 	</cffunction> 
 	
 </cfcomponent>

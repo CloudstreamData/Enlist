@@ -112,7 +112,14 @@ Notes:
 	<bean id="NavigationLinkService" class="Enlist.model.navigation.NavigationLinkService">
 		<property name="NavigationLinkGateway"><ref bean="NavigationLinkGateway" /></property>
 	</bean>
-	<bean id="NavigationLinkGateway" class="Enlist.model.navigation.NavigationLinkGateway" />
+	<bean id="NavigationLinkGateway" class="Enlist.model.navigation.NavigationLinkGateway">
+		<constructor-arg name="entityComponentPath">
+			<value>Enlist.model.navigation.NavigationLinkGateway</value>
+		</constructor-arg>
+		<constructor-arg name="kind">
+			<value>NavigationLink</value>
+		</constructor-arg>
+	</bean>
 	
 	<!-- USERGROUP -->
 	<bean id="UserGroupService" class="Enlist.model.usergroup.UserGroupGateway">

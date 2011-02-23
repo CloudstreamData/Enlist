@@ -25,68 +25,35 @@ $Id: $
 
 Notes:
 --->
-<cfcomponent output="false">
+<cfcomponent output="false" extends="enlist.model.GenericDAO">
 	
 	
 	<cffunction name="init" access="public" returntype="NavigationLinkGateway" output="false"> 
+		<cfargument name="entityComponentPath" type="string" required="true" />
+		<cfargument name="kind" type="string" required="false" />
+
 		<cfscript>
+			super.init(argumentCollection=arguments);
 			createDefaultNavigationSet();
 			return this;
 		</cfscript>
 	</cffunction>
 	
 	
-	
-	<cffunction name="getNavigationLink" access="public" returntype="Enlist.model.navigation.NavigationLink" output="false">
-		<cfargument name="navigationLinkID" type="string" required="false" default="">
-		
-		<cfif len( arguments.navigationLinkID )>
-			<cfset var navigationLinks = GoogleQuery("select from navigationLink where id == '#arguments.navigationLinkID#'") />
-			<cfif arrayLen( navigationLinks )>
-				<cfreturn navigationLinks[1] />
-			</cfif>
-		</cfif>
-		
-		<cfreturn createObject("component", "Enlist.model.navigation.NavigationLink").init() />
-	</cffunction> 
-	
-	<cffunction name="getNavigationLinks" access="public" returntype="array" output="false">
-		<cfreturn googleQuery("select from navigationLink order by name") />
+	<cffunction name="list" access="public" returntype="array" output="false">
+		<cfreturn googleQuery("select from #getKind()# order by name") />
 	</cffunction>
 	
-	
-	<cffunction name="deleteNavigationLink" access="public" returntype="void" output="false">
-		<cfargument name="navigationLink" type="Enlist.model.navigation.NavigationLink" required="true">
-		<cfif len(navigationLink.getID()) GT 0>
-			<cfset googleDelete(arguments.navigationLink) />
-		</cfif>
-	</cffunction> 
-	
 
-	<cffunction name="saveNavigationLink" access="public" returntype="void" output="false">
-		<cfargument name="navigationLink" type="Enlist.model.navigation.NavigationLink" required="true">
-
-		<cfset var currentObjectToDelete = "" />
-		
-		<cfif arguments.navigationLink.getID() eq "">
-			<cfset arguments.navigationLink.setID(createUUID()) />
-		<cfelse>
-			<!--- Peter said this is a necessary workaround, because googleWrite() will not currently update, but always insert a new record: --->
-			<cfset googleDelete(getNavigationLink(arguments.navigationLink.getID())) />
-		</cfif>
-		<cfset key = arguments.navigationLink.googleWrite("navigationLink") />
-	</cffunction> 
-	
-	
 	<cffunction name="createDefaultNavigationSet" returntype="any" access="public" output="false">
 		<cfscript>
 			var navigationLink = '';
 			var defaultNavigation = listToArray('Events,event.list;Activities,activity.list;Navigation,navigation.list;My Activities,activityvolunteer.list', ";");
 			var i = 0;
 			//check if any navigation exists
-			if(arrayLen(getNavigationLinks()) EQ 0) {
+			if(arrayLen(list()) EQ 0) {
 				for (i=1; i LTE arrayLen(defaultNavigation); i=i+1) {
-					navigationLink = getNavigationLink();
+					//navigationLink = read('');
 					navigationLink.setName(listFirst(defaultNavigation[i]));
 					navigationLink.setEventName(listLast(defaultNavigation[i]));
 					saveNavigationLink(navigationLink);
