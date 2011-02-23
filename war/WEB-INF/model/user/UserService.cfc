@@ -39,7 +39,7 @@ Notes:
 	INITIALIZATION / CONFIGURATION
 	--->
 	<cffunction name="init" access="public" returntype="UserService" output="false">
-		<cfset super.init() />
+		<cfset super.init( argumentCollection = arguments ) />
 		<cfset var googleUserFactory = CreateObject("java", "com.google.appengine.api.users.UserServiceFactory") />
 		<cfset variables.googleUserService = googleUserFactory.getUserService() />
 		<cfreturn this />
