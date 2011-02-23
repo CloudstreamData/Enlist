@@ -86,13 +86,13 @@ Notes:
 
 	<cffunction name="logoutUser" access="public" returntype="void" output="false">
 		<cfargument name="user" type="Enlist.model.user.User" required="true">
-		<cfset variables.sessionFacade.removeUser() />
+		<cfset variables.sessionFacade.deleteProperty("authentication")/>
 	</cffunction>
 
 	<cffunction name="registerUser" access="public" returntype="void" output="false">
 		<cfargument name="user" type="Enlist.model.user.User" required="true">
 		<cfset saveUser( arguments.user )>
-		<cfset variables.sessionFacade.setUser( arguments.user )>
+		<cfset variables.sessionFacade.getProperty("authentication").setUser( arguments.user )>
 	</cffunction>
 
 	<cffunction name="saveUser" access="public" returntype="void" output="false">
@@ -104,7 +104,7 @@ Notes:
 			<cfset arguments.user.setGoogleEmail( variables.googleUserService.getCurrentUser().getEmail() ) />
 		</cfif>
 		<cfset getUserGateway().save( arguments.user ) />
-		<cfset variables.sessionFacade.setUser( arguments.user )>
+		<cfset variables.sessionFacade.getProperty("authentication").setUser( arguments.user )>
 	</cffunction>
 
 	<!---
