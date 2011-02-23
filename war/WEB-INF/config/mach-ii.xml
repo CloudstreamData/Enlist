@@ -241,7 +241,7 @@ Notes:
 			<execute subroutine="doMainLayout"/>
 		</event-handler>
 		<event-handler event="logout" access="public">
-			<call-method bean="sessionFacade" method="removeUser" />
+			<call-method bean="sessionFacade" method="deleteProperty" args="authentication" />
 			<event-arg name="message" value="Logout successful" />
 			<view-page name="home" contentArg="layout.content" />
 			<execute subroutine="doMainLayout"/>
