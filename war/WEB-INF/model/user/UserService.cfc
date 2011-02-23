@@ -49,36 +49,21 @@ Notes:
 		<cfreturn this />
 	</cffunction>
 
-	<cffunction name="setUserGateway" access="public" returntype="UserService" output="false">
-		<cfargument name="userGateway" type="any" required="true" />
-		<cfset variables.userGateway = arguments.userGateway />
-	</cffunction>
-
-	<cffunction name="setSessionFacade" access="public" returntype="SessionFacade" output="false">
-		<cfargument name="sessionFacade" type="any" required="true" />
-		<cfset variables.sessionFacade = arguments.sessionFacade />
-	</cffunction>
-
-	<cffunction name="getGoogleUserService" access="public" returntype="any" output="false">
-		<cfreturn variables.googleUserService />
-	</cffunction>
-
 	<!---
 	PUBLIC FUNCTIONS
 	--->
-
 	<cffunction name="getUser" access="public" returntype="any" output="false">
 		<cfargument name="id" type="string" required="true" />
-		<cfreturn variables.userGateway.getUser( arguments.id ) />
+		<cfreturn getUserGateway().read( arguments.id ) />
 	</cffunction>
 
 	<cffunction name="getUsers" access="public" returntype="array" output="false">
-		<cfreturn variables.userGateway.getUsers() />
+		<cfreturn getUserGateway().list() />
 	</cffunction>
 
 	<cffunction name="getUsersByRole" access="public" returntype="array" output="false">
 		<cfargument name="role" type="string" required="true" />
-		<cfreturn variables.userGateway.getUsersByRole( arguments.role ) />
+		<cfreturn getUserGateway().getUsersByRole( arguments.role ) />
 	</cffunction>
 
 	<cffunction name="getUsersBySearch" access="public" returntype="array" output="false">
@@ -90,14 +75,18 @@ Notes:
 		<cfargument name="lastName" type="string" required="false" default="" />
 		<cfargument name="googleEmail" type="string" required="false" default="" />
 		<cfargument name="altEmail" type="string" required="false" default="" />
-		<cfreturn variables.userGateway.getUsersBySearch(argumentCollection=arguments) />
+		<cfreturn getUserGateway().listByPropertyMap( arguments ) />
 	</cffunction>
-
 
 	<cffunction name="getUserByGoogleEmail" access="public" returntype="any" output="false"
 		hint="Gets an User from the datastore by Google Email.">
 		<cfargument name="googleEmail" type="string" required="true" />
-		<cfreturn variables.userGateway.getUserByGoogleEmail(arguments.googleEmail) />
+		<cfreturn getUserGateway().readByProperty( "googleEmail", arguments.googleEmail ) />
+	</cffunction>
+
+	<cffunction name="logoutUser" access="public" returntype="void" output="false">
+		<cfargument name="user" type="Enlist.model.user.User" required="true">
+		<cfset variables.sessionFacade.removeUser() />
 	</cffunction>
 
 	<cffunction name="registerUser" access="public" returntype="void" output="false">
@@ -114,8 +103,35 @@ Notes:
 			</cfif>
 			<cfset arguments.user.setGoogleEmail( variables.googleUserService.getCurrentUser().getEmail() ) />
 		</cfif>
-		<cfset variables.userGateway.saveUser( arguments.user ) />
+		<cfset getUserGateway().save( arguments.user ) />
 		<cfset variables.sessionFacade.setUser( arguments.user )>
+	</cffunction>
+
+	<!---
+	ACCESSORS
+	--->
+	<cffunction name="getGoogleUserService" access="public" returntype="any" output="false">
+		<cfreturn variables.googleUserService />
+	</cffunction>
+	<cffunction name="setGoogleUserService" access="public" returntype="void" output="false">
+		<cfargument name="googleUserService" type="any" required="true" />
+		<cfset variables.googleUserService = arguments.googleUserService />
+	</cffunction>
+
+	<cffunction name="getSessionFacade" access="public" returntype="SessionFacade" output="false">
+		<cfreturn variables.sessionFacade />
+	</cffunction>
+	<cffunction name="setSessionFacade" access="public" returntype="SessionFacade" output="false">
+		<cfargument name="sessionFacade" type="any" required="true" />
+		<cfset variables.sessionFacade = arguments.sessionFacade />
+	</cffunction>
+
+	<cffunction name="getUserGateway" access="public" returntype="any" output="false">
+		<cfreturn variables.userGateway />
+	</cffunction>
+	<cffunction name="setUserGateway" access="public" returntype="void" output="false">
+		<cfargument name="userGateway" type="any" required="true" />
+		<cfset variables.userGateway = arguments.userGateway />
 	</cffunction>
 
 </cfcomponent>
