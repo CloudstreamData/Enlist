@@ -107,6 +107,10 @@ Notes:
 		</constructor-arg>
 	</bean>
 	
+
+	<!-- EMAIL -->
+	<bean id="EmailService" class="Enlist.model.email.EmailService" />
+
 	<!-- NAVIGATION -->
 	<bean id="NavigationLinkService" class="Enlist.model.navigation.NavigationLinkService">
 		<property name="NavigationLinkGateway"><ref bean="NavigationLinkGateway" /></property>
