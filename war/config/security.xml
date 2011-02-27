@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!--
+	Enlist - Volunteer Management Software
+	Copyright (C) 2011 GreatBizTools, LLC
+
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+	Linking this library statically or dynamically with other modules is
+	making a combined work based on this library.  Thus, the terms and
+	conditions of the GNU General Public License cover the whole
+	combination.
+-->
+<mach-ii>
+	<plugins>
+		<plugin name="security" type="enlist.controllers.plugins.SecurityPlugin">
+			<parameters>
+				<parameter name="authenticationRequiredEvent" value="doLoginRedirect"/>
+				<parameter name="authenticationRequiredMessage" value="The requested page requires authentication."/>
+				<parameter name="authorizationFailedEvent" value="showAccessDenied"/>
+				<parameter name="authorizationFailedMessage" value="Access to the requested page is not authorized."/>
+				<parameter name="securityRules">
+					<array>
+						<!-- Bypass security rules in development -->
+						<element>
+							<struct>
+								<key name="environment" value="group:development"/>
+								<key name="eventPattern" value=".*"/>
+								<key name="action" value="allow"/>
+							</struct>
+						</element>
+
+						<!-- Allowed events for any request -->
+						<element>
+							<struct>
+								<key name="eventNames" value="home,logout,register"/>
+								<key name="action" value="allow"/>
+							</struct>
+						</element>
+
+						<!-- Restrict by role -->
+						<element>
+							<struct>
+								<key name="eventPattern" value=".*"/>
+								<key name="action" value="requireRole"/>
+								<key name="roleRequired" value="admin"/>
+							</struct>
+						</element>
+						
+					</array>
+				</parameter>
+			</parameters>		
+		</plugin>
+	</plugins>
+	
+</mach-ii>	

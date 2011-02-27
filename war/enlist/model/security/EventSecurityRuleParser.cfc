@@ -20,25 +20,26 @@
 	conditions of the GNU General Public License cover the whole
 	combination.
 --->
-<cfcomponent output="false" extends="tests.mxunit.BaseTest">
+<cfcomponent extends="BaseSecurityObject" output="false">
 
-	<cffunction name="setup" returntype="void" access="public" output="false">
-		<cfset super.setup()/>
-	</cffunction>
+	<cffunction name="parse" returntype="array" access="public" output="false">
+		<cfargument name="securityRules" type="any" required="true"/>
 
-	<cffunction name="testLifecycle" returntype="void" access="public" output="false">
-		<cfset var cfg = getConfig()/>
-		<cfset var result = structNew()/>
-		<cfset var eventGateway = getServiceBean("eventGateway")/>
+		<cfset var rule = "null"/>
+		<cfset var rules = arrayNew(1)/>
+		<cfset var eventSecurityRule = "null"/>
+		<cfset var log = getLog()/>
 
-		<cfset result.newEvent = createObject("component", "enlist.model.event.Event").init(argumentCollection=cfg.testData.event)/>
-		<cfset assertBeanProperty(structKeyList(cfg.testData.event), result.newEvent)/>
-
-		<cfset eventGateway.saveEvent(result.newEvent)/>
-
-		<cfset result.savedEvent = eventGateway.getEvent(result.newEvent.getId())/>
-
-		<cfset assertBeanProperty(structKeyList(cfg.testData.event), result.savedEvent)/>
+		<cfset getLog().info("Parsing security rules.")/>
+		<cfloop array="#arguments.securityRules#" index="rule">
+			<cfset eventSecurityRule = createObject("component", "enlist.model.security.EventSecurityRule").init(argumentCollection=rule)/>
+			<cfset eventSecurityRule.setLogFactory(getLogFactory())/>
+			<cfif log.isInfoEnabled()>
+				<cfset log.info("Created security rule: #eventSecurityRule.getSummary()#")/>
+			</cfif>
+			<cfset arrayAppend(rules, eventSecurityRule)/>
+		</cfloop>
+		<cfreturn rules/>
 	</cffunction>
 
 </cfcomponent>

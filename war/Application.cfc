@@ -44,7 +44,7 @@ Notes:
 	<!---
 	PROPERTIES - MACH-II SPECIFIC
 	--->	
-	<cfset MACHII_CONFIG_PATH = ExpandPath("/Enlist/config/mach-ii.xml") />
+	<cfset MACHII_CONFIG_PATH = ExpandPath("/config/mach-ii.xml") />
 
 	<!---
 		Most of the rest of the properties, methods, etc. have "intelligent defaults" 

@@ -165,14 +165,14 @@
 		<cfset assertFalse(authorization.getIsAuthorized(), "The anonymous user should be required to login.")/>
 	</cffunction>
 
-	<cffunction name="getSecurityManager" returntype="Enlist.model.security.SecurityManager" access="private" output="false">
+	<cffunction name="getSecurityManager" returntype="enlist.model.security.SecurityManager" access="private" output="false">
 		<cfset var securityManager = "null"/>
-		<cfset var authenticationService = createObject("component", "Enlist.model.security.AuthenticationService")/>
-		<cfset var authorizationService = createObject("component", "Enlist.model.security.EventAuthorizationService")/>
-		<cfset var securityRuleParser = createObject("component", "Enlist.model.security.EventSecurityRuleParser")/>
+		<cfset var authenticationService = createObject("component", "enlist.model.security.AuthenticationService")/>
+		<cfset var authorizationService = createObject("component", "enlist.model.security.EventAuthorizationService")/>
+		<cfset var securityRuleParser = createObject("component", "enlist.model.security.EventSecurityRuleParser")/>
 		<cfset var environment = structNew()/>
 
-		<cfset securityManager = createObject("component", "Enlist.model.security.SecurityManager").init(authenticationService, authorizationService, securityRuleParser)/>
+		<cfset securityManager = createObject("component", "enlist.model.security.SecurityManager").init(authenticationService, authorizationService, securityRuleParser)/>
 		<cfreturn securityManager/>
 	</cffunction>
 
@@ -256,18 +256,18 @@
 		<cfreturn securityRules/>
 	</cffunction>
 
-	<cffunction name="getUserByType" returntype="Enlist.model.user.User" access="private" output="false">
+	<cffunction name="getUserByType" returntype="enlist.model.user.User" access="private" output="false">
 		<cfargument name="type" type="string" required="false" default=""/>
 
 		<cfset var cfg = getConfig()/>
 		<cfset var user = "null"/>
 
 		<cfif arguments.type eq "admin">
-			<cfset user = createObject("component", "Enlist.model.user.User").init(argumentCollection=cfg.testData.admin)/>
+			<cfset user = createObject("component", "enlist.model.user.User").init(argumentCollection=cfg.testData.admin)/>
 		<cfelseif arguments.type eq "coordinator">
-			<cfset user = createObject("component", "Enlist.model.user.User").init(argumentCollection=cfg.testData.coordinator)/>
+			<cfset user = createObject("component", "enlist.model.user.User").init(argumentCollection=cfg.testData.coordinator)/>
 		<cfelseif arguments.type eq "volunteer">
-			<cfset user = createObject("component", "Enlist.model.user.User").init(argumentCollection=cfg.testData.volunteer)/>
+			<cfset user = createObject("component", "enlist.model.user.User").init(argumentCollection=cfg.testData.volunteer)/>
 		<cfelse>
 			<cfset fail("A request for an unknown user type (" & arguments.type & ") was requested.")/>
 		</cfif>

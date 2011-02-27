@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Enlist - Volunteer Management Software
+    Copyright (C) 2011 GreatBizTools, LLC
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    
+    Linking this library statically or dynamically with other modules is
+    making a combined work based on this library.  Thus, the terms and
+    conditions of the GNU General Public License cover the whole
+    combination.
+
+$Id: $
+
+Notes:
+-->
+
+<beans>
+	<bean id="utilityConnector" class="MachII.util.UtilityConnector"/>
+
+	<!-- SYS -->
+	<bean id="sessionFacade" class="enlist.model.sys.SessionFacade"/>
+	<bean id="udfs" class="enlist.model.sys.Udfs" />
+	
+	<!-- USER -->
+	<bean id="userService" class="enlist.model.user.UserService">
+		<property name="gateway"><ref bean="UserGateway" /></property>
+		<property name="sessionFacade"><ref bean="sessionFacade" /></property>
+	</bean>
+	<bean id="userGateway" class="enlist.model.BaseGateway">
+		<constructor-arg name="entityComponentPath">
+			<value>enlist.model.user.User</value>
+		</constructor-arg>
+	</bean>	
+	
+	<bean id="googleUserService" factory-bean="userService" factory-method="getGoogleUserService" />
+		
+	<!-- EVENT -->
+	<bean id="eventService" class="enlist.model.event.EventService">
+		<property name="eventGateway"><ref bean="EventGateway" /></property>
+	</bean>
+	<bean id="eventGateway" class="enlist.model.event.EventGateway">
+		<property name="dao">
+			<bean id="eventDAO" class="enlist.model.GenericDAO">
+				<constructor-arg name="entityComponentPath">
+					<value>enlist.model.event.Event</value>
+				</constructor-arg>
+			</bean>
+		</property>
+	</bean>
+  
+  
+  <!-- ACTIVITY -->
+  <bean id="activityService" class="enlist.model.event.activity.ActivityService">
+    <property name="activityGateway"><ref bean="activityGateway" /></property>
+  </bean>
+  <bean id="activityGateway" class="enlist.model.event.activity.ActivityGateway">
+    <property name="eventService"><ref bean="eventService" /></property>
+    <property name="userService"><ref bean="userService" /></property>
+	<property name="dao">
+		<bean id="eventDAO" class="enlist.model.GenericDAO">
+			<constructor-arg name="entityComponentPath">
+				<value>enlist.model.event.activity.Activity</value>
+			</constructor-arg>
+		</bean>
+	</property>
+  </bean>
+    	
+	<!-- CHAPTER -->
+	<bean id="chapterService" class="enlist.model.chapter.ChapterService">
+		<property name="chapterGateway"><ref bean="chapterGateway" /></property>
+	</bean>
+	<bean id="chapterGateway" class="enlist.model.chapter.ChapterGateway" />
+
+	<!-- SECURITY -->
+	<bean id="logFactory" factory-bean="utilityConnector" factory-method="getLogFactory"/>
+	<bean id="abstractSecurityObject" abstract="true">
+		<property name="logFactory">
+			<ref bean="logFactory"/>
+		</property>
+	</bean>
+	<bean id="securityManager" class="enlist.model.security.SecurityManager">
+		<constructor-arg name="authenticationService">
+			<bean class="enlist.model.security.AuthenticationService" parent="abstractSecurityObject"/>
+		</constructor-arg>
+		<constructor-arg name="authorizationService">
+			<bean class="enlist.model.security.EventAuthorizationService" parent="abstractSecurityObject"/>
+		</constructor-arg>
+		<constructor-arg name="securityRuleParser">
+			<bean class="enlist.model.security.EventSecurityRuleParser" parent="abstractSecurityObject"/>
+		</constructor-arg>
+	</bean>	
+
+	<!-- EMAIL -->
+	<bean id="emailService" class="enlist.model.email.EmailService" />
+
+	<!-- NAVIGATION -->
+	<bean id="navigationLinkService" class="enlist.model.navigation.NavigationLinkService">
+		<property name="navigationLinkGateway"><ref bean="navigationLinkGateway" /></property>
+	</bean>
+	<bean id="navigationLinkGateway" class="enlist.model.navigation.NavigationLinkGateway">
+		<constructor-arg name="entityComponentPath">
+			<value>enlist.model.navigation.NavigationLinkGateway</value>
+		</constructor-arg>
+		<constructor-arg name="kind">
+			<value>NavigationLink</value>
+		</constructor-arg>
+	</bean>
+	
+	<!-- USERGROUP -->
+	<bean id="userGroupService" class="enlist.model.usergroup.UserGroupGateway">
+		<property name="userGroupGateway"><ref bean="userGroupGateway" /></property>
+	</bean>
+	<bean id="userGroupGateway" class="enlist.model.usergroup.UserGroupGateway" />
+	
+	<!-- SETTING -->
+	<bean id="settingService" class="enlist.model.setting.SettingService">
+		<property name="settingGateway"><ref bean="settingGateway" /></property>
+	</bean>
+	<bean id="settingGateway" class="enlist.model.setting.SettingGateway">
+		<property name="dao">
+			<bean id="settingDAO" class="enlist.model.GenericDAO">
+				<constructor-arg name="entityComponentPath">
+					<value>enlist.model.setting.Setting</value>
+				</constructor-arg>
+			</bean>
+		</property>
+	</bean>
+	
+</beans>

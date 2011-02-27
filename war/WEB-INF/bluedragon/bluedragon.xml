@@ -14,23 +14,8 @@
     <defaultcharset>utf-8</defaultcharset>
   </system>
   <cfmappings>
-    <mapping name="/enlist">
-      <directory>/WEB-INF/</directory>
-      <name>/enlist</name>
-      <displayname>/Enlist</displayname>
-    </mapping>
-    <mapping name="/machii">
-      <directory>/WEB-INF/MachII/</directory>
-      <name>/machii</name>
-      <displayname>/MachII</displayname>
-    </mapping>
-    <mapping name="/mxunit">
-      <directory>/WEB-INF/mxunit/</directory>
-      <name>/mxunit</name>
-      <displayname>/mxunit</displayname>
-    </mapping>
     <mapping name="/coldspring">
-      <directory>/WEB-INF/cs</directory>
+      <directory>/cs</directory>
       <name>/coldspring</name>
       <displayname>/coldspring</displayname>
     </mapping>
