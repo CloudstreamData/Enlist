@@ -26,7 +26,7 @@
 	<property file="${user.home}/build.properties"/>
 	<property file="${user.name}.properties"/>
 
-	<property name="project.mxunit" value="war/WEB-INF/mxunit"/>
+	<property name="project.mxunit" value="war/mxunit"/>
 	<property name="project.build" value="build"/>
 	
 	<property name="server.name" value="localhost"/>
