@@ -57,7 +57,13 @@ Notes:
 	</cffunction>
 	
 	<cffunction name="list" access="public" returntype="array" output="false">
-		<cfreturn googleQuery("select from #getKind()# order by name") />
+		<cfset var navArray = ArrayNew(1) />
+		
+		<cfif getKind() neq "">
+			<cfset navArray = googleQuery("select from #getKind()# order by name") />
+		</cfif>
+		
+		<cfreturn navArray />
 	</cffunction>
 
 	<cffunction name="createDefaultNavigationSet" returntype="any" access="public" output="false">
@@ -65,8 +71,8 @@ Notes:
 			var navigationLink = 0;
 			var defaultNavigation = listToArray('Events,event.list;Activities,activity.list;Navigation,navigation.list;My Activities,activityvolunteer.list', ";");
 			var i = 0;
-			
-			if (getKind() eq "" or ArrayLen(list()) eq 0) {
+
+			if (ArrayLen(list()) eq 0) {
 				for (i = 1; i lte ArrayLen(defaultNavigation); i = i + 1) {
 					navigationLink = CreateObject("component", "NavigationLink").init();
 					navigationLink.setName(ListFirst(defaultNavigation[i]));
