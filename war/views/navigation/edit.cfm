@@ -1,21 +1,20 @@
 ﻿<cfimport prefix="form" taglib="/MachII/customtags/form">
-<cfset >
 <cfoutput>
 <cfif event.getArg("message") neq "">
-	<p class="alert">#event.getArg("message")#</p>	
+	<p class="alert">#event.getArg("message")#</p>
 </cfif>
 </cfoutput>
 
 <cfoutput>
-<form:form actionEvent="navigation.save" bind="event">
+<form:form actionEvent="navigation.save" bind="event" id="navForm">
 	<table>
 		<tr>
 			<th>Name:</th>
-			<td><form:input path="name" size="40" maxlength="200" value="#event.getArg( "navigation" ).getName()#"/></td>
+			<td><form:input path="name" size="40" maxlength="200" value="#event.getArg( "navigation" ).getName()#" class="required" /></td>
 		</tr>
 		<tr>
 			<th>Location:</th>
-			<td><form:input path="eventName" size="40" maxlength="200" value="#event.getArg( "navigation" ).getEventName()#"/></td>
+			<td><form:input path="eventName" size="40" maxlength="200" value="#event.getArg( "navigation" ).getEventName()#"  class="required" /></td>
 		</tr>
 		<tr>
 			<td><form:hidden name="id" path="id" value="#event.getArg( "navigation" ).getID()#" /></td>
@@ -24,3 +23,8 @@
 	</table>
 </form:form>
 </cfoutput>
+<script>
+	$(document).ready(function(){
+		$("#navForm").validate();
+	});
+</script>

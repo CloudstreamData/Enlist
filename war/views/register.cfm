@@ -37,15 +37,15 @@
 <cfoutput>
 <h2>Register</h2>
 
-<form:form actionEvent="register_process" bind="user">
+<form:form actionEvent="register_process" bind="user" id="registerForm">
 	<table>
 		<tr>
 			<th style="width:40%;">First Name</th>
-			<td style="width:60%;"><form:input path="firstName" size="40" maxlength="200" /></td>
+			<td style="width:60%;"><form:input path="firstName" size="40" maxlength="200"  class="required" /></td>
 		</tr>
 		<tr>
 			<th>Last Name</th>
-			<td><form:input path="lastName" size="40" maxlength="200" /></td>
+			<td><form:input path="lastName" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
 			<th>Alternative Email</th>
@@ -70,3 +70,8 @@
 	</table>
 </form:form>
 </cfoutput>
+<script>
+	$(document).ready(function(){
+		$("#registerForm").validate();
+	});
+</script>

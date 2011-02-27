@@ -6,19 +6,19 @@
 	<p class="alert">#event.getArg("message")#</p>
 </cfif>
 </cfoutput>
-<form:form actionEvent="user.save" bind="user">
+<form:form actionEvent="user.save" bind="user" id="userForm">
 	<table>
 		<tr>
 			<th>First Name:</th>
-			<td><form:input path="firstname" size="40" maxlength="200" /></td>
+			<td><form:input path="firstname" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
 			<th>Last Name:</th>
-			<td><form:input path="lastname" size="40" maxlength="200" /></td>
+			<td><form:input path="lastname" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
 			<th>Google Email:</th>
-			<td><form:input path="googleemail" size="40" maxlength="200" /></td>
+			<td><form:input path="googleemail" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
 			<th>Alternative Email</th>
@@ -60,3 +60,8 @@
 		</tr>
 	</table>
 </form:form>
+<script>
+	$(document).ready(function(){
+		$("#userForm").validate();
+	});
+</script>

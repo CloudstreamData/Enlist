@@ -2,7 +2,7 @@
 
 <cfoutput>
 <cfif event.getArg("message") neq "">
-	<p class="alert">#event.getArg("message")#</p>	
+	<p class="alert">#event.getArg("message")#</p>
 </cfif>
 </cfoutput>
 
@@ -17,28 +17,28 @@
 </cfsavecontent>
 <cfhtmlhead text="#js#">
 
-<form:form actionEvent="event.save" bind="event">
+<form:form actionEvent="event.save" bind="event" id="eventForm">
 	<table>
 		<tr>
 			<th>Name:</th>
-			<td><form:input path="name" size="40" maxlength="200" /></td>
+			<td><form:input path="name" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
 			<th>Location:</th>
-			<td><form:input path="location" size="40" maxlength="200" /></td>
+			<td><form:input path="location" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
 			<th nowrap="nowrap">Start Date:</th>
-			<td><form:input path="startDate" size="10" maxlength="200" /></td>
+			<td><form:input path="startDate" size="10" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
 			<th nowrap="nowrap">End Date:</th>
-			<td><form:input path="endDate" size="10" maxlength="200" /></td>
+			<td><form:input path="endDate" size="10" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
 			<th nowrap="nowrap">Status:</th>
-			<td><form:select path="status">
-				<form:option value="-" label="Choose a status" />
+			<td><form:select path="status"  class="required">
+				<form:option value="" label="Choose a status" />
 				<form:option value="pending" label="Pending" />
 				<form:option value="open" label="Open" />
 				<form:option value="closed" label="Closed" />
@@ -51,3 +51,8 @@
 		</tr>
 	</table>
 </form:form>
+<script>
+	$(document).ready(function(){
+		$("#eventForm").validate();
+	});
+</script>

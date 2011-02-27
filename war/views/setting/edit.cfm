@@ -8,7 +8,7 @@
 <form:form actionEvent="setting.save" bind="setting" id="settingForm">
 	<table>
 		<tr>
-			<th>Orginaztion Name:</th>
+			<th>Organization Name:</th>
 			<td><form:input path="orgName" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
@@ -41,7 +41,7 @@
 	</table>
 </form:form>
 <script>
-  $(document).ready(function(){
-    $("#settingForm").validate();
-  });
-  </script>
+	$(document).ready(function(){
+		$("#settingForm").validate();
+	});
+</script>

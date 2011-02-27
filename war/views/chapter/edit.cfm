@@ -5,15 +5,15 @@
 	<p class="alert">#event.getArg("message")#</p>
 </cfif>
 </cfoutput>
-<form:form actionEvent="chapter.save" bind="chapter">
+<form:form actionEvent="chapter.save" bind="chapter" id="chapterForm">
 	<table>
 		<tr>
 			<th>Name:</th>
-			<td><form:input path="name" size="40" maxlength="200" /></td>
+			<td><form:input path="name" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
 			<th>Location:</th>
-			<td><form:input path="location" size="40" maxlength="200" /></td>
+			<td><form:input path="location" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
 			<th>Status:</th>
@@ -30,3 +30,8 @@
 		</tr>
 	</table>
 </form:form>
+<script>
+	$(document).ready(function(){
+		$("#chapterForm").validate();
+	});
+</script>

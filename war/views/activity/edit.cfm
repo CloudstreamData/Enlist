@@ -3,7 +3,7 @@
 
 <cfoutput>
 <cfif event.getArg("message") neq "">
-	<p class="alert">#event.getArg("message")#</p>	
+	<p class="alert">#event.getArg("message")#</p>
 </cfif>
 </cfoutput>
 
@@ -18,13 +18,13 @@
 </cfsavecontent>
 <cfhtmlhead text="#js#">
 
-<form:form actionEvent="activity.save" bind="activity">
+<form:form actionEvent="activity.save" bind="activity" id="actForm">
 	<form:hidden name="id" path="id" />
 	<cfoutput>
 	<table style="width: 100%">
 		<tr>
 			<th>Title:</th>
-			<td><form:input path="title" size="40" maxlength="200" /></td>
+			<td><form:input path="title" size="40" maxlength="200" class="required" /></td>
 		</tr>
  		<tr>
 			<th>Description:</th>
@@ -32,32 +32,32 @@
 		</tr>
 		<tr>
 			<th>Number of People:</th>
-			<td><form:input path="numPeople" size="40" maxlength="4" /></td>
+			<td><form:input path="numPeople" size="40" maxlength="4" class="required" /></td>
 		</tr>
 		<tr>
 			<th>Start Date:</th>
-			<td><form:input path="startDate" size="40" maxlength="10" /></td>
+			<td><form:input path="startDate" size="40" maxlength="10" class="required" /></td>
 		</tr>
 		<tr>
 			<th>End Date:</th>
-			<td><form:input path="endDate" size="40" maxlength="10" /></td>
+			<td><form:input path="endDate" size="40" maxlength="10" class="required" /></td>
 		</tr>
 		<tr>
 			<th>Point Hours:</th>
-			<td><form:input path="pointHours" size="40" maxlength="4" /></td>
+			<td><form:input path="pointHours" size="40" maxlength="4" class="required" /></td>
 		</tr>
 		<tr>
 			<th>Location:</th>
-			<td><form:input path="location" size="40" maxlength="20" /></td>
+			<td><form:input path="location" size="40" maxlength="20" class="required" /></td>
 		</tr>
 		<tr>
 			<th>Event:</th>
 			<td>
-				<form:select path="eventId" items="#event.getArg("events")#" bind="#event.getArg("activity").getEvent().getId()#">
+				<form:select path="eventId" items="#event.getArg("events")#" bind="#event.getArg("activity").getEvent().getId()#" class="required">
 				<form:option value="" label="Choose an event" />
 				</form:select>
 			</td>
-		</tr> 
+		</tr>
 		<!--- TODO: Add dropdown of events --->
 		<tr>
 			<td></td>
@@ -66,3 +66,8 @@
 		</cfoutput>
 	</table>
 </form:form>
+<script>
+	$(document).ready(function(){
+		$("#actForm").validate();
+	});
+</script>
