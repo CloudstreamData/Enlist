@@ -140,6 +140,7 @@ Notes:
 							<array>
 								<element value="libraries/jquery/jquery-1-5.js" />
 								<element value="libraries/jquery/jquery-ui-1.8.9.custom.min.js" />
+								<element value="libraries/jquery/jquery.validate-1.6.0.min.js" />
 							</array>
 						</key>
 					</struct>
