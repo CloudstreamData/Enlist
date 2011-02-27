@@ -4,18 +4,22 @@
 	<version>1</version>
 
 	<static-files>
+		<include path="/favicon.ico" />
 		<include path="/img/**.gif" />
 		<include path="/img/**.png" />
 		<include path="/img/**.jpg" />
 		<include path="/js/**.js" />
 		<include path="/css/**.css" />
+		<include path="/mxunit/resources/**" />
+		<include path="/mxunit/images/*.gif" />
+		<include path="/mxunit/images/*.png" />
 		<exclude path="/**.cfml" />
 		<exclude path="/**.cfm" />
 		<exclude path="/**.cfc" />
 	</static-files>
 	
 	<resource-files>
-		<exclude path="/WEB-INF/MachII/dashboard/rawimg/icons/**.png" />
+		<exclude path="/MachII/dashboard/rawimg/icons/**.png" />
 	</resource-files>
 
 	<sessions-enabled>true</sessions-enabled>
