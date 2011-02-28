@@ -36,11 +36,11 @@
 		</tr>
 		<tr>
 			<th>Start Date:</th>
-			<td><form:input path="startDate" size="40" maxlength="10" class="required" /></td>
+			<td><form:input path="startDate" id="startDate" size="40" maxlength="10" class="required date" /></td>
 		</tr>
 		<tr>
 			<th>End Date:</th>
-			<td><form:input path="endDate" size="40" maxlength="10" class="required" /></td>
+			<td><form:input path="endDate" id="endDate" size="40" maxlength="10" class="required date" /></td>
 		</tr>
 		<tr>
 			<th>Point Hours:</th>
@@ -68,6 +68,13 @@
 </form:form>
 <script>
 	$(document).ready(function(){
+		jQuery.validator.addMethod("greaterThan", function(value, element, params) {
+			if (!/Invalid|NaN/.test(new Date(value))) {
+				return new Date(value) > new Date($(params).val());
+			}
+			return isNaN(value) && isNaN($(params).val()) || (parseFloat(value) > parseFloat($(params).val()));
+		},'Must be greater than {0}.');
 		$("#actForm").validate();
+		$("#endDate").rules("add", {greaterThan: "#startDate"});
 	});
 </script>
