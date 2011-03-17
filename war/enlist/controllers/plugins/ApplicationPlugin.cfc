@@ -51,7 +51,7 @@ Notes:
 
 		<cfset var event = arguments.eventContext.getNextEvent() />
 		<cfset var sessionFacade = getProperty("sessionFacade")/>
-
+		
 		<cfif sessionFacade.isPropertyDefined("authentication")>
 			<cfset var authentication = sessionFacade.getProperty("authentication")/>
 		<cfelse>
@@ -62,10 +62,12 @@ Notes:
 			<!--- Load in our User object based off the Google Email as the ID --->
 			<cfset var googleEmail = getGoogleUserService().getCurrentUser().getEmail() />
 			<cfset var userByGoogleEmail = getUserService().getUserByGoogleEmail( googleEmail ) />
+			
 			<cfif len(userByGoogleEmail.getID())>
 				<cfset authentication.setUser( userByGoogleEmail ) />
+				<cfset sessionFacade.setProperty("authentication", authentication) />
 			<cfelseif event.getName() NEQ "register_process">
-				<!--- if the user is logged in with there google account, but not in this system, send them to the registration event --->
+				<!--- if the user is logged in with their google account, but not in this system, send them to the registration event --->
 				<cfset eventContext.clearEventQueue() />
 				<cfset event.setArg("message", "Please register before continuing") />
 				<cfset event.setArg("googleEmail",googleEmail) />
