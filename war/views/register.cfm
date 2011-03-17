@@ -37,6 +37,10 @@
 <cfoutput>
 <h2>Register</h2>
 
+<cfif event.isArgDefined("message")>
+<p><em>#event.getArg("message")#</em></p>
+</cfif>
+
 <form:form actionEvent="register_process" bind="user" id="registerForm">
 	<table>
 		<tr>
