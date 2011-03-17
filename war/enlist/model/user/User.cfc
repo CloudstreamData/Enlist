@@ -163,5 +163,19 @@ Notes:
 	<cffunction name="getImportHashCode" access="public" returntype="UUID" output="false">
 		<cfreturn variables.importHashCode />
 	</cffunction>
+	
+	<cffunction name="dump" access="public" returntype="void" output="false">
+		<cfargument name="abort" type="boolean" required="false" default="false" />
+		
+		<cfset var property = "" />
+		
+		<cfloop collection="#variables#" item="property">
+			<cfdump var="#variables[property]#" /><br />
+		</cfloop>
+		
+		<cfif arguments.abort>
+			<cfabort />
+		</cfif>
+	</cffunction>
 
 </cfcomponent>
