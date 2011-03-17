@@ -33,7 +33,7 @@
 						#buildmessage(arguments.message)#
 				    </cfmailpart>
 	        </cfmail>
-		<cfcatch><cflog application="true" text="Attempt so send email failed: message #cfcatch.message#"></cfcatch>
+		<cfcatch><cflog application="true" text="Attempt to send email failed: message #cfcatch.message#"></cfcatch>
 		</cftry>
 
 		<cfreturn />
@@ -41,7 +41,7 @@
 	
 	<cffunction name="buildMessage" access="public" output="false" returntype="string">
 		<cfset var strHTML = "">
-		<cfsavecontent variable="strHTML"><cfinclude template="/Enlist/views/email/buildMessage.cfm"></cfsavecontent>
+		<cfsavecontent variable="strHTML"><cfinclude template="/views/email/buildMessage.cfm"></cfsavecontent>
 		<cfreturn strHTML/>
 	</cffunction>
 	
