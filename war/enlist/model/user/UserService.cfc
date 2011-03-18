@@ -84,7 +84,7 @@ Notes:
 		<cfargument name="user" type="enlist.model.user.User" required="true">
 		<cfset getSessionFacade().deleteProperty("authentication")/>
 	</cffunction>
-
+	
 	<cffunction name="registerUser" access="public" returntype="void" output="false">
 		<cfargument name="user" type="enlist.model.user.User" required="true">
 		<cfset saveUser( arguments.user )>

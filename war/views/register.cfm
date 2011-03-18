@@ -38,7 +38,17 @@
 <h2>Register</h2>
 
 <cfif event.isArgDefined("message")>
-<p><em>#event.getArg("message")#</em></p>
+	<p><em>#event.getArg("message")#</em></p>
+</cfif>
+
+<cfif event.isArgDefined("errors") and IsStruct(event.getArg("errors")) 
+		and not StructIsEmpty(event.getArg("errors"))>
+	<cfset errors = event.getArg("errors") />
+	<ul>
+	<cfloop collection="#errors#" item="key">
+		<li>#errors[key]#</li>
+	</cfloop>
+	</ul>
 </cfif>
 
 <form:form actionEvent="register_process" bind="user" id="registerForm">
@@ -50,6 +60,10 @@
 		<tr>
 			<th>Last Name</th>
 			<td><form:input path="lastName" size="40" maxlength="200" class="required" /></td>
+		</tr>
+		<tr>
+			<th>Phone</th>
+			<td><form:input path="phone" size="40" maxlength="20" class="required" /></td>
 		</tr>
 		<tr>
 			<th>Alternative Email</th>

@@ -42,6 +42,7 @@ Notes:
 	<cfset variables.lastName = "" />
 	<cfset variables.googleEmail = "" />
 	<cfset variables.altEmail = "" />
+	<cfset variables.phone = "" />
 	<cfset variables.importHashCode = "" />
 
 	<!---
@@ -56,6 +57,7 @@ Notes:
 		<cfargument name="lastName" type="string" required="false" default="" />
 		<cfargument name="googleEmail" type="string" required="false" default="" />
 		<cfargument name="altEmail" type="string" required="false" default="" />
+		<cfargument name="phone" type="string" required="false" default="" />
 		<cfargument name="importHashCode" type="UUID" required="false" default="#CreateUUID()#" />
 
 		<cfset setInstanceMemento(arguments) />
@@ -76,13 +78,14 @@ Notes:
 		<cfset setLastName(arguments.data.lastName) />
 		<cfset setGoogleEmail(arguments.data.googleEmail) />
 		<cfset setAltEmail(arguments.data.altEmail) />
+		<cfset setPhone(arguments.data.phone) />
 		<cfset setImportHashCode(arguments.data.importHashCode) />
 	</cffunction>
 	<cffunction name="getInstanceMemento" access="public"returntype="struct" output="false" >
 		<cfset var data = structnew() />
 		<cfset var fieldname = "" />
 
-		<cfloop list="id,status,role,chapterId,firstName,lastName,googleEmail,altEmail,importHashCode" index="fieldname">
+		<cfloop list="id,status,role,chapterId,firstName,lastName,googleEmail,altEmail,phone,importHashCode" index="fieldname">
 			<cfset data[fieldname] = variables[fieldname] />
 		</cfloop>
 
@@ -156,12 +159,45 @@ Notes:
 		<cfreturn variables.altEmail />
 	</cffunction>
 
+	<cffunction name="setPhone" access="public" returntype="void" output="false">
+		<cfargument name="phone" type="string" required="true" />
+		<cfset variables.phone = trim(arguments.phone) />
+	</cffunction>
+	<cffunction name="getPhone" access="public" returntype="string" output="false">
+		<cfreturn variables.phone />
+	</cffunction>
+
 	<cffunction name="setImportHashCode" access="public" returntype="void" output="false">
 		<cfargument name="importHashCode" type="UUID" required="true" />
 		<cfset variables.importHashCode = arguments.importHashCode />
 	</cffunction>
 	<cffunction name="getImportHashCode" access="public" returntype="UUID" output="false">
 		<cfreturn variables.importHashCode />
+	</cffunction>
+	
+	<cffunction name="validate" access="public" returntype="struct" output="false">
+		<cfscript>
+			var errors = StructNew();
+			
+			if (Len(Trim(getFirstName())) eq 0) {
+				errors.firstName = "First Name is required";
+			}
+			
+			if (Len(Trim(getLastName())) eq 0) {
+				errors.lastName = "Last name is required";
+			}
+			
+			if (Len(Trim(getGoogleEmail())) eq 0 
+				or not IsValid("email", getGoogleEmail())) {
+				errors.googleEmail = "A valid Google email address is required";
+			}
+			
+			if (Len(Trim(getPhone())) eq 0) {
+				errors.phone = "A phone number is required";
+			}
+			
+			return errors;
+		</cfscript>
 	</cffunction>
 	
 	<cffunction name="dump" access="public" returntype="void" output="false">

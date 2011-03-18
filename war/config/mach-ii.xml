@@ -179,6 +179,7 @@ Notes:
 		<listener name="emailNotificationListener" type="enlist.controllers.listeners.EmailNotificationListener" />
 		<listener name="eventListener" type="enlist.controllers.listeners.EventListener" />
 		<listener name="settingListener" type="enlist.controllers.listeners.SettingListener" />
+		<listener name="userListener" type="enlist.controllers.listeners.UserListener" />
 		<!--
 		<listener name="yourListenerName" type="fully.Qualified.Dot.Delimited.Path.To.CFC">
 			<parameters>
@@ -222,22 +223,22 @@ Notes:
 			<execute subroutine="doMainLayout" />
 		</event-handler>
 		<event-handler event="register" access="public">
-			<event-bean name="user" type="enlist.model.user.User" />
+			<event-bean name="user" type="enlist.model.user.User" reinit="false" />
 			<call-method bean="chapterService" method="getChapters" resultArg="chapters" />
 			<view-page name="register" contentArg="layout.content" />
 			<execute subroutine="doMainLayout" />
 		</event-handler>
 		<event-handler event="register_process" access="public">
 			<event-bean name="user" type="enlist.model.user.User" autopopulate="true" reinit="false"  />
-			<call-method bean="userService" method="saveUser">
-				<arg name="user" value="${event.user}" />
-			</call-method>
+			<event-mapping event="pass" mapping="home" />
+			<event-mapping event="fail" mapping="register" />
 			<event-arg name="message" value="Registration saved" />
+			<notify listener="userListener" method="processRegistration" />
+			<!-- TODO: should the email notification be moved to the listener so it's more transactional with 
+						creating the new user? -->
 			<event-arg name="email.title" value="welcomeNewVolunteerTitle"/>
 			<event-arg name="email.message" value="welcomeNewVolunteer"/>
 			<publish message="email.Notification"/>
-			<view-page name="home" contentArg="layout.content"/>
-			<execute subroutine="doMainLayout"/>
 		</event-handler>
 		<event-handler event="logout" access="public">
 			<call-method bean="sessionFacade" method="deleteProperty" args="authentication" />

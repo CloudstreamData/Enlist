@@ -69,7 +69,9 @@ Notes:
 			<cfelseif event.getName() NEQ "register_process">
 				<!--- if the user is logged in with their google account, but not in this system, send them to the registration event --->
 				<cfset eventContext.clearEventQueue() />
-				<cfset event.setArg("message", "Please register before continuing") />
+				<cfif not event.isArgDefined("message")>
+					<cfset event.setArg("message", "Please register before continuing") />
+				</cfif>
 				<cfset event.setArg("googleEmail",googleEmail) />
 				<cfset announceEvent("register", event.getArgs()) />
 			</cfif>
