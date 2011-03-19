@@ -22,31 +22,57 @@
 	    conditions of the GNU General Public License cover the whole
 	    combination.
 	
-	$Id: $
+	$Id$
 	
 	Notes:
 	--->
 	<cfimport prefix="form" taglib="/MachII/customtags/form">
 	<cfset chapters = event.getArg("chapters") />
+	<cfset states = getProperty("udfs").getStateList() />
 </cfsilent>
 <form:form actionEvent="user.doSearch">
 	<table>
 		<tr>
-			<th>First Name:</th>
-			<td><form:input path="firstname" size="40" maxlength="200" /></td>
+			<th>First Name</th>
+			<td><form:input path="firstName" size="40" maxlength="200" /></td>
 		</tr>
 		<tr>
-			<th>Last Name:</th>
-			<td><form:input path="lastname" size="40" maxlength="200" /></td>
+			<th>Last Name</th>
+			<td><form:input path="lastName" size="40" maxlength="200" /></td>
 		</tr>
 		<tr>
-			<th>Google Email:</th>
-			<td><form:input path="googleemail" size="40" maxlength="200" /></td>
+			<th>Google Email</th>
+			<td><form:input path="googleEmail" size="40" maxlength="200" /></td>
+		</tr>
+		<tr>
+			<th>Phone</th>
+			<td><form:input path="phone" size="40" maxlength="40" /></td>
+		</tr>
+		<tr>
+			<th>Address</th>
+			<td><form:input path="address1" size="40" maxlength="200" /></td>
+		</tr>
+		<tr>
+			<th>Address (cont.)</th>
+			<td><form:input path="address2" size="40" maxlength="200" /></td>
+		</tr>
+		<tr>
+			<th>City</th>
+			<td><form:input path="city" size="40" maxlength="200" /></td>
+		</tr>
+		<tr>
+			<th>State / Zip</th>
+			<td>
+				<form:select path="state" items="#states#" labelKey="abbr" valueKey="abbr">
+					<form:option value="" label="--" />
+				</form:select>&nbsp;
+				<form:input path="zip" size="11" maxlength="10" />
+			</td>
 		</tr>
 		<tr>
 			<th>Alternative Email</th>
 			<td><form:input path="altEmail" size="40" maxlength="200" /></td>
-		</tr
+		</tr>
 		<tr>
 			<th>Chapter</th>
 			<td>

@@ -247,6 +247,11 @@ Notes:
 				errors.googleEmail = "A valid Google email address is required";
 			}
 			
+			if (Len(Trim(getAltEmail())) neq 0 
+				and not IsValid("email", getAltEmail())) {
+				errors.altEmail = "The alternate email address you provided is not valid";
+			}
+			
 			return errors;
 		</cfscript>
 	</cffunction>

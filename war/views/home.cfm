@@ -22,7 +22,7 @@
 	    conditions of the GNU General Public License cover the whole
 	    combination.
 
-	$Id: $
+	$Id$
 
 	Notes:
 	--->
@@ -32,4 +32,16 @@
 <cfoutput>
 <h2>Welcome to Enlist for #getProperty('setting').getOrgName()#</h2>
 <p>#getProperty('setting').getOrgName()# is #getProperty('setting').getOrgDesc()#</p>
+
+<h3>Let's assume everyone's an admin for now and build this stuff out ...</h3>
+
+<cfif event.isArgDefined("message")>
+<p>#event.getArg("message")#</p>
+</cfif>
+
+<ul>
+	<li><a href="#BuildUrl('user.edit')#">Add New User</a></li>
+	<li><a href="#BuildUrl('user.list')#">List All Users</a></li>
+	<li><a href="#BuildUrl('user.search')#">Search Users</a></li>
+</ul>
 </cfoutput>

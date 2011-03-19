@@ -22,7 +22,7 @@
     conditions of the GNU General Public License cover the whole
     combination.
 
-$Id: $
+$Id$
 
 Notes:
 -->
@@ -233,7 +233,7 @@ Notes:
 			<event-mapping event="pass" mapping="home" />
 			<event-mapping event="fail" mapping="register" />
 			<event-arg name="message" value="Registration saved" />
-			<notify listener="userListener" method="processRegistration" />
+			<notify listener="userListener" method="saveUser" />
 			<!-- TODO: should the email notification be moved to the listener so it's more transactional with 
 						creating the new user? -->
 			<event-arg name="email.title" value="welcomeNewVolunteerTitle"/>
@@ -415,17 +415,10 @@ Notes:
 			<execute subroutine="doMainLayout"/>
 		</event-handler>
 		<event-handler event="user.save" access="public">
-			<call-method bean="userService" method="getUser" resultArg="user">
-				<arg name="id" value="${event.id}" />
-			</call-method>
 			<event-bean name="user" type="enlist.model.user.User" autopopulate="true" reinit="false"  />
-			<call-method bean="userService" method="saveUser">
-				<arg name="user" value="${event.user}" />
-			</call-method>
-			<event-arg name="message" value="User saved" />
-			<call-method bean="chapterService" method="getChapters" resultArg="chapters" />
-			<view-page name="user.edit" contentArg="layout.content"/>
-			<execute subroutine="doMainLayout"/>
+			<event-mapping event="pass" mapping="home" />
+			<event-mapping event="fail" mapping="user.edit" />
+			<notify listener="userListener" method="saveUser" />
 		</event-handler>
 		<event-handler event="user.search" access="public">
 			<call-method bean="chapterService" method="getChapters" resultArg="chapters" />
@@ -437,6 +430,12 @@ Notes:
 				<arg name="firstName" value="${event.firstName:''}" />
 				<arg name="lastName" value="${event.lastName:''}" />
 				<arg name="googleEmail" value="${event.googleEmail:''}" />
+				<arg name="phone" value="${event.phone:''}" />
+				<arg name="address1" value="${event.address1:''}" />
+				<arg name="address2" value="${event.address2:''}" />
+				<arg name="city" value="${event.city:''}" />
+				<arg name="state" value="${event.state:''}" />
+				<arg name="zip" value="${event.zip:''}" />
 				<arg name="altEmail" value="${event.altEmail:''}" />
 				<arg name="role" value="${event.role:''}" />
 				<arg name="chapterId" value="${event.chapterId:''}" />

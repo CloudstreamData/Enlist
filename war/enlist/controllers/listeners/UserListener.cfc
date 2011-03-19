@@ -21,7 +21,7 @@
     conditions of the GNU General Public License cover the whole
     combination.
 
-$Id: $
+$Id$
 
 Notes:
 --->
@@ -46,8 +46,8 @@ Notes:
 	<!---
 	PUBLIC FUNCTIONS
 	--->
-	<cffunction name="processRegistration" access="public" returntype="void" output="false" 
-		hint="Processes the registration form">
+	<cffunction name="saveUser" access="public" returntype="void" output="false" 
+		hint="Processes the user forms (registration, admin new/edit user) and saves the user">
 		<cfargument name="event" type="MachII.framework.Event" required="true" />
 		
 		<cfscript>
@@ -55,9 +55,14 @@ Notes:
 			var existingUser = getUserService().getUserByGoogleEmail(user.getGoogleEmail());
 			var errors = StructNew();
 			
+			// set a default message if necessary since this is hit a couple of different ways
+			if (not arguments.event.isArgDefined("message")) {
+				arguments.event.setArg("message", "User saved");
+			}
+			
 			// make sure the user isn't already registered
 			if (existingUser.getID() neq "") {
-				errors.alreadyRegistered = "You have already registered with this application using this email address.";
+				errors.alreadyRegistered = "A user is already registered with this application using this email address.";
 			} else {
 				// validate the rest of the user input
 				errors = user.validate();
@@ -72,11 +77,12 @@ Notes:
 				try {
 					getUserService().saveUser(user);
 				} catch (Any e) {
-					arguments.event.setArg("message", "Saving your registration failed. " & e.message);
+					arguments.event.setArg("message", "Saving the user data failed. " & e.message);
 					redirectEvent("fail", "", true);
 				}
 				
-				redirectEvent("pass");
+				arguments.event.removeArg("user");
+				redirectEvent("pass", "", true);
 			}
 		</cfscript>
 	</cffunction>
