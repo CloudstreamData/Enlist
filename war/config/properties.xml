@@ -149,6 +149,35 @@ Notes:
 			</array>
 		</property>
 		
+		<property name="eventStatuses">
+			<array>
+				<element>
+					<struct>
+						<key name="label" value="Pending" />
+						<key name="value" value="pending" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="label" value="Open" />
+						<key name="value" value="open" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="label" value="Closed" />
+						<key name="value" value="closed" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="label" value="Archived" />
+						<key name="value" value="archived" />
+					</struct>
+				</element>
+			</array>
+		</property>
+		
 		<property name="usStates">
 			<array>
 				<element>
@@ -502,14 +531,6 @@ Notes:
 			</array>
 		</property>
 		
-		<property name="eventStatuses">
-			<array>
-				<element value="Pending" />
-				<element value="Open" />
-				<element value="Closed" />
-				<element value="Archived" />
-			</array>
-		</property>
 		<!-- CACHING RELATED -->
 		<property name="caching" type="MachII.caching.CachingProperty" />
 		

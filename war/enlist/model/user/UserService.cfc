@@ -56,7 +56,8 @@ Notes:
 	<cffunction name="getUsers" access="public" returntype="array" output="false">
 		<cfreturn getGateway().list() />
 	</cffunction>
-
+	
+	<!--- TODO: I think this needs to be converted to something more generic to work with the base gateway --->
 	<cffunction name="getUsersByRole" access="public" returntype="array" output="false">
 		<cfargument name="role" type="string" required="true" />
 		<cfreturn getGateway().getUsersByRole( arguments.role ) />

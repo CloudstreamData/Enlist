@@ -188,6 +188,17 @@ Notes:
 			<view-page name="event.search" contentArg="layout.content"/>
 			<execute subroutine="doMainLayout"/>
 		</event-handler>
+		<event-handler event="event.doSearch" access="public">
+			<call-method bean="eventService" method="getEventsBySearch" resultArg="events">
+				<arg name="name" value="${event.name:''}" />
+				<arg name="location" value="${event.location:''}" />
+				<arg name="startDate" value="${event.startDate:''}" />
+				<arg name="endDate" value="${event.endDate:''}" />
+				<arg name="status" value="${event.status:''}" />
+			</call-method>
+			<view-page name="event.list" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
+		</event-handler>
 		
 		<!-- ACTIVITIES -->
 		<event-handler event="activity.list" access="public">

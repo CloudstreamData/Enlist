@@ -36,7 +36,7 @@ Notes:
 	
 	<!-- USER -->
 	<bean id="userService" class="enlist.model.user.UserService">
-		<property name="gateway"><ref bean="UserGateway" /></property>
+		<property name="gateway"><ref bean="userGateway" /></property>
 		<property name="sessionFacade"><ref bean="sessionFacade" /></property>
 	</bean>
 	<bean id="userGateway" class="enlist.model.BaseGateway">
@@ -49,18 +49,13 @@ Notes:
 		
 	<!-- EVENT -->
 	<bean id="eventService" class="enlist.model.event.EventService">
-		<property name="eventGateway"><ref bean="EventGateway" /></property>
+		<property name="gateway"><ref bean="eventGateway" /></property>
 	</bean>
-	<bean id="eventGateway" class="enlist.model.event.EventGateway">
-		<property name="dao">
-			<bean id="eventDAO" class="enlist.model.GenericDAO">
-				<constructor-arg name="entityComponentPath">
-					<value>enlist.model.event.Event</value>
-				</constructor-arg>
-			</bean>
-		</property>
+	<bean id="eventGateway" class="enlist.model.BaseGateway">
+		<constructor-arg name="entityComponentPath">
+			<value>enlist.model.event.Event</value>
+		</constructor-arg>
 	</bean>
-  
   
   <!-- ACTIVITY -->
   <bean id="activityService" class="enlist.model.event.activity.ActivityService">

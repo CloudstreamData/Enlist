@@ -50,5 +50,6 @@
 <ul>
 	<li><a href="#BuildUrl('event.edit')#">Add New Event</a></li>
 	<li><a href="#BuildUrl('event.list')#">List Events</li>
+	<li><a href="#BuildUrl('event.search')#">Search Events</a></li>
 </ul>
 </cfoutput>

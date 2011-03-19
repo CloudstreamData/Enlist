@@ -21,11 +21,13 @@
     conditions of the GNU General Public License cover the whole
     combination.
 
-$Id: $
+$Id$
 
 Notes:
 --->
-<cfcomponent output="false">
+<cfcomponent displayname="EventService" 
+	output="false" 
+	extends="enlist.model.BaseService">
 
 	<!---
 	PROPERTIES
@@ -37,32 +39,35 @@ Notes:
 	--->
 	<cffunction name="init" access="public" returntype="EventService" output="false"
 		hint="Initializes the service.">
+		<cfset super.init(argumentcollection = arguments) />
 		<cfreturn this />
 	</cffunction>
 	
-	<cffunction name="getEventGateway" access="public" returntype="enlist.model.event.EventGateway" output="false">
-		<cfreturn variables.eventGateway />
-	</cffunction> 
-	<cffunction name="setEventGateway" access="public" returntype="void" output="false">
-		<cfargument name="eventGateway" type="enlist.model.event.EventGateway" required="true" /> 
-		<cfset variables.eventGateway = arguments.eventGateway />
-	</cffunction> 
-
 	<!---
 	PUBLIC FUNCTIONS
 	--->
 	<cffunction name="getEvent" access="public" returntype="enlist.model.event.Event" output="false">
-		<cfargument name="eventID" type="string" required="false" default="">
-		<cfreturn getEventGateway().getEvent(arguments.eventID) />
+		<cfargument name="id" type="string" required="false" default="">
+		<cfreturn getGateway().read(arguments.id) />
 	</cffunction> 
 	
 	<cffunction name="getEvents" access="public" returntype="array" output="false">
-		<cfreturn getEventGateway().getEvents() />
+		<cfreturn getGateway().list() />
 	</cffunction>
 	
 	<cffunction name="saveEvent" access="public" returntype="void" output="false">
 		<cfargument name="event" type="enlist.model.event.Event" required="true">
-		<cfset getEventGateway().saveEvent(arguments.event) />
+		<cfset getGateway().save(arguments.event) />
 	</cffunction> 
+
+	<cffunction name="getEventsBySearch" access="public" returntype="array" output="false">
+		<cfargument name="id" type="string" required="false" default="" />
+		<cfargument name="name" type="string" required="false" default="" />
+		<cfargument name="location" type="string" required="false" deafult="" />
+		<cfargument name="startDate" type="string" required="false" default="" />
+		<cfargument name="endDate" type="string" required="false" default="" />
+		<cfargument name="status" type="string" required="false" default="" />
+		<cfreturn getGateway().listByPropertyMap( arguments ) />
+	</cffunction>
 	
 </cfcomponent>

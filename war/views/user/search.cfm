@@ -87,7 +87,7 @@
 			</td>
 		</tr>
 		<tr>
-			<th>Status:</th>
+			<th>Status</th>
 			<td>
 				<form:select path="status" items="#statuses#">
 					<form:option label="--Select to search--" value="" />
@@ -95,7 +95,7 @@
 			</td>
 		</tr>
 		<tr>
-			<th>Role:</th>
+			<th>Role</th>
 			<td>
 				<form:select path="role" items="#roles#">
 					<form:option label="--Select to search--" value="" />

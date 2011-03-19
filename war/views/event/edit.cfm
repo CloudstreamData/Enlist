@@ -26,7 +26,8 @@
 	
 	Notes:
 	--->
-	<cfimport prefix="form" taglib="/MachII/customtags/form">
+	<cfimport prefix="form" taglib="/MachII/customtags/form" />
+	<cfset statuses = getProperty("eventStatuses") />
 </cfsilent>
 <cfoutput>
 <cfif event.getArg("message") neq "">
@@ -65,12 +66,8 @@
 		</tr>
 		<tr>
 			<th nowrap="nowrap">Status:</th>
-			<td><form:select path="status"  class="required">
+			<td><form:select path="status" items="#statuses#" class="required">
 				<form:option value="" label="Choose a status" />
-				<form:option value="pending" label="Pending" />
-				<form:option value="open" label="Open" />
-				<form:option value="closed" label="Closed" />
-				<form:option value="archived" label="Archived" />
 			</form:select></td>
 		</tr>
 		<tr>
