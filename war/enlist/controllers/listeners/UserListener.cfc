@@ -69,7 +69,6 @@ Notes:
 			}
 			
 			if (not StructIsEmpty(errors)) {
-				exitEvent = "register";
 				arguments.event.setArg("message", "Please correct the following errors:");
 				arguments.event.setArg("errors", errors);
 				redirectEvent("fail", "", true);
