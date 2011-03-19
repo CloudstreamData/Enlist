@@ -21,7 +21,7 @@
     conditions of the GNU General Public License cover the whole
     combination.
 
-$Id: $
+$Id$
 
 Notes:
 --->
@@ -71,6 +71,12 @@ Notes:
 		<cfargument name="lastName" type="string" required="false" default="" />
 		<cfargument name="googleEmail" type="string" required="false" default="" />
 		<cfargument name="altEmail" type="string" required="false" default="" />
+		<cfargument name="phone" type="string" required="false" default="" />
+		<cfargument name="address1" type="string" required="false" default="" />
+		<cfargument name="address1" type="string" required="false" default="" />
+		<cfargument name="city" type="string" required="false" default="" />
+		<cfargument name="state" type="string" required="false" default="" />
+		<cfargument name="zip" type="string" required="false" default="" />
 		<cfreturn getGateway().listByPropertyMap( arguments ) />
 	</cffunction>
 
