@@ -73,7 +73,7 @@ Notes:
 		<cfargument name="altEmail" type="string" required="false" default="" />
 		<cfargument name="phone" type="string" required="false" default="" />
 		<cfargument name="address1" type="string" required="false" default="" />
-		<cfargument name="address1" type="string" required="false" default="" />
+		<cfargument name="address2" type="string" required="false" default="" />
 		<cfargument name="city" type="string" required="false" default="" />
 		<cfargument name="state" type="string" required="false" default="" />
 		<cfargument name="zip" type="string" required="false" default="" />

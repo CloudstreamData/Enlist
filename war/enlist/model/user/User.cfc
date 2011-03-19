@@ -100,7 +100,7 @@ Notes:
 		<cfset var data = structnew() />
 		<cfset var fieldname = "" />
 
-		<cfloop list="id,status,role,chapterId,firstName,lastName,googleEmail,altEmail,phone,address1,address2,city,state,zipimportHashCode" index="fieldname">
+		<cfloop list="id,status,role,chapterId,firstName,lastName,googleEmail,altEmail,phone,address1,address2,city,state,zip,importHashCode" index="fieldname">
 			<cfset data[fieldname] = variables[fieldname] />
 		</cfloop>
 
