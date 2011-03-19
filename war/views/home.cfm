@@ -39,9 +39,16 @@
 <p>#event.getArg("message")#</p>
 </cfif>
 
+<p><strong>Users</strong></p>
 <ul>
 	<li><a href="#BuildUrl('user.edit')#">Add New User</a></li>
 	<li><a href="#BuildUrl('user.list')#">List All Users</a></li>
 	<li><a href="#BuildUrl('user.search')#">Search Users</a></li>
+</ul>
+
+<p><strong>Events</strong></p>
+<ul>
+	<li><a href="#BuildUrl('event.edit')#">Add New Event</a></li>
+	<li><a href="#BuildUrl('event.list')#">List Events</li>
 </ul>
 </cfoutput>

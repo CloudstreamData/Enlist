@@ -29,7 +29,7 @@
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
 	<cfimport prefix="form" taglib="/MachII/customtags/form" />
 	<view:meta type="title" content="Register" />
-	<cfset states = getProperty("udfs").getStateList() />
+	<cfset states = getProperty("usStates") />
 	<cfset chapters = event.getArg("chapters") />
 	<cfset user = event.getArg("user") />
 	<cfset googleEmail = event.getArg("googleEmail") />

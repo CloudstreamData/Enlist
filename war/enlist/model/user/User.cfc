@@ -36,7 +36,7 @@ Notes:
 	--->
 	<cfset variables.id = "" />
 	<cfset variables.status = "" />
-	<cfset variables.role = "" /><!--- valid values: Volunteer, Coordinator, Admin --->
+	<cfset variables.role = "" /><!--- valid values in config/properties.xml --->
 	<cfset variables.chapterId = "" />
 	<cfset variables.firstName = "" />
 	<cfset variables.lastName = "" />

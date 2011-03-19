@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Enlist - Volunteer Management Software
+    Copyright (C) 2011 GreatBizTools, LLC
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    
+    Linking this library statically or dynamically with other modules is
+    making a combined work based on this library.  Thus, the terms and
+    conditions of the GNU General Public License cover the whole
+    combination.
+
+$Id$
+
+Notes:
+-->
+
+<!DOCTYPE mach-ii PUBLIC "-//Mach-II//DTD Mach-II Configuration 1.9.0//EN"
+	"http://www.mach-ii.com/dtds/mach-ii_1_9_0.dtd" >
+
+<mach-ii version="1.9">
+	<properties>
+		<!-- Begin APPLICATION -->
+		<property name="environment" type="MachII.properties.EnvironmentProperty">
+			<parameters>
+				<parameter name="defaultEnvironmentName" value="production"/>
+				<parameter name="development">
+					<struct>
+						<key name="environmentGroup" value="development"/>
+						<key name="servers" value="localhost"/>
+						<key name="properties">
+							<struct>
+								<key name="modules:lazyLoad" value="*"/>
+							</struct>
+						</key>
+					</struct>
+				</parameter>
+				<parameter name="production">
+					<struct>
+						<key name="environmentGroup" value="production"/>
+						<key name="servers" value="enlist.appspot.com"/>
+						<key name="properties">
+							<struct>
+								<key name="modules:disable" value="dashboard"/>
+							</struct>
+						</key>
+					</struct>
+				</parameter>
+			</parameters>
+		</property>
+
+		<property name="coldspring" type="MachII.properties.ColdspringProperty">
+			<parameters>
+				<parameter name="beanFactoryPropertyName" value="serviceFactory"/>
+				<parameter name="configFile" value="/config/services.xml"/>
+				<parameter name="configFilePathIsRelative" value="true"/>
+				<parameter name="placeFactoryInApplicationScope" value="true"/>
+				<parameter name="generateRemoteProxies" value="true"/>
+				<parameter name="resolveMachIIDependencies" value="true"/>
+				<parameter name="beansToMachIIProperties">
+					<struct>
+						<key name="sessionFacade" value="sessionFacade" />
+						<key name="udfs" value="udfs" />
+						<key name="googleUserService" value="googleUserService" />
+						<key name="settingService" value="settingService" />
+					</struct>
+				</parameter>
+			</parameters>
+		</property>
+		
+		<property name="settingProperty" type="enlist.controllers.properties.SettingProperty" />
+		
+		<property name="html" type="MachII.properties.HtmlHelperProperty">
+			<parameters>
+				<parameter name="metaTitleSuffix" value=" | Enlist" />
+				<parameter name="cacheAssetPaths">
+					<struct>
+						<key name="development" value="true" />
+						<key name="production" value="true" />
+					</struct>
+				</parameter>
+				<parameter name="assetPackages">
+					<struct>
+						<key name="jquery">
+							<array>
+								<element value="libraries/jquery/jquery-1-5.js" />
+								<element value="libraries/jquery/jquery-ui-1.8.9.custom.min.js" />
+								<element value="libraries/jquery/jquery.validate-1.6.0.min.js" />
+							</array>
+						</key>
+					</struct>
+				</parameter>
+			</parameters>
+		</property>
+		
+		<property name="i18n" type="MachII.globalization.GlobalizationLoaderProperty">
+			<parameters>
+				<parameter name="bundles">
+					<array>
+						<element value="./config/resources/"/>
+					</array>
+				</parameter>
+			</parameters>
+		</property>
+		
+		<property name="userRoles">
+			<array>
+				<element>
+					<struct>
+						<key name="label" value="Volunteer" />
+						<key name="value" value="volunteer" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="label" value="Coordinator" />
+						<key name="value" value="coordinator" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="label" value="Admin" />
+						<key name="value" value="admin" />
+					</struct>
+				</element>
+			</array>
+		</property>
+		
+		<property name="userStatuses">
+			<array>
+				<element>
+					<struct>
+						<key name="label" value="Valid" />
+						<key name="value" value="valid" />
+					</struct>
+				</element>
+			</array>
+		</property>
+		
+		<property name="usStates">
+			<array>
+				<element>
+					<struct>
+						<key name="abbr" value="AL" />
+						<key name="name" value="Alabama" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="AK" />
+						<key name="name" value="Alaska" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="AS" />
+						<key name="name" value="American Samoa" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="AR" />
+						<key name="name" value="Arkansas" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="CA" />
+						<key name="name" value="California" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="CO" />
+						<key name="name" value="Colorado" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="CT" />
+						<key name="name" value="Connecticut" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="DE" />
+						<key name="name" value="Delaware" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="DC" />
+						<key name="name" value="District of Columbia" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="FM" />
+						<key name="name" value="Federated States of Micronesia" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="FL" />
+						<key name="name" value="Florida" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="GA" />
+						<key name="name" value="Georgia" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="GU" />
+						<key name="name" value="Guam" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="HI" />
+						<key name="name" value="Hawaii" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="ID" />
+						<key name="name" value="Idaho" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="IL" />
+						<key name="name" value="Illinois" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="IN" />
+						<key name="name" value="Indiana" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="IA" />
+						<key name="name" value="Iowa" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="KS" />
+						<key name="name" value="Kansas" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="KY" />
+						<key name="name" value="Kentucky" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="LA" />
+						<key name="name" value="Louisiana" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="ME" />
+						<key name="name" value="Maine" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="MH" />
+						<key name="name" value="Marshall Islands" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="MD" />
+						<key name="name" value="Maryland" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="MA" />
+						<key name="name" value="Massachusetts" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="MI" />
+						<key name="name" value="Michigan" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="MN" />
+						<key name="name" value="Minnesota" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="MS" />
+						<key name="name" value="Mississippi" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="MO" />
+						<key name="name" value="Missouri" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="MT" />
+						<key name="name" value="Montana" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="NE" />
+						<key name="name" value="Nebraska" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="NV" />
+						<key name="name" value="Nevada" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="NH" />
+						<key name="name" value="New Hampshire" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="NJ" />
+						<key name="name" value="New Jersey" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="NM" />
+						<key name="name" value="New Mexico" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="NY" />
+						<key name="name" value="New York" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="NC" />
+						<key name="name" value="North Carolina" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="ND" />
+						<key name="name" value="North Dakota" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="MP" />
+						<key name="name" value="Northern Mariana Islands" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="OH" />
+						<key name="name" value="Ohio" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="OK" />
+						<key name="name" value="Oklahoma" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="OR" />
+						<key name="name" value="Oregon" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="PW" />
+						<key name="name" value="Palau" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="PA" />
+						<key name="name" value="Pennsylvania" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="PR" />
+						<key name="name" value="Puerto Rico" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="RI" />
+						<key name="name" value="Rhode Island" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="SC" />
+						<key name="name" value="South Carolina" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="SC" />
+						<key name="name" value="South Dakota" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="TN" />
+						<key name="name" value="Tennessee" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="TX" />
+						<key name="name" value="Texas" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="UT" />
+						<key name="name" value="Utah" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="VT" />
+						<key name="name" value="Vermont" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="VI" />
+						<key name="name" value="Virgin Islands" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="VA" />
+						<key name="name" value="Virginia" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="WA" />
+						<key name="name" value="Washington" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="WV" />
+						<key name="name" value="West Virginia" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="WI" />
+						<key name="name" value="Wisconsin" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="abbr" value="WY" />
+						<key name="name" value="Wyoming" />
+					</struct>
+				</element>
+			</array>
+		</property>
+		
+		<property name="eventStatuses">
+			<array>
+				<element value="Pending" />
+				<element value="Open" />
+				<element value="Closed" />
+				<element value="Archived" />
+			</array>
+		</property>
+		<!-- CACHING RELATED -->
+		<property name="caching" type="MachII.caching.CachingProperty" />
+		
+		<!-- LOGGING RELATED -->
+		<property name="logging" type="MachII.logging.LoggingProperty">
+			<parameters>
+				<parameter name="loggingEnabled">
+					<struct>
+						<key name="group:development" value="true" />
+						<key name="group:production" value="false" />
+					</struct>
+				</parameter>
+			</parameters>
+		</property>
+	</properties>
+</mach-ii>

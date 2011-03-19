@@ -28,7 +28,9 @@
 	--->
 	<cfimport prefix="form" taglib="/MachII/customtags/form">
 	<cfset chapters = event.getArg("chapters") />
-	<cfset states = getProperty("udfs").getStateList() />
+	<cfset states = getProperty("usStates") />
+	<cfset roles= getProperty("userRoles") />
+	<cfset statuses = getProperty("userStatuses") />
 </cfsilent>
 <form:form actionEvent="user.doSearch">
 	<table>
@@ -87,20 +89,16 @@
 		<tr>
 			<th>Status:</th>
 			<td>
-				<form:select path="status">
+				<form:select path="status" items="#statuses#">
 					<form:option label="--Select to search--" value="" />
-					<form:option value="valid" />
 				</form:select>
 			</td>
 		</tr>
 		<tr>
 			<th>Role:</th>
 			<td>
-				<form:select path="role">
+				<form:select path="role" items="#roles#">
 					<form:option label="--Select to search--" value="" />
-					<form:option label="Volunteer" value="volunteer" />
-					<form:option label="Coordinator" value="coordinator" />
-					<form:option label="Admin" value="admin" />
 				</form:select>
 			</td>
 		</tr>

@@ -53,11 +53,10 @@ Notes:
 			</mach-ii>
 		</module>
 	</modules>
-	
-	
 
 	<!-- INCLUDES -->
 	<includes>
+		<include file="./properties.xml" />
 		<include file="./security.xml"/>
 	</includes>
 	
@@ -74,103 +73,6 @@ Notes:
 		<property name="urlDelimiters" value="/|/|/"/>
 		<property name="urlExcludeEventParameter" value="true"/>
 		<property name="defaultEmail" value="enlist@mach-ii.com" />
-
-	<!-- Begin APPLICATION -->
-		<property name="environment" type="MachII.properties.EnvironmentProperty">
-			<parameters>
-				<parameter name="defaultEnvironmentName" value="production"/>
-				<parameter name="development">
-					<struct>
-						<key name="environmentGroup" value="development"/>
-						<key name="servers" value="localhost"/>
-						<key name="properties">
-							<struct>
-								<key name="modules:lazyLoad" value="*"/>
-							</struct>
-						</key>
-					</struct>
-				</parameter>
-				<parameter name="production">
-					<struct>
-						<key name="environmentGroup" value="production"/>
-						<key name="servers" value="enlist.appspot.com"/>
-						<key name="properties">
-							<struct>
-								<key name="modules:disable" value="dashboard"/>
-							</struct>
-						</key>
-					</struct>
-				</parameter>
-			</parameters>
-		</property>
-
-		<property name="coldspring" type="MachII.properties.ColdspringProperty">
-			<parameters>
-				<parameter name="beanFactoryPropertyName" value="serviceFactory"/>
-				<parameter name="configFile" value="/config/services.xml"/>
-				<parameter name="configFilePathIsRelative" value="true"/>
-				<parameter name="placeFactoryInApplicationScope" value="true"/>
-				<parameter name="generateRemoteProxies" value="true"/>
-				<parameter name="resolveMachIIDependencies" value="true"/>
-				<parameter name="beansToMachIIProperties">
-					<struct>
-						<key name="sessionFacade" value="sessionFacade" />
-						<key name="udfs" value="udfs" />
-						<key name="googleUserService" value="googleUserService" />
-						<key name="settingService" value="settingService" />
-					</struct>
-				</parameter>
-			</parameters>
-		</property>
-		
-		<property name="settingProperty" type="enlist.controllers.properties.SettingProperty" />
-		
-		<property name="html" type="MachII.properties.HtmlHelperProperty">
-			<parameters>
-				<parameter name="metaTitleSuffix" value=" | Enlist" />
-				<parameter name="cacheAssetPaths">
-					<struct>
-						<key name="development" value="true" />
-						<key name="production" value="true" />
-					</struct>
-				</parameter>
-				<parameter name="assetPackages">
-					<struct>
-						<key name="jquery">
-							<array>
-								<element value="libraries/jquery/jquery-1-5.js" />
-								<element value="libraries/jquery/jquery-ui-1.8.9.custom.min.js" />
-								<element value="libraries/jquery/jquery.validate-1.6.0.min.js" />
-							</array>
-						</key>
-					</struct>
-				</parameter>
-			</parameters>
-			
-		</property>
-		<property name="i18n" type="MachII.globalization.GlobalizationLoaderProperty">
-			<parameters>
-				<parameter name="bundles">
-					<array>
-						<element value="./config/resources/"/>
-					</array>
-				</parameter>
-			</parameters>
-		</property>
-		<!-- CACHING RELATED -->
-		<property name="caching" type="MachII.caching.CachingProperty" />
-		
-		<!-- LOGGING RELATED -->
-		<property name="logging" type="MachII.logging.LoggingProperty">
-			<parameters>
-				<parameter name="loggingEnabled">
-					<struct>
-						<key name="group:development" value="true" />
-						<key name="group:production" value="false" />
-					</struct>
-				</parameter>
-			</parameters>
-		</property>
 	</properties>
 
 	<!-- LISTENERS -->
@@ -280,6 +182,10 @@ Notes:
 			</call-method>
 			<event-arg name="message" value="Event saved" />
 			<view-page name="event.edit" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
+		</event-handler>
+		<event-handler event="event.search" access="public">
+			<view-page name="event.search" contentArg="layout.content"/>
 			<execute subroutine="doMainLayout"/>
 		</event-handler>
 		
