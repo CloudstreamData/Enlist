@@ -22,13 +22,14 @@
 	    conditions of the GNU General Public License cover the whole
 	    combination.
 
-	$Id: $
+	$Id$
 
 	Notes:
 	--->
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
 	<cfimport prefix="form" taglib="/MachII/customtags/form" />
 	<view:meta type="title" content="Register" />
+	<cfset states = getProperty("udfs").getStateList() />
 	<cfset chapters = event.getArg("chapters") />
 	<cfset user = event.getArg("user") />
 	<cfset googleEmail = event.getArg("googleEmail") />
@@ -63,7 +64,28 @@
 		</tr>
 		<tr>
 			<th>Phone</th>
-			<td><form:input path="phone" size="40" maxlength="20" class="required" /></td>
+			<td><form:input path="phone" size="40" maxlength="40" /></td>
+		</tr>
+		<tr>
+			<th>Address</th>
+			<td><form:input path="address1" size="40" maxlength="200" /></td>
+		</tr>
+		<tr>
+			<th>Address (cont.)</th>
+			<td><form:input path="address2" size="40" maxlength="200" /></td>
+		</tr>
+		<tr>
+			<th>City</th>
+			<td><form:input path="city" size="40" maxlength="200" /></td>
+		</tr>
+		<tr>
+			<th>State / Zip</th>
+			<td>
+				<form:select path="state" items="#states#" labelKey="abbr" valueKey="abbr">
+					<form:option value="" label="--" />
+				</form:select>&nbsp;
+				<form:input path="zip" size="11" maxlength="10" />
+			</td>
 		</tr>
 		<tr>
 			<th>Alternative Email</th>
