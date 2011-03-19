@@ -21,7 +21,7 @@
     conditions of the GNU General Public License cover the whole
     combination.
 
-$Id: $
+$Id$
 
 Notes:
 --->
@@ -43,6 +43,11 @@ Notes:
 	<cfset variables.googleEmail = "" />
 	<cfset variables.altEmail = "" />
 	<cfset variables.phone = "" />
+	<cfset variables.address1 = "" />
+	<cfset variables.address2 = "" />
+	<cfset variables.city = "" />
+	<cfset variables.state = "" />
+	<cfset variables.zip = "" />
 	<cfset variables.importHashCode = "" />
 
 	<!---
@@ -58,6 +63,11 @@ Notes:
 		<cfargument name="googleEmail" type="string" required="false" default="" />
 		<cfargument name="altEmail" type="string" required="false" default="" />
 		<cfargument name="phone" type="string" required="false" default="" />
+		<cfargument name="address1" type="string" required="false" default="" />
+		<cfargument name="address2" type="string" required="false" default="" />
+		<cfargument name="city" type="string" required="false" default="" />
+		<cfargument name="state" type="string" required="false" default="" />
+		<cfargument name="zip" type="string" required="false" default="" />
 		<cfargument name="importHashCode" type="UUID" required="false" default="#CreateUUID()#" />
 
 		<cfset setInstanceMemento(arguments) />
@@ -79,13 +89,18 @@ Notes:
 		<cfset setGoogleEmail(arguments.data.googleEmail) />
 		<cfset setAltEmail(arguments.data.altEmail) />
 		<cfset setPhone(arguments.data.phone) />
+		<cfset setAddress1(arguments.data.address1) />
+		<cfset setAddress2(arguments.data.address2) />
+		<cfset setCity(arguments.data.city) />
+		<cfset setState(arguments.data.state) />
+		<cfset setZip(arguments.data.zip) />
 		<cfset setImportHashCode(arguments.data.importHashCode) />
 	</cffunction>
 	<cffunction name="getInstanceMemento" access="public"returntype="struct" output="false" >
 		<cfset var data = structnew() />
 		<cfset var fieldname = "" />
 
-		<cfloop list="id,status,role,chapterId,firstName,lastName,googleEmail,altEmail,phone,importHashCode" index="fieldname">
+		<cfloop list="id,status,role,chapterId,firstName,lastName,googleEmail,altEmail,phone,address1,address2,city,state,zipimportHashCode" index="fieldname">
 			<cfset data[fieldname] = variables[fieldname] />
 		</cfloop>
 
@@ -167,6 +182,46 @@ Notes:
 		<cfreturn variables.phone />
 	</cffunction>
 
+	<cffunction name="setAddress1" access="public" returntype="void" output="false">
+		<cfargument name="address1" type="string" required="true" />
+		<cfset variables.address1 = trim(arguments.address1) />
+	</cffunction>
+	<cffunction name="getAddress1" access="public" returntype="string" output="false">
+		<cfreturn variables.address1 />
+	</cffunction>
+
+	<cffunction name="setAddress2" access="public" returntype="void" output="false">
+		<cfargument name="address2" type="string" required="true" />
+		<cfset variables.address2 = trim(arguments.address2) />
+	</cffunction>
+	<cffunction name="getAddress2" access="public" returntype="string" output="false">
+		<cfreturn variables.address2 />
+	</cffunction>
+
+	<cffunction name="setCity" access="public" returntype="void" output="false">
+		<cfargument name="city" type="string" required="true" />
+		<cfset variables.city = trim(arguments.city) />
+	</cffunction>
+	<cffunction name="getCity" access="public" returntype="string" output="false">
+		<cfreturn variables.city />
+	</cffunction>
+
+	<cffunction name="setState" access="public" returntype="void" output="false">
+		<cfargument name="state" type="string" required="true" />
+		<cfset variables.state = trim(arguments.state) />
+	</cffunction>
+	<cffunction name="getState" access="public" returntype="string" output="false">
+		<cfreturn variables.state />
+	</cffunction>
+
+	<cffunction name="setZip" access="public" returntype="void" output="false">
+		<cfargument name="zip" type="string" required="true" />
+		<cfset variables.zip = trim(arguments.zip) />
+	</cffunction>
+	<cffunction name="getZip" access="public" returntype="string" output="false">
+		<cfreturn variables.zip />
+	</cffunction>
+
 	<cffunction name="setImportHashCode" access="public" returntype="void" output="false">
 		<cfargument name="importHashCode" type="UUID" required="true" />
 		<cfset variables.importHashCode = arguments.importHashCode />
@@ -190,10 +245,6 @@ Notes:
 			if (Len(Trim(getGoogleEmail())) eq 0 
 				or not IsValid("email", getGoogleEmail())) {
 				errors.googleEmail = "A valid Google email address is required";
-			}
-			
-			if (Len(Trim(getPhone())) eq 0) {
-				errors.phone = "A phone number is required";
 			}
 			
 			return errors;
