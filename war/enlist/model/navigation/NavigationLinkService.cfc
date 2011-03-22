@@ -25,7 +25,9 @@ $Id: $
 
 Notes:
 --->
-<cfcomponent displayname="NavigationLinkService" output="false">
+<cfcomponent 
+	displayname="NavigationLinkService" 
+	output="false">
 
 	<!---
 	PROPERTIES
@@ -35,8 +37,7 @@ Notes:
 	INITIALIZATION / CONFIGURATION
 	--->
 	<cffunction name="init" access="public" returntype="NavigationLinkService" output="false"
-		hint="Initializes the service."> 
-			
+		hint="Initializes the service."> 		
 		<cfreturn this />
 	</cffunction>
 	
@@ -52,7 +53,8 @@ Notes:
 	PUBLIC FUNCTIONS
 	--->
 	<cffunction name="getNavigationLink" access="public" returntype="NavigationLink" output="false">
-		<cfargument name="id" type="string" required="false" default="">
+		<cfargument name="id" type="string" required="false" default="" />
+
 		<cfscript>
 			var navigationLink = '';
 			if(arguments.id NEQ '') {

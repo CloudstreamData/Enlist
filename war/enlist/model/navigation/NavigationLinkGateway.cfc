@@ -25,8 +25,14 @@ $Id: $
 
 Notes:
 --->
-<cfcomponent displayname="NavigationLinkGateway" output="false" extends="enlist.model.GenericDAO">
+<cfcomponent 
+	displayname="NavigationLinkGateway" 
+	output="false" 
+	extends="enlist.model.GenericDAO">
 	
+	<!---
+	INITIALIZATION / CONFIGURATION
+	--->
 	<cffunction name="init" access="public" returntype="NavigationLinkGateway" output="false">
 		<cfargument name="entityComponentPath" type="string" required="false" default="" />
 		<cfargument name="kind" type="string" required="false" default="" />
