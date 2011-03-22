@@ -177,12 +177,9 @@ Notes:
 				<arg name="eventID" value="${event.id}" />
 			</call-method>
 			<event-bean name="event" type="enlist.model.event.Event" autopopulate="true" reinit="false"  />
-			<call-method bean="eventService" method="saveEvent">
-				<arg name="event" value="${event.event}" />
-			</call-method>
-			<event-arg name="message" value="Event saved" />
-			<view-page name="event.edit" contentArg="layout.content"/>
-			<execute subroutine="doMainLayout"/>
+			<event-mapping event="pass" mapping="event.list" />
+			<event-mapping event="fail" mapping="event.edit" />
+			<notify listener="eventListener" method="saveEvent" />
 		</event-handler>
 		<event-handler event="event.search" access="public">
 			<view-page name="event.search" contentArg="layout.content"/>

@@ -59,18 +59,14 @@ Notes:
   
   <!-- ACTIVITY -->
   <bean id="activityService" class="enlist.model.event.activity.ActivityService">
-    <property name="activityGateway"><ref bean="activityGateway" /></property>
+    <property name="gateway"><ref bean="activityGateway" /></property>
   </bean>
   <bean id="activityGateway" class="enlist.model.event.activity.ActivityGateway">
     <property name="eventService"><ref bean="eventService" /></property>
     <property name="userService"><ref bean="userService" /></property>
-	<property name="dao">
-		<bean id="eventDAO" class="enlist.model.GenericDAO">
-			<constructor-arg name="entityComponentPath">
-				<value>enlist.model.event.activity.Activity</value>
-			</constructor-arg>
-		</bean>
-	</property>
+    <constructor-arg name="entityComponentPath">
+    	<value>enlist.model.event.activity.Activity</value>
+    </constructor-arg>
   </bean>
     	
 	<!-- CHAPTER -->

@@ -21,37 +21,33 @@
     conditions of the GNU General Public License cover the whole
     combination.
 
-$Id: $
+$Id$
 
 Notes:
 --->
-<cfcomponent output="false">
+<cfcomponent displayname="ActivityService" 
+	output="false" 
+	extends="enlist.model.BaseService">
 
 	<!---
-	PROPERTIES
+	INITIALIZATION / CONFIGURATION
 	--->
-	<cfset variables.activityGateway = "" />
+	<cffunction name="init" access="public" returntype="ActivityService" output="false"
+		hint="Initializes the service.">
+		<cfset super.init(argumentcollection = arguments) />
+		<cfreturn this />
+	</cffunction>
 	
-	
-    <!--- DEPENDENCIES --->
-	<cffunction name="getActivityGateway" access="public" returntype="enlist.model.event.activity.ActivityGateway" output="false">
-		<cfreturn variables.activityGateway />
-	</cffunction> 
-	<cffunction name="setActivityGateway" access="public" returntype="void" output="false">
-		<cfargument name="activityGateway" type="enlist.model.event.activity.ActivityGateway" required="true" /> 
-		<cfset variables.activityGateway = arguments.activityGateway />
-	</cffunction> 
- 
 	<!---
 	PUBLIC FUNCTIONS
 	--->	
 	<cffunction name="getActivity" access="public" returntype="enlist.model.event.activity.Activity" output="false">
 		<cfargument name="id" type="string" required="false" default="">
-		<cfreturn getActivityGateway().getActivity( argumentCollection = arguments ) />
+		<cfreturn getGateway().read( argumentCollection = arguments ) />
 	</cffunction> 
 	
 	<cffunction name="getActivities" access="public" returntype="array" output="false">
-		<cfreturn getActivityGateway().getActivities() />
+		<cfreturn getGateway().list() />
 	</cffunction>
 
 
@@ -68,7 +64,7 @@ Notes:
 
 	<cffunction name="saveActivity" access="public" returntype="void" output="false">
 		<cfargument name="activity" type="enlist.model.event.activity.Activity" required="true" />
-		<cfset getActivityGateway().saveActivity( arguments.activity ) />
+		<cfset getGateway().save( arguments.activity ) />
 	</cffunction> 
 	
 </cfcomponent>

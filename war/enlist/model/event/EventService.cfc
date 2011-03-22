@@ -30,11 +30,6 @@ Notes:
 	extends="enlist.model.BaseService">
 
 	<!---
-	PROPERTIES
-	--->
-	<cfset variables.eventGateway = "" />
-	
-	<!---
 	INITIALIZATION / CONFIGURATION
 	--->
 	<cffunction name="init" access="public" returntype="EventService" output="false"
@@ -47,8 +42,8 @@ Notes:
 	PUBLIC FUNCTIONS
 	--->
 	<cffunction name="getEvent" access="public" returntype="enlist.model.event.Event" output="false">
-		<cfargument name="id" type="string" required="false" default="">
-		<cfreturn getGateway().read(arguments.id) />
+		<cfargument name="eventID" type="string" required="false" default="">
+		<cfreturn getGateway().read(arguments.eventID) />
 	</cffunction> 
 	
 	<cffunction name="getEvents" access="public" returntype="array" output="false">

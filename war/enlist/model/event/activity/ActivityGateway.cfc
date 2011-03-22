@@ -21,21 +21,20 @@
     conditions of the GNU General Public License cover the whole
     combination.
 
-$Id: $
+$Id$
 
 Notes:
 --->
-<cfcomponent output="false">	
-	<!---
-	PROPERTIES
-	--->
-	<cfset variables.dao = "" />
+<cfcomponent displayname="ActivityGateway" 
+	output="false" 
+	extends="enlist.model.BaseGateway">	
 	
 	<!---
 	INITIALIZATION / CONFIGURATION
 	--->
 	<cffunction name="init" access="public" returntype="ActivityGateway" output="false"
 		hint="Initializes the gateway.">
+		<cfset super.init(argumentcollection = arguments) />
 		<cfreturn this />
 	</cffunction>
 
@@ -54,14 +53,6 @@ Notes:
 	<cffunction name="setUserService" returntype="void" access="public" output="false">
 		<cfargument name="userService" type="enlist.model.user.UserService" required="true" />
 		<cfset variables.userService = arguments.userService />
-	</cffunction>
-
-	<cffunction name="getDAO" returntype="enlist.model.GenericDAO" access="public" output="false">
-		<cfreturn variables.dao />
-	</cffunction>
-	<cffunction name="setDAO" returntype="void" access="public" output="false">
-		<cfargument name="dao" type="enlist.model.GenericDAO" required="true" />
-		<cfset variables.dao = arguments.dao />
 	</cffunction>
 
     <!---

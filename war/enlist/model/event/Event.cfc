@@ -21,7 +21,7 @@
     conditions of the GNU General Public License cover the whole
     combination.
 
-$Id: $
+$Id$
 
 Notes:
 --->
@@ -97,36 +97,65 @@ Notes:
      	<cfset variables.name = Trim(arguments.name) />
      </cffunction>
      
-     <cffunction name="getstartDate" access="public" returntype="string" output="false">     
+     <cffunction name="getStartDate" access="public" returntype="string" output="false">     
      	<cfreturn variables.startDate />     
      </cffunction>     
-     <cffunction name="setstartDate" access="public" returntype="void" output="false">     
+     <cffunction name="setStartDate" access="public" returntype="void" output="false">     
      	<cfargument name="startDate" type="string" required="true" />     
      	<cfset variables.startDate = Trim(arguments.startDate) />     
      </cffunction>
 	
-	<cffunction name="getendDate" access="public" returntype="string" output="false">        
+	<cffunction name="getEndDate" access="public" returntype="string" output="false">        
     	<cfreturn variables.endDate />        
     </cffunction>        
-    <cffunction name="setendDate" access="public" returntype="void" output="false">        
+    <cffunction name="setEndDate" access="public" returntype="void" output="false">        
     	<cfargument name="endDate" type="string" required="true" />        
     	<cfset variables.endDate = Trim(arguments.endDate) />        
     </cffunction>
     
-    <cffunction name="getlocation" access="public" returntype="string" output="false">    
+    <cffunction name="getLocation" access="public" returntype="string" output="false">    
     	<cfreturn variables.location />    
     </cffunction>    
-    <cffunction name="setlocation" access="public" returntype="void" output="false">    
+    <cffunction name="setLocation" access="public" returntype="void" output="false">    
     	<cfargument name="location" type="string" required="true" />    
     	<cfset variables.location = Trim(arguments.location) />    
     </cffunction>
     
-    <cffunction name="getstatus" access="public" returntype="string" output="false">    
+    <cffunction name="getStatus" access="public" returntype="string" output="false">    
     	<cfreturn variables.status />    
     </cffunction>    
-    <cffunction name="setstatus" access="public" returntype="void" output="false">    
+    <cffunction name="setStatus" access="public" returntype="void" output="false">    
     	<cfargument name="status" type="string" required="true" />    
     	<cfset variables.status = Trim(arguments.status) />    
     </cffunction>
+	
+	<cffunction name="validate" access="public" returntype="struct" output="false">
+		<cfscript>
+			var errors = StructNew();
+			
+			if (Len(Trim(getName())) eq 0) {
+				errors.name = "An event name is required";
+			}
+			
+			if (Len(Trim(getStartDate())) eq 0 
+				or not IsValid("date", getStartDate())) {
+				errors.startDate = "A valid start date is required";
+			}
+			
+			if (Len(Trim(getEndDate())) neq 0 
+				and not IsValid("date", getEndDate())) {
+				errors.endDate = "The end date is invalid";
+			}
+			
+			if (Len(Trim(getEndDate())) neq 0 
+				and IsValid("date", getEndDate()) 
+				and IsValid("date", getStartDate()) 
+				and getStartDate() gt getEndDate()) {
+				errors.endDate = "The end date must be the same as or later than the start date.";
+			}
+			
+			return errors;
+		</cfscript>
+	</cffunction>
 	
 </cfcomponent>

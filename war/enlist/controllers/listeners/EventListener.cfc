@@ -21,7 +21,7 @@
     conditions of the GNU General Public License cover the whole
     combination.
 
-$Id: $
+$Id$
 
 Notes:
 --->
@@ -46,6 +46,33 @@ Notes:
 	<!---
 	PUBLIC FUNCTIONS
 	--->
+	<cffunction name="saveEvent" access="public" returntype="void" output="false">
+		<cfargument name="event" type="MachII.framework.Event" required="true" />
+		
+		<cfscript>
+			var theEvent = arguments.event.getArg("event");
+			var errors = theEvent.validate();
+			
+			arguments.event.setArg("message", "Event saved");
+			
+			if (not StructIsEmpty(errors)) {
+				arguments.event.setArg("message", "Please correct the following errors:");
+				arguments.event.setArg("errors", errors);
+				redirectEvent("fail", "", true);
+			} else {
+				try {
+					getEventService().saveEvent(theEvent);
+				} catch (Any e) {
+					arguments.event.setArg("message", "Saving the event failed. " & e.message);
+					redirectEvent("fail", "", true);
+				}
+				
+				arguments.event.removeArg("event");
+				redirectEvent("pass", "", true);
+			}
+		</cfscript>
+	</cffunction>
+	
 	<cffunction name="getEventsAsStruct" output="false" access="public" returntype="struct"
 		hint="This method returns a struct of ID:Name for use in the form:select tag">
 		<cfargument name="event" type="MachII.framework.Event" required="true" />

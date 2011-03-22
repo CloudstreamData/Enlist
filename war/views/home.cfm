@@ -49,7 +49,14 @@
 <p><strong>Events</strong></p>
 <ul>
 	<li><a href="#BuildUrl('event.edit')#">Add New Event</a></li>
-	<li><a href="#BuildUrl('event.list')#">List Events</li>
+	<li><a href="#BuildUrl('event.list')#">List All Events</li>
 	<li><a href="#BuildUrl('event.search')#">Search Events</a></li>
+</ul>
+
+<p><strong>Activities</strong></p>
+<ul>
+	<li><a href="#BuildUrl('activity.edit')#">Add New Activity</a></li>
+	<li><a href="#BuildUrl('activity.list')#">List All Activities</a></li>
+	<li><a href="#BuildUrl('activity.search')#">Search Activities</a></li>
 </ul>
 </cfoutput>

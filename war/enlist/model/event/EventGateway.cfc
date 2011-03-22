@@ -21,10 +21,12 @@
     conditions of the GNU General Public License cover the whole
     combination.
 
-$Id: $
+$Id$
 
 Notes:
 --->
+<!--- TODO: I don't think this is being used anymore now that EventService leverages 
+			the generic service/gateway stuff --->
 <cfcomponent output="false">
 	
 	<!---

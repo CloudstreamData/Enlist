@@ -21,12 +21,10 @@
 	conditions of the GNU General Public License cover the whole
 	combination.
 
-$Id: $
+$Id$
 
 Notes:
 --->
-
-
 <cfcomponent
 	displayname="Activity"
 	output="false">
