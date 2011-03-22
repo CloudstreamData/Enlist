@@ -142,7 +142,7 @@ Notes:
 			}
 			
 			if (not IsValid("date", getEndDate())) {
-				errors.endDate = "The end date is invalid";
+				errors.endDate = "A valid end date is required";
 			}
 			
 			if (IsValid("date", getStartDate()) 
