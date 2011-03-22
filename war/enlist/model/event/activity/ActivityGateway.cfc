@@ -25,7 +25,8 @@ $Id$
 
 Notes:
 --->
-<cfcomponent displayname="ActivityGateway" 
+<cfcomponent 
+	displayname="ActivityGateway" 
 	output="false" 
 	extends="enlist.model.BaseGateway">	
 	
@@ -38,7 +39,9 @@ Notes:
 		<cfreturn this />
 	</cffunction>
 
-    <!--- DEPENDENCIES --->
+    <!---
+	DEPENDENCIES
+	--->
     <cffunction name="getEventService" access="public" returntype="enlist.model.event.EventService" output="false">
         <cfreturn variables.eventService />
     </cffunction>
@@ -56,23 +59,28 @@ Notes:
 	</cffunction>
 
     <!---
-	PUBLIC
+	PUBLIC FUNCTIONS
 	--->
-	<cffunction name="list" access="public" returntype="array" output="false">
+	<cffunction name="list" access="public" returntype="array" output="false"
+		hint="Lists all activities.">
+
 		<cfset var activities = super.list() />
 		<cfset var activity = "" />
+
 		<cfloop array="#activities#" index="activity">
 			<cfset activity.setEvent( getEventService().getEvent( activity.getEventId() ) ) />
 		</cfloop>
+
 		<cfreturn activities />		
 	</cffunction>
 
-
-	<cffunction name="getActivityVolunteer" returntype="enlist.model.event.activity.ActivityVolunteer" access="public" output="false">
+	<cffunction name="getActivityVolunteer" returntype="enlist.model.event.activity.ActivityVolunteer" access="public" output="false"
+		hint="">
 		<cfargument name="id" type="string" required="false" default="" />
 
 		<cfset var activityVolunteer = "" />
-		<cfif NOT len( arguments.id )>
+
+		<cfif NOT Len( arguments.id )>
 			<cfset activityVolunteer = createObject( "component", "enlist.model.event.activity.ActivityVolunteer" ).init( argumentCollection = arguments ) />
 		<cfelse>
 			<cfset activityVolunteer = GoogleQuery( "select from activityvolunteer where id == '#arguments.id#'" ) />
@@ -85,7 +93,8 @@ Notes:
 		<cfreturn activityVolunteer />
 	</cffunction>
 
-	<cffunction name="getActivityVolunteerHistoryByUser" returntype="array" access="public" output="false">
+	<cffunction name="getActivityVolunteerHistoryByUser" returntype="array" access="public" output="false"
+		hint="">
 		<cfargument name="userId" type="string" required="true" />
 
 		<cfset var volunteerActivities = GoogleQuery("select from activityvolunteer where userId == '#arguments.userId#' order by scheduledEnd desc") />
@@ -100,26 +109,21 @@ Notes:
 		<cfreturn volunteerActivities />
 	</cffunction>
 
-
 	<cffunction name="saveActivity" access="public" returntype="void" output="false">
 		<cfargument name="activity" type="enlist.model.event.activity.Activity" required="true">
 		<cfset getDAO().save( arguments.activity ) />
 	</cffunction>
 
-
-
     <!---
-	PRIVATE
+	PROTECTED FUNCTIONS
 	--->
-
-	<!--- Accept a bean with a populated userId and set the User property with the instance of that userId --->
-	<cffunction name="setUserFromUserStub" access="private" output="false" returntype="void">
+	<cffunction name="setUserFromUserStub" access="private" output="false" returntype="void"
+		hint="Accept a bean with a populated userId and set the User property with the instance of that userId.">
 		<cfargument name="aBean" type="any" required="true" />
+		
 		<cfif Len(arguments.aBean.getUser().getId()) >
 			<cfset arguments.aBean.setEvent( getUserService().getUser( arguments.aBean.getUser().getId() ) ) />
 		</cfif>
-		<cfreturn />
 	</cffunction>
-
 
 </cfcomponent>

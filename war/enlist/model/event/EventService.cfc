@@ -25,7 +25,8 @@ $Id$
 
 Notes:
 --->
-<cfcomponent displayname="EventService" 
+<cfcomponent 
+	displayname="EventService" 
 	output="false" 
 	extends="enlist.model.BaseService">
 
@@ -34,7 +35,9 @@ Notes:
 	--->
 	<cffunction name="init" access="public" returntype="EventService" output="false"
 		hint="Initializes the service.">
+
 		<cfset super.init(argumentcollection = arguments) />
+
 		<cfreturn this />
 	</cffunction>
 	
@@ -52,6 +55,7 @@ Notes:
 
 	<cffunction name="getEventsAsStruct" output="false" access="public" returntype="struct"
 		hint="This method returns a struct of ID:Name for use in the form:select tag">
+
 		<cfset var events = StructNew() />
 		<cfset var thisEvent = "" />
 		

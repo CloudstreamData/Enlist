@@ -58,8 +58,10 @@ Notes:
 	--->
 	<cffunction name="delete" access="public" returntype="void" output="false">
 		<cfargument name="entity" type="any" required="true" />
+
 		<!--- Workaround: googleDelete(entity) does not work unless entity has been read from googleQuery() --->
 		<cfset var readEntity = read( arguments.entity.getID() ) />
+
 		<cfset googleDelete( readEntity ) />
 	</cffunction>
 
@@ -70,13 +72,17 @@ Notes:
 	<cffunction name="listByProperty" access="public" returntype="array" output="false">
 		<cfargument name="propertyName" type="string" required="true" />
 		<cfargument name="propertyValue" type="string" required="true" />
+
 		<cfset var map = structNew() />
+
 		<cfset map[ arguments.propertyName ] = arguments.propertyValue />
+
 		<cfreturn googleQuery( "select from #getKind()# where #arguments.propertyName# == '#arguments.propertyValue#'" ) />
 	</cffunction>
 
 	<cffunction name="listByPropertyMap" access="public" returntype="array" output="false">
-		<cfargument name="map" type="struct" required="true" hint="Property key/value pairs to filter on." />
+		<cfargument name="map" type="struct" required="true" 
+			hint="Property key/value pairs to filter on." />
 		<cfreturn googleQuery( "select from #getKind()# #propertyMapToWhereClause( arguments.map )#" ) />
 	</cffunction>
 
@@ -88,13 +94,17 @@ Notes:
 	<cffunction name="readByProperty" access="public" returntype="any" output="false">
 		<cfargument name="propertyName" type="string" required="true" />
 		<cfargument name="propertyValue" type="string" required="true" />
+
 		<cfset var map = structNew() />
+
 		<cfset map[ arguments.propertyName ] = arguments.propertyValue />
+
 		<cfreturn readByPropertyMap( map ) />
 	</cffunction>
 
 	<cffunction name="readByPropertyMap" access="public" returntype="any" output="false">
-		<cfargument name="map" type="struct" required="true" hint="Property key/value pairs to filter on." />
+		<cfargument name="map" type="struct" required="true" 
+			hint="Property key/value pairs to filter on." />
 
 		<cfset var whereClause = propertyMapToWhereClause( arguments.map ) />
 		
@@ -113,8 +123,8 @@ Notes:
 	<cffunction name="save" access="public" returntype="void" output="false">
 		<cfargument name="entity" type="any" required="true">
 
-		<cfif arguments.entity.getID() eq "">
-			<cfset arguments.entity.setID( createUUID() ) />
+		<cfif arguments.entity.getID() EQ "">
+			<cfset arguments.entity.setID( CreateUUID() ) />
 		<cfelse>
 			<!--- This is a necessary workaround, because googleWrite() will not currently update, but always insert a new record: --->
 			<cfset delete( arguments.entity ) />
@@ -124,10 +134,11 @@ Notes:
 	</cffunction>
 
 	<!---
-	PRIVATE FUNCTIONS
+	PROTECTED FUNCTIONS
 	--->
 	<cffunction name="propertyMapToWhereClause" returntype="string" access="private" output="false">
-		<cfargument name="map" type="struct" required="true" hint="Property key/value pairs to filter on." />
+		<cfargument name="map" type="struct" required="true"
+			hint="Property key/value pairs to filter on." />
 		<cfscript>
 			var whereClause = "";
 			var key = "";
@@ -157,7 +168,9 @@ Notes:
 	</cffunction>
 	<cffunction name="setEntityComponentPath" returntype="any" access="public" output="false">
 		<cfargument name="entityComponentPath" type="string" required="true" />
+
 		<cfset variables.entityComponentPath = arguments.entityComponentPath />
+
 		<cfreturn this />
 	</cffunction>
 
@@ -166,7 +179,9 @@ Notes:
 	</cffunction>
 	<cffunction name="setKind" returntype="any" access="public" output="false">
 		<cfargument name="kind" type="string" required="true" />
+
 		<cfset variables.kind = arguments.kind />
+
 		<cfreturn this />
 	</cffunction>
 

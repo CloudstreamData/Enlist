@@ -25,7 +25,8 @@ $Id$
 
 Notes:
 --->
-<cfcomponent displayname="ActivityService" 
+<cfcomponent 
+	displayname="ActivityService" 
 	output="false" 
 	extends="enlist.model.BaseService">
 
@@ -34,7 +35,9 @@ Notes:
 	--->
 	<cffunction name="init" access="public" returntype="ActivityService" output="false"
 		hint="Initializes the service.">
-		<cfset super.init(argumentcollection = arguments) />
+		
+		<cfset super.init(argumentcollection=arguments) />
+		
 		<cfreturn this />
 	</cffunction>
 	
@@ -50,7 +53,6 @@ Notes:
 		<cfreturn getGateway().list() />
 	</cffunction>
 
-
 	<cffunction name="getActivityVolunteer" returntype="enlist.model.event.activity.ActivityVolunteer" access="public" output="false">
 		<cfargument name="id" type="string" required="true" />
 		<cfreturn getActivityGateway().getActivityVolunteer( arguments.id ) />
@@ -60,7 +62,6 @@ Notes:
 		<cfargument name="userId" type="string" required="true" />
 		<cfreturn getActivityGateway().getActivityVolunteerHistoryByUser( arguments.userId ) />
 	</cffunction>
-	
 
 	<cffunction name="saveActivity" access="public" returntype="void" output="false">
 		<cfargument name="activity" type="enlist.model.event.activity.Activity" required="true" />

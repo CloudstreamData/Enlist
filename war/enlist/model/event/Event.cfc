@@ -60,6 +60,7 @@ Notes:
 	--->
 	<cffunction name="setInstanceMemento" access="public" returntype="void" output="false">
 		<cfargument name="data" type="struct" required="true" />	
+
 		<cfset setId(arguments.data.id) />
 		<cfset setName(arguments.data.name) />
 		<cfset setStartDate(arguments.data.startDate) />
@@ -68,6 +69,7 @@ Notes:
 		<cfset setStatus(arguments.data.status) />
  	</cffunction>
 	<cffunction name="getInstanceMemento" access="public" returntype="struct" output="false">
+
 		<cfset var data = structnew() />
 		<cfset var fieldname = "" />
 		
