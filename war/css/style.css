@@ -51,10 +51,11 @@ table{
 }
 
 th {
-	text-align: right;
-	padding: 5px;
+	text-align: left;
+	padding: 7px 5px;
 	color: #666;
 	background-color: #F7FDE3;
+	vertical-align:top; 
 }
 
 td {

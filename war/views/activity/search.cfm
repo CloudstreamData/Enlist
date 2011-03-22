@@ -26,63 +26,64 @@
 	
 	Notes:
 	--->
+	<cfimport prefix="view" taglib="/MachII/customtags/view" />
 	<cfimport prefix="form" taglib="/MachII/customtags/form" />
-</cfsilent>
+	<cfset copyToScope("${event.events}") />
+	
+	<view:meta type="title" content="Search Activities" />
 
-<cfsavecontent variable="js">
-	<script>
+	<view:script>
 		$(function() {
 			$( "#startDate" ).datepicker();
 			$( "#endDate" ).datepicker();
 		});
-	</script>
-
-</cfsavecontent>
-<cfhtmlhead text="#js#">
-
+	</view:script>
+</cfsilent>
+<cfoutput>
+	
+<h3>Search Activities</h3>
 <form:form actionEvent="activity.doSearch">
-	<cfoutput>
-	<table style="width: 100%">
+	<table>
 		<tr>
-			<th>Event:</th>
+			<th>Event</th>
 			<td>
-				<form:select path="eventId" items="#event.getArg("events")#">
+				<form:select path="eventId" items="#variables.events#">
 					<form:option value="" label="Choose an event" />
 				</form:select>
 			</td>
 		</tr>
 		<tr>
-			<th>Title:</th>
+			<th>Title</th>
 			<td><form:input path="title" size="40" maxlength="200" /></td>
 		</tr>
  		<tr>
-			<th>Description:</th>
+			<th>Description</th>
 			<td><form:input path="description" size="40" maxlength="200" /></td>
 		</tr>
 		<tr>
-			<th>Number of People:</th>
-			<td><form:input path="numPeople" size="40" maxlength="4" class="required" /></td>
+			<th>Number of People</th>
+			<td><form:input path="numPeople" size="40" maxlength="4" /></td>
 		</tr>
 		<tr>
-			<th>Start Date:</th>
-			<td><form:input path="startDate" id="startDate" size="40" maxlength="10" /></td>
+			<th>Start Date</th>
+			<td><form:input path="startDate" size="40" maxlength="10" /></td>
 		</tr>
 		<tr>
-			<th>End Date:</th>
-			<td><form:input path="endDate" id="endDate" size="40" maxlength="10" /></td>
+			<th>End Date</th>
+			<td><form:input path="endDate" size="40" maxlength="10" /></td>
 		</tr>
 		<tr>
-			<th>Point Hours:</th>
+			<th>Point Hours</th>
 			<td><form:input path="pointHours" size="40" maxlength="4" /></td>
 		</tr>
 		<tr>
-			<th>Location:</th>
+			<th>Location</th>
 			<td><form:input path="location" size="40" maxlength="20" /></td>
 		</tr>
 		<tr>
 			<td></td>
 			<td><form:button type="submit" name="search" value="Search" /></td>
 		</tr>
-		</cfoutput>
 	</table>
 </form:form>
+</cfoutput>
