@@ -137,19 +137,16 @@ Notes:
 				errors.name = "An event name is required";
 			}
 			
-			if (Len(Trim(getStartDate())) eq 0 
-				or not IsValid("date", getStartDate())) {
+			if (not IsValid("date", getStartDate())) {
 				errors.startDate = "A valid start date is required";
 			}
 			
-			if (Len(Trim(getEndDate())) neq 0 
-				and not IsValid("date", getEndDate())) {
+			if (not IsValid("date", getEndDate())) {
 				errors.endDate = "The end date is invalid";
 			}
 			
-			if (Len(Trim(getEndDate())) neq 0 
+			if (IsValid("date", getStartDate()) 
 				and IsValid("date", getEndDate()) 
-				and IsValid("date", getStartDate()) 
 				and getStartDate() gt getEndDate()) {
 				errors.endDate = "The end date must be the same as or later than the start date.";
 			}
