@@ -38,6 +38,7 @@ Notes:
 	<cfproperty name="endDate" type="string"/>
 	<cfproperty name="pointHours" type="string"/>
 	<cfproperty name="location" type="string"/>
+	<cfproperty name="eventId" type="string" />
 	<cfproperty name="event" type="enlist.model.event.Event" />
 
 	<cfset variables.id = "" />
@@ -68,6 +69,7 @@ Notes:
 		<cfargument name="endDate" type="string" required="false" default=""/>
 		<cfargument name="pointHours" type="string" required="false" default=""/>
 		<cfargument name="location" type="string" required="false" default=""/>
+		<cfargument name="eventId" type="string" required="false" default="" />
 		<cfargument name="event" type="enlist.model.event.Event" required="false"/>
 		<cfset setInstanceMemento(arguments) />
 
@@ -81,7 +83,6 @@ Notes:
 	<cffunction name="setInstanceMemento" access="public" returntype="void" output="false">
 		<cfargument name="data" type="struct" required="true" />
 		<cfset setId( arguments.data.id ) />
-		<cfset setDescription( arguments.data.description ) />
 		<cfset setTitle(arguments.data.title)/>
 		<cfset setDescription(arguments.data.description)/>
 		<cfset setNumPeople(arguments.data.numPeople)/>
@@ -89,6 +90,7 @@ Notes:
 		<cfset setEndDate(arguments.data.endDate)/>
 		<cfset setPointHours(arguments.data.pointHours)/>
 		<cfset setLocation(arguments.data.location)/>
+		<cfset setEventId(arguments.data.eventId) />
 		<cfif structKeyExists(arguments.data, "event")>
 			<cfset setEvent(arguments.data.event)/>
 		</cfif>
@@ -97,7 +99,7 @@ Notes:
 		<cfset var data = structnew() />
 		<cfset var fieldname = "" />
 
-		<cfloop list="id,eventId,title,description,numPeople,startDate,endDate,pointHours,location" index="fieldname">
+		<cfloop list="id,title,description,numPeople,startDate,endDate,pointHours,location,eventId" index="fieldname">
 			<cfset data[fieldname] = variables[fieldname]>
 		</cfloop>
 
@@ -182,6 +184,47 @@ Notes:
 	
 	<cffunction name="getEventId" access="public" returntype="string" output="false">
 		<cfreturn variables.eventId />
+	</cffunction>
+	<cffunction name="setEventId" access="public" returntype="void" output="false">
+		<cfargument name="eventId" type="string" required="true" />
+		<cfset variables.eventId = arguments.eventId />
+	</cffunction>
+	
+	<cffunction name="validate" access="public" returntype="struct" output="false">
+		<cfscript>
+			// TODO: not sure what's required and what isn't. Are point hours integers or are floats allowed?
+			var errors = StructNew();
+			
+			if (Len(Trim(getEventId())) eq 0) {
+				errors.eventId = "An activity must be associated with an event";
+			}
+			
+			if (Len(Trim(getTitle())) eq 0) {
+				errors.title = "An activity title is required";
+			}
+			
+			if (Len(Trim(getNumPeople())) neq 0 
+				and not IsValid("integer", getNumPeople())) {
+				errors.numPeople = "Number of people must be an integer";
+			}
+			
+			if (Len(Trim(getStartDate())) neq 0 
+				and not IsValid("date", getStartDate())) {
+				errors.startDate = "The start date is not valid";
+			}
+			
+			if (Len(Trim(getEndDate())) neq 0 
+				and not IsValid("date", getEndDate())) {
+				errors.endDate = "The end date is not valid";
+			}
+			
+			if (IsValid("date", getStartDate()) and IsValid("date", getEndDate()) 
+				and getStartDate() gt getEndDate()) {
+				errors.endDate = "The end date must be the same as or later than the start date";
+			}
+			
+			return errors;
+		</cfscript>
 	</cffunction>
 	
 </cfcomponent>

@@ -66,5 +66,17 @@ Notes:
 		<cfargument name="activity" type="enlist.model.event.activity.Activity" required="true" />
 		<cfset getGateway().save( arguments.activity ) />
 	</cffunction> 
-	
+
+	<cffunction name="getActivitiesBySearch" access="public" returntype="array" output="false">
+		<cfargument name="eventId" type="string" required="false" default="" />
+		<cfargument name="title" type="string" required="false" default="" />
+		<cfargument name="description" type="string" required="false" deafult="" />
+		<cfargument name="numPeople" type="string" required="false" default="" />
+		<cfargument name="startDate" type="string" required="false" default="" />
+		<cfargument name="endDate" type="string" required="false" default="" />
+		<cfargument name="pointHours" type="string" required="false" default="" />
+		<cfargument name="location" type="string" required="false" default="" />
+		<cfreturn getGateway().listByPropertyMap( arguments ) />
+	</cffunction>
+		
 </cfcomponent>

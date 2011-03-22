@@ -82,7 +82,7 @@ Notes:
 
 	<cffunction name="read" access="public" returntype="any" output="false">
 		<cfargument name="id" type="string" required="true" />
-		<cfreturn readByProperty( "id", arguments.id ) />
+		<cfreturn readByProperty( "id", UCase(arguments.id) ) />
 	</cffunction>
 
 	<cffunction name="readByProperty" access="public" returntype="any" output="false">

@@ -58,18 +58,11 @@ Notes:
     <!---
 	PUBLIC
 	--->
-	<cffunction name="getActivity" access="public" returntype="enlist.model.event.activity.Activity" output="false">
-		<cfargument name="id" type="string" required="false" default="">
-		<cfset var activity = getDAO().read( arguments.id ) />
-		<cfset activity.setEvent( getEventService().getEvent( activity.getEventId() ) ) />
-		<cfreturn activity />
-	</cffunction>
-
-	<cffunction name="getActivities" access="public" returntype="array" output="false">
-		<cfset var activities = getDAO().list() />
+	<cffunction name="list" access="public" returntype="array" output="false">
+		<cfset var activities = super.list() />
 		<cfset var activity = "" />
 		<cfloop array="#activities#" index="activity">
-			<cfset activity.setEvent( getEventService().getEvent( id = activity.getEventId() ) ) />
+			<cfset activity.setEvent( getEventService().getEvent( activity.getEventId() ) ) />
 		</cfloop>
 		<cfreturn activities />		
 	</cffunction>

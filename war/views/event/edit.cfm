@@ -56,7 +56,7 @@
 </cfsavecontent>
 <cfhtmlhead text="#js#">
 
-<form:form actionEvent="event.save" bind="event" id="eventForm">
+<form:form actionEvent="event.save" bind="theEvent" id="eventForm">
 	<table>
 		<tr>
 			<th>Name:</th>

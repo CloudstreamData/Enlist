@@ -42,12 +42,24 @@ Notes:
 	PUBLIC FUNCTIONS
 	--->
 	<cffunction name="getEvent" access="public" returntype="enlist.model.event.Event" output="false">
-		<cfargument name="eventID" type="string" required="false" default="">
+		<cfargument name="eventID" type="string" required="false" default="" />
 		<cfreturn getGateway().read(arguments.eventID) />
 	</cffunction> 
 	
 	<cffunction name="getEvents" access="public" returntype="array" output="false">
 		<cfreturn getGateway().list() />
+	</cffunction>
+
+	<cffunction name="getEventsAsStruct" output="false" access="public" returntype="struct"
+		hint="This method returns a struct of ID:Name for use in the form:select tag">
+		<cfset var events = StructNew() />
+		<cfset var thisEvent = "" />
+		
+		<cfloop array="#getEvents()#" index="thisEvent">
+			<cfset events[ thisEvent.getId() ] = thisEvent.getName() />
+		</cfloop>
+		
+		<cfreturn events />
 	</cffunction>
 	
 	<cffunction name="saveEvent" access="public" returntype="void" output="false">

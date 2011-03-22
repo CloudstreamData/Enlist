@@ -46,6 +46,18 @@ Notes:
 	<!---
 	PUBLIC FUNCTIONS
 	--->
+	<cffunction name="getUser" access="public" returntype="enlist.model.user.User" output="false">
+		<cfargument name="event" type="MachII.framework.Event" required="true" />
+		
+		<cfscript>
+			if (not arguments.event.isArgDefined("user")) {
+				return getUserService().getUser(arguments.event.getArg("id", ""));
+			} else {
+				return arguments.event.getArg("user");
+			}
+		</cfscript>
+	</cffunction>
+	
 	<cffunction name="saveUser" access="public" returntype="void" output="false" 
 		hint="Processes the user forms (registration, admin new/edit user) and saves the user">
 		<cfargument name="event" type="MachII.framework.Event" required="true" />
@@ -60,8 +72,8 @@ Notes:
 				arguments.event.setArg("message", "User saved");
 			}
 			
-			// make sure the user isn't already registered
-			if (existingUser.getID() neq "") {
+			// if this isn't an update make sure the user isn't already registered
+			if (user.getID() eq "" and existingUser.getID() neq "") {
 				errors.alreadyRegistered = "A user is already registered with this application using this email address.";
 			} else {
 				// validate the rest of the user input

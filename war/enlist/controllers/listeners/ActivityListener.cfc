@@ -47,7 +47,7 @@ Notes:
 	PUBLIC FUNCTIONS
 	--->
 	<cffunction name="getActivityVolunteerHistoryForUser" returntype="array" access="public" output="false">
-		<cfargument name="event" type="MachII.framework.Event" />
+		<cfargument name="event" type="MachII.framework.Event" required="true" />
 
 		<cfset var authentication = getSessionFacade().getProperty("authentication")/>
 		<cfset var user = ""/>
@@ -58,6 +58,45 @@ Notes:
 			<cfset result = getActivityService().getActivityVolunteerHistoryByUser( user.getId() ) />
 		</cfif>
 		<cfreturn result/>
+	</cffunction>
+	
+	<cffunction name="getActivity" access="public" returntype="enlist.model.event.activity.Activity" output="false">
+		<cfargument name="event" type="MachII.framework.Event" required="true" />
+		
+		<cfscript>
+			if (not arguments.event.isArgDefined("activity")) {
+				return getActivityService().getActivity(arguments.event.getArg("id", ""));
+			} else {
+				return arguments.event.getArg("activity");
+			}
+		</cfscript>
+	</cffunction>
+	
+	<cffunction name="saveActivity" access="public" returntype="void" output="false">
+		<cfargument name="event" type="MachII.framework.Event" required="true" />
+		
+		<cfscript>
+			var activity = arguments.event.getArg("activity");
+			var errors = activity.validate();
+			
+			arguments.event.setArg("message", "Activity saved");
+			
+			if (not StructIsEmpty(errors)) {
+				arguments.event.setArg("message", "Please correct the following errors:");
+				arguments.event.setArg("errors", errors);
+				redirectEvent("fail", "", true);
+			} else {
+				try {
+					getActivityService().saveActivity(activity);
+				} catch (Any e) {
+					arguments.event.setArg("message", "Saving the activity failed. " & e.message);
+					redirectEvent("fail", "", true);
+				}
+				
+				arguments.event.removeArg("activity");
+				redirectEvent("pass", "", true);
+			}
+		</cfscript>
 	</cffunction>
 
 </cfcomponent>

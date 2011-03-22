@@ -1,4 +1,4 @@
-﻿<cfsilent>
+<cfsilent>
 	<!---
 	
 	    Enlist - Volunteer Management Software
@@ -26,23 +26,8 @@
 	
 	Notes:
 	--->
-	<cfimport prefix="form" taglib="/MachII/customtags/form">
+	<cfimport prefix="form" taglib="/MachII/customtags/form" />
 </cfsilent>
-<cfoutput>
-<cfif event.getArg("message") neq "">
-	<p class="alert">#event.getArg("message")#</p>
-</cfif>
-
-<cfif event.isArgDefined("errors") and IsStruct(event.getArg("errors")) 
-		and not StructIsEmpty(event.getArg("errors"))>
-	<cfset errors = event.getArg("errors") />
-	<ul>
-	<cfloop collection="#errors#" item="key">
-		<li>#errors[key]#</li>
-	</cfloop>
-	</ul>
-</cfif>
-</cfoutput>
 
 <cfsavecontent variable="js">
 	<script>
@@ -55,21 +40,20 @@
 </cfsavecontent>
 <cfhtmlhead text="#js#">
 
-<form:form actionEvent="activity.save" bind="activity" id="actForm">
-	<form:hidden name="id" path="id" />
+<form:form actionEvent="activity.doSearch">
 	<cfoutput>
 	<table style="width: 100%">
 		<tr>
 			<th>Event:</th>
 			<td>
-				<form:select path="eventId" items="#event.getArg("events")#" bind="#event.getArg("activity").getEvent().getId()#" class="required">
-				<form:option value="" label="Choose an event" />
+				<form:select path="eventId" items="#event.getArg("events")#">
+					<form:option value="" label="Choose an event" />
 				</form:select>
 			</td>
 		</tr>
 		<tr>
 			<th>Title:</th>
-			<td><form:input path="title" size="40" maxlength="200" class="required" /></td>
+			<td><form:input path="title" size="40" maxlength="200" /></td>
 		</tr>
  		<tr>
 			<th>Description:</th>
@@ -81,36 +65,24 @@
 		</tr>
 		<tr>
 			<th>Start Date:</th>
-			<td><form:input path="startDate" id="startDate" size="40" maxlength="10" class="required date" /></td>
+			<td><form:input path="startDate" id="startDate" size="40" maxlength="10" /></td>
 		</tr>
 		<tr>
 			<th>End Date:</th>
-			<td><form:input path="endDate" id="endDate" size="40" maxlength="10" class="required date" /></td>
+			<td><form:input path="endDate" id="endDate" size="40" maxlength="10" /></td>
 		</tr>
 		<tr>
 			<th>Point Hours:</th>
-			<td><form:input path="pointHours" size="40" maxlength="4" class="required" /></td>
+			<td><form:input path="pointHours" size="40" maxlength="4" /></td>
 		</tr>
 		<tr>
 			<th>Location:</th>
-			<td><form:input path="location" size="40" maxlength="20" class="required" /></td>
+			<td><form:input path="location" size="40" maxlength="20" /></td>
 		</tr>
 		<tr>
 			<td></td>
-			<td><form:button type="submit" name="save" value="Save Activity" /></td>
+			<td><form:button type="submit" name="search" value="Search" /></td>
 		</tr>
 		</cfoutput>
 	</table>
 </form:form>
-<script>
-	$(document).ready(function(){
-		jQuery.validator.addMethod("greaterThan", function(value, element, params) {
-			if (!/Invalid|NaN/.test(new Date(value))) {
-				return new Date(value) > new Date($(params).val());
-			}
-			return isNaN(value) && isNaN($(params).val()) || (parseFloat(value) > parseFloat($(params).val()));
-		},'Must be greater than {0}.');
-		$("#actForm").validate();
-		$("#endDate").rules("add", {greaterThan: "#startDate"});
-	});
-</script>

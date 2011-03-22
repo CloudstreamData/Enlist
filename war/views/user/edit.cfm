@@ -36,6 +36,16 @@
 <cfif event.getArg("message") neq "">
 	<p class="alert">#event.getArg("message")#</p>
 </cfif>
+
+<cfif event.isArgDefined("errors") and IsStruct(event.getArg("errors")) 
+		and not StructIsEmpty(event.getArg("errors"))>
+	<cfset errors = event.getArg("errors") />
+	<ul>
+	<cfloop collection="#errors#" item="key">
+		<li>#errors[key]#</li>
+	</cfloop>
+	</ul>
+</cfif>
 </cfoutput>
 <form:form actionEvent="user.save" bind="user" id="userForm">
 	<table>

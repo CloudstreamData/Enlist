@@ -166,17 +166,12 @@ Notes:
 			<execute subroutine="doMainLayout"/>
 		</event-handler>
 		<event-handler event="event.edit" access="public">
-			<call-method bean="eventService" method="getEvent" resultArg="event">
-				<arg name="eventID" value="${event.id:''}" />
-			</call-method>
+			<notify listener="eventListener" method="getEvent" resultArg="theEvent" />
 			<view-page name="event.edit" contentArg="layout.content"/>
 			<execute subroutine="doMainLayout"/>
 		</event-handler>
 		<event-handler event="event.save" access="public">
-			<call-method bean="eventService" method="getEvent" resultArg="event">
-				<arg name="eventID" value="${event.id}" />
-			</call-method>
-			<event-bean name="event" type="enlist.model.event.Event" autopopulate="true" reinit="false"  />
+			<event-bean name="theEvent" type="enlist.model.event.Event" autopopulate="true" reinit="false"  />
 			<event-mapping event="pass" mapping="event.list" />
 			<event-mapping event="fail" mapping="event.edit" />
 			<notify listener="eventListener" method="saveEvent" />
@@ -204,28 +199,42 @@ Notes:
 			<execute subroutine="doMainLayout"/>
 		</event-handler>		
 		<event-handler event="activity.edit" access="public">
-			<call-method bean="activityService" method="getActivity" resultArg="activity">
-				<arg name="id" value="${event.id:''}" />
-			</call-method>
-			<notify listener="eventListener" method="getEventsAsStruct" resultArg="events" />
+			<notify listener="activityListener" method="getActivity" resultArg="activity" />
+			<call-method bean="eventService" method="getEventsAsStruct" resultArg="events" />
 			<view-page name="activity.edit" contentArg="layout.content"/>
 			<execute subroutine="doMainLayout"/>
 		</event-handler>
 		<event-handler event="activity.save" access="public">
-			<call-method bean="activityService" method="getActivity" resultArg="activity">
-				<arg name="id" value="${event.id}" />
-			</call-method>
 			<call-method bean="eventService" method="getEvent" resultArg="event">
 				<arg name="eventId" value="${event.eventId}" />
 			</call-method>			
-			<event-bean name="activity" type="enlist.model.event.activity.Activity" fields="id,title,description,numPeople,startDate,endDate,pointHours,location" reinit="false" >
+			<event-bean name="activity" type="enlist.model.event.activity.Activity" 
+						fields="id,title,description,numPeople,startDate,endDate,pointHours,location,eventId" 
+						reinit="false">
    				<field name="event" value="${event.event}" />			
 			</event-bean>
-			<call-method bean="activityService" method="saveActivity">
-				<arg name="activity" value="${event.activity}" />
+			<event-mapping event="pass" mapping="activity.list" />
+			<event-mapping event="fail" mapping="activity.edit" />
+			<notify listener="activityListener" method="saveActivity" />
+		</event-handler>
+		<event-handler event="activity.search" access="public">
+			<call-method bean="eventService" method="getEventsAsStruct" resultArg="events" />
+			<view-page name="activity.search" contentArg="layout.content" />
+			<execute subroutine="doMainLayout" />
+		</event-handler>
+		<event-handler event="activity.doSearch" access="public">
+			<call-method bean="activityService" method="getActivitiesBySearch" resultArg="activities">
+				<arg name="eventId" value="${event.eventId:''}" />
+				<arg name="title" value="${event.title:''}" />
+				<arg name="description" value="${event.description:''}" />
+				<arg name="numPeople" value="${event.numPeople:''}" />
+				<arg name="startDate" value="${event.startDate:''}" />
+				<arg name="endDate" value="${event.endDate:''}" />
+				<arg name="pointHours" value="${event.pointHours:''}" />
+				<arg name="location" value="${event.location:''}" />
 			</call-method>
-			<event-arg name="message" value="Event saved" />
-			<redirect event="activity.list" persist="true" />
+			<view-page name="activity.list" contentArg="layout.content"/>
+			<execute subroutine="doMainLayout"/>
 		</event-handler>
 		
 		<!-- ACTIVITY VOLUNTEER -->
@@ -321,9 +330,7 @@ Notes:
 			<execute subroutine="doMainLayout"/>
 		</event-handler>
 		<event-handler event="user.edit" access="public">
-			<call-method bean="userService" method="getUser" resultArg="user">
-				<arg name="id" value="${event.id:''}" />
-			</call-method>
+			<notify listener="userListener" method="getUser" resultArg="user" />
 			<call-method bean="chapterService" method="getChapters" resultArg="chapters" />
 			<view-page name="user.edit" contentArg="layout.content"/>
 			<execute subroutine="doMainLayout"/>

@@ -46,11 +46,23 @@ Notes:
 	<!---
 	PUBLIC FUNCTIONS
 	--->
+	<cffunction name="getEvent" access="public" returntype="enlist.model.event.Event" output="false">
+		<cfargument name="event" type="MachII.framework.Event" required="true" />
+		
+		<cfscript>
+			if (not arguments.event.isArgDefined("theEvent")) {
+				return getEventService().getEvent(arguments.event.getArg("id", ""));
+			} else {
+				return arguments.event.getArg("theEvent");
+			}
+		</cfscript>
+	</cffunction>
+	
 	<cffunction name="saveEvent" access="public" returntype="void" output="false">
 		<cfargument name="event" type="MachII.framework.Event" required="true" />
 		
 		<cfscript>
-			var theEvent = arguments.event.getArg("event");
+			var theEvent = arguments.event.getArg("theEvent");
 			var errors = theEvent.validate();
 			
 			arguments.event.setArg("message", "Event saved");
@@ -67,23 +79,10 @@ Notes:
 					redirectEvent("fail", "", true);
 				}
 				
-				arguments.event.removeArg("event");
+				arguments.event.removeArg("theEvent");
 				redirectEvent("pass", "", true);
 			}
 		</cfscript>
 	</cffunction>
-	
-	<cffunction name="getEventsAsStruct" output="false" access="public" returntype="struct"
-		hint="This method returns a struct of ID:Name for use in the form:select tag">
-		<cfargument name="event" type="MachII.framework.Event" required="true" />
-		<cfset var events = StructNew() />
-		<cfset var thisEvent = "" />
 		
-		<cfloop array="#getEventService().getEvents()#" index="thisEvent">
-			<cfset events[ thisEvent.getId() ] = thisEvent.getName() />
-		</cfloop>
-		
-		<cfreturn events />
-	</cffunction>
-	
 </cfcomponent>
