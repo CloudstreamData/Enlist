@@ -72,6 +72,7 @@
 </cfif>
 
 <h3>#variables.type# Activity</h3>
+
 <form:form actionEvent="activity.save" bind="activity" id="actForm">
 	<table>
 		<tr>

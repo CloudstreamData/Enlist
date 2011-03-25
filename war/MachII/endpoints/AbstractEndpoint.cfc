@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Peter J. Farrell (peter@mach-ii.com)
-$Id: AbstractEndpoint.cfc 2656 2011-02-04 02:34:34Z peterjfarrell $
+$Id: AbstractEndpoint.cfc 2695 2011-03-10 03:46:33Z peterjfarrell $
 
 Created version: 1.9.0
 
@@ -187,7 +187,7 @@ Notes:
 			<cfsetting enablecfoutputonly="false" /><cfoutput><cfinclude template="#getThrowTemplate()#" /></cfoutput><cfsetting enablecfoutputonly="true" />
 		<!--- Default exception handling --->
 		<cfelse>
-			<cfset variables.log.error(getAppManager().getUtils().buildMessageFromCfCatch(arguments.exception.getCaughtException()), arguments.exception.getCaughtException()) />
+			<cfset variables.log.error(getUtils().buildMessageFromCfCatch(arguments.exception.getCaughtException()), arguments.exception.getCaughtException()) />
 			<cfset addHTTPHeaderByStatus(500) />
 			<cfset addHTTPHeaderByName("machii.endpoint.error", "Endpoint named '#event.getArg(getProperty("endpointParameter"))#' encountered an unhandled exception.") />
 			<cfsetting enablecfoutputonly="false" /><cfoutput>Endpoint named '#event.getArg(getProperty("endpointParameter"))#' encountered an unhandled exception.</cfoutput><cfsetting enablecfoutputonly="true" />

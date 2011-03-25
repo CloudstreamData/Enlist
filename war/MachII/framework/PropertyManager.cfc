@@ -57,7 +57,7 @@ Notes:
 	CONSTANTS
 	--->
 	<cfset variables.VERSION_MAJOR = "1.9.0" />
-	<cfset variables.VERSION_MINOR = "2682" />
+	<cfset variables.VERSION_MINOR = "2706" />
 	<cfset variables.PROPS_NOT_ALLOWED_IN_MODULES = "eventParameter,parameterPrecedence,endpointParameter,maxEvents,redirectPersistParameter,redirectPersistScope,redirectPersistParameterLocation,moduleDelimiter,urlBase,urlSecureBase,urlSecureEnabled,urlDelimiters,urlParseSES,urlExcludeEventParameter,defaultModule" />
 	<cfset variables.PROPERTY_SHORTCUTS = StructNew() />
 	<cfset variables.PROPERTY_SHORTCUTS["ColdspringProperty"] = "MachII.properties.ColdspringProperty" />

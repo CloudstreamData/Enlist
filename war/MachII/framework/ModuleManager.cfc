@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Kurt Wiersma (kurt@mach-ii.com)
-$Id: ModuleManager.cfc 2586 2010-11-12 21:52:26Z jason_york $
+$Id: ModuleManager.cfc 2687 2011-02-24 21:25:57Z doug_smith $
 
 Created version: 1.5.0
 Updated version: 1.5.0
@@ -195,9 +195,13 @@ Notes:
 		hint="Preforms deconfiguration logic in each of the registered modules.">
 
 		<cfset var key = "" />
+		<cfset var module = "" />
 
 		<cfloop collection="#variables.enabledModules#" item="key">
-			<cfset variables.enabledModules[key].getModuleAppManager().deconfigure() />
+			<cfset module = variables.enabledModules[key] />
+			<cfif module.isLoaded()>
+				<cfset module.getModuleAppManager().deconfigure() />
+			</cfif>
 		</cfloop>
 	</cffunction>
 

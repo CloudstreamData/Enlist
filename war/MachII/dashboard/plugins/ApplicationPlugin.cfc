@@ -40,7 +40,7 @@
 	extend certain Mach-II public interfaces (see README for list of public
 	interfaces).
 
-$Id: ApplicationPlugin.cfc 2346 2010-09-04 05:25:42Z peterjfarrell $
+$Id: ApplicationPlugin.cfc 2693 2011-03-06 19:27:46Z kurt_wiersma $
 
 Created version: 1.0.0
 Updated version: 1.0.0
@@ -100,6 +100,11 @@ Notes:
 			<cfset setLoggedIn(false) />
 			<cfset message = CreateObject("component", "MachII.dashboard.model.sys.Message").init() />
 			<cfset message.setMessage("You have been logged out.") />
+		</cfif>
+		
+		<!--- Check to see if CF Builder passed a call back url in the url --->
+		<cfif event.isArgDefined("callbackurl")>
+			<cfset getProperty("application").setSessionItem("callbackUrl", event.getArg("callbackurl")) />
 		</cfif>
 
 		<!--- Check if this event even exists --->
@@ -161,23 +166,23 @@ Notes:
 	--->
 	<cffunction name="isLoggedIn" access="private" returntype="boolean" output="false"
 		hint="Checks if the user is logged in.">
+			
+		<cfset var sessionFacade = getProperty("application")>
 
-		<cfset var scope = StructGet(getProperty("sessionManagementScope")) />
-
-		<cfif NOT StructKeyExists(scope, "_MachIIDashboard_loginStatus")>
-			<cfset scope._MachIIDashboard_loginStatus = false />
+		<cfif NOT sessionFacade.isSessionItemDefined("loginStatus")>
+			<cfset sessionFacade.setSessionItem("loginStatus", false) />
 		</cfif>
 
-		<cfreturn scope._MachIIDashboard_loginStatus />
+		<cfreturn sessionFacade.getSessionItem("loginStatus") />
 	</cffunction>
 
 	<cffunction name="setLoggedIn" access="private" returntype="void" output="false"
 		hint="Checks if the user is logged in.">
 		<cfargument name="loggedIn" type="boolean" required="true" />
 
-		<cfset var scope = StructGet(getProperty("sessionManagementScope")) />
+		<cfset var sessionFacade = getProperty("application")>
 
-		<cfset scope._MachIIDashboard_loginStatus = arguments.loggedIn />
+		<cfset sessionFacade.setSessionItem("loginStatus", arguments.loggedIn) />
 	</cffunction>
 
 	<cffunction name="isProtectedEvent" access="private" returntype="boolean" output="false"

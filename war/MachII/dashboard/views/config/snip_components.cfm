@@ -41,7 +41,7 @@
 	extend certain Mach-II public interfaces (see README for list of public
 	interfaces).
 
-$Id: snip_components.cfm 2615 2010-12-21 07:13:46Z peterjfarrell $
+$Id: snip_components.cfm 2693 2011-03-06 19:27:46Z kurt_wiersma $
 
 Created version: 1.0.0
 Updated version: 1.1.0
@@ -84,10 +84,27 @@ Notes:
 							</span>
 						</cfif>
 						</view:a></p>
+						<p><a href="##dummy" onclick="openFile('#variables.baseComponentData.listeners[i].type#');" 
+								>Open in CF Builder</a></p>
+						<!--- For some reason I couldn't get the JS below to run in CFBuilder 2.0
+ 							 myConfigHandler.openInCFBuilder('#variables.baseComponentData.listeners[i].type#'); --->
 					</td>
 				</tr>
 			</table>
 			</cfloop>
+			<script language="JavaScript">
+				function openFile(cfctype) {
+					alert(cfctype);
+					var currentObject = this;
+					var arequest = new Ajax.Request('#buildUnescapedUrl("builder.openfile")#', {
+						method: 'post',
+						parameters: { filename: cfctype },
+						onSuccess: function(transport) {
+							// empty for now
+						}
+					});
+				}
+			</script>
 		</td>
 		<td style="padding:0;">
 			<cfloop from="1" to="#ArrayLen(variables.baseComponentData.filters)#" index="i">

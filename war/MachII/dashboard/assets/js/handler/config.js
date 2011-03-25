@@ -40,7 +40,7 @@
  *  interfaces).
 	
  * Author: Peter J. Farrell (peter@mach-ii.com)
- * $Id: config.js 2346 2010-09-04 05:25:42Z peterjfarrell $
+ * $Id: config.js 2693 2011-03-06 19:27:46Z kurt_wiersma $
  * 
  */
 try {
@@ -59,13 +59,15 @@ ConfigHandler.prototype = {
 	updater: null,
 	reloadAllChangedComponentsUrl: '',
 	refreshAllChangedComponents: '',
+	openFileUrl: '',
 
 	//
 	//INITIALIZATION - CONFIGURATION
 	//
-	initialize: function(_reloadAllChangedComponentsUrl, _refreshAllChangedComponentsUrl) {
+	initialize: function(_reloadAllChangedComponentsUrl, _refreshAllChangedComponentsUrl, _openFileUrl) {
 		this.reloadAllChangedComponentsUrl = _reloadAllChangedComponentsUrl;
 		this.refreshAllChangedComponentsUrl = _refreshAllChangedComponentsUrl;
+		this.openFileUrl = _openFileUrl;
 	},
 
 	//
@@ -120,5 +122,16 @@ ConfigHandler.prototype = {
 		);
 		
 		this.periodicUpdateChangedComponents();
+	},
+	
+	openInCFBuilder: function(cfctype) {
+		var currentObject = this;
+		var arequest = new Ajax.Request(this.openFileUrl, {
+			method: 'post',
+			parameters: { filename: cfctype },
+			onSuccess: function(transport) {
+				// empty for now
+			}
+		});
 	}
 }

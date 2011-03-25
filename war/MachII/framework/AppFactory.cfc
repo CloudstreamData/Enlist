@@ -40,7 +40,7 @@
 	extend certain Mach-II public interfaces (see README for list of public
 	interfaces).
 
-$Id: AppFactory.cfc 2674 2011-02-18 21:03:46Z peterjfarrell $
+$Id: AppFactory.cfc 2694 2011-03-10 00:18:30Z peterjfarrell $
 
 Created version: 1.0.0
 Updated version: 1.9.0
@@ -134,8 +134,6 @@ Notes:
 				file="#arguments.configXmlPath#"
 				variable="configXmlFile" />
 			<cfcatch type="any">
-				<cfdump var="#cfcatch#"/>
-				<cfabort>
 				<cfthrow type="MachII.framework.CannotFindBaseConfigFile"
 					message="Unable to find the base config file for module '#arguments.moduleName#'."
 					detail="configPath=#arguments.configXmlPath#" />

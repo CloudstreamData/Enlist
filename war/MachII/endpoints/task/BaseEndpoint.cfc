@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Peter J. Farrell (peter@mach-ii.com)
-$Id: BaseEndpoint.cfc 2534 2010-10-10 09:30:59Z peterjfarrell $
+$Id: BaseEndpoint.cfc 2696 2011-03-10 03:51:36Z peterjfarrell $
 
 Created version: 1.9.0
 
@@ -449,7 +449,7 @@ Custom Configuration:
 		<cfif NOT getUrlBase().startsWith("http://") OR NOT getUrlBase().startsWith("https://")>
 			<!--- Ensure an absolute path if to route bootstrapper file --->
 			<cfif NOT getUrlBase().startsWith("/")>
-				<cfset arguments.server = arguments.server & getDirectoryFromPath(cgi.scriptName) />
+				<cfset arguments.server = arguments.server & getUtils().filePathClean(getDirectoryFromPath(cgi.scriptName)) />
 			</cfif>
 			<cfset variables.server = arguments.server />
 		</cfif>

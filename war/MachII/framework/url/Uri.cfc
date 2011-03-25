@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Doug Smith (doug.smith@daveramsey.com)
-$Id: Uri.cfc 2663 2011-02-15 17:35:46Z peterjfarrell $
+$Id: Uri.cfc 2692 2011-03-02 22:09:27Z doug_smith $
 
 Created version: 1.9.0
 
@@ -66,7 +66,7 @@ For example, a uriPattern like "/service/doit/{value}"
 	<!--- The ONE_TOKEN_REGEX is what will be used to match an individual token in the URL. Used when generating the full uriRegex value. --->
 	<cfset variables.ONE_TOKEN_REGEX ="([^\/\?&\.]+)" />
 	<!--- HTTP_METHODS is the list of supported HTTP request methods. --->
-	<cfset variables.HTTP_METHODS = "GET,POST,PUT,DELETE,HEAD" />
+	<cfset variables.HTTP_METHODS = "GET,POST,PUT,DELETE,HEAD,PATCH" />
 	<cfset variables.DEFAULT_FORMAT_LIST = "htm,html,json,xml" />
 
 	<!---
@@ -193,7 +193,7 @@ For example, a uriPattern like "/service/doit/{value}"
 	<!---
 	PROTECTED FUNCTIONS
 	--->
-	<cffunction name="makeUriPatternIntoRegex" access="private" returntype="string" output="false"
+	<cffunction name="makeUriPatternIntoRegex" access="private" returntype="void" output="false"
 		hint="Take an input URI with optional {tokens} and set the uriRegex and uriTokenNames instance variables.">
 		<cfargument name="uriPattern" type="string" required="true"
 			hint="The URI pattern convert into a regex for matching. The URI will be matched against incoming PATH_INFO, can only be slash delimited, and a token can be used to link a variable to a position in the URI path, e.g. '/service/doit/{value}'" />

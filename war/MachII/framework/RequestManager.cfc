@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Peter J. Farrell (peter@mach-ii.com)
-$Id: RequestManager.cfc 2671 2011-02-16 22:05:41Z peterjfarrell $
+$Id: RequestManager.cfc 2698 2011-03-10 23:02:40Z peterjfarrell $
 
 Created version: 1.5.0
 Updated version: 1.8.0
@@ -274,7 +274,7 @@ Notes:
 		hint="Builds a framework specific url and automatically escapes entities for html display.">
 		<cfargument name="moduleName" type="string" required="true"
 			hint="Name of the module to build the url with." />
-		<cfargument name="urlParameters" type="any" required="false" default=""
+		<cfargument name="urlParameters" type="any" required="false" default="#StructNew()#"
 			hint="Name/value pairs (urlArg1=value1|urlArg2=value2) to replace or add into the current url with or a struct of data." />
 		<cfargument name="urlParametersToRemove" type="string" required="false" default=""
 			hint="Comma delimited list of url parameter names of items to remove from the current url" />
@@ -288,10 +288,13 @@ Notes:
 		<cfset var currentSESParams = getRequestHandler().getCurrentSESParams() />
 		<cfset var moduleDelimiter = getModuleDelimiter() />
 		<cfset var urlScopeNames = getPageContext().getRequest().getParameterNames() />
+
+		<cfset arguments.urlParameters = getUtils().parseAttributesIntoStruct(arguments.urlParameters) />
 		
 		<!--- Automatically remove the Mach II redirect persist id from the url params --->
 		<cfset arguments.urlParametersToRemove = ListAppend(arguments.urlParametersToRemove, getPropertyManager().getProperty("redirectPersistParameter")) />
 		
+		<!--- Use the iterator so the url key names are in the right case --->
 		<cfloop condition="#urlScopeNames.hasMoreElements()#">
 			<cfset key = urlScopeNames.nextElement() />
 			<cfif NOT StructKeyExists(params, key) AND key NEQ eventParameterName
@@ -300,8 +303,11 @@ Notes:
 			</cfif>
 		</cfloop>
 		
+		<!--- Build route --->
 		<cfif Len(routeName)>
 			<cfreturn buildRouteUrl(routeName, getRequestHandler().getCurrentRouteParams(), arguments.urlParameters) />
+		
+		<!--- Build normal event with SES --->
 		<cfelseif StructCount(currentSESParams)>
 			<cfloop collection="#currentSESParams#" item="key">
 				<cfif key eq eventParameterName>
@@ -319,6 +325,8 @@ Notes:
 			</cfloop>
 
 			<cfreturn buildUrl(parsedModuleName, eventName, arguments.urlParameters) />
+		
+		<!--- Build normal event without SES --->
 		<cfelse>
 			<cfif isDefined("url.#eventParameterName#")>
 				<cfset eventName = url[eventParameterName] />

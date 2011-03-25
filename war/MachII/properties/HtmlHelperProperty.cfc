@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Peter J. Farrell (peter@mach-ii.com)
-$Id: HtmlHelperProperty.cfc 2679 2011-02-19 04:42:00Z peterjfarrell $
+$Id: HtmlHelperProperty.cfc 2693 2011-03-06 19:27:46Z kurt_wiersma $
 
 Created version: 1.8.0
 Updated version: 1.9.0
@@ -170,7 +170,7 @@ from the parent application.
 		
 		<!--- Test for getFileInfo() --->
 		<cftry>
-			<cfset getFileInfo("ExpandPath(./HtmlHelperProperty.cfc)") />
+			<cfset getFileInfo(ExpandPath("/MachII/properties/HtmlHelperProperty.cfc")) />
 			<cfcatch type="any">
 				<cfset variables.getFileInfo = getUtils().getFileInfo_cfdirectory />
 				<cfset this.getFileInfo = getUtils().getFileInfo_cfdirectory />
