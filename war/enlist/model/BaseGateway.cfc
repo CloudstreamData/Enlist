@@ -140,7 +140,7 @@ Notes:
 	<cffunction name="propertyMapToWhereClause" returntype="string" access="private" output="false">
 		<cfargument name="map" type="struct" required="true" 
 			hint="Property key/value pairs to filter on." />
-
+			
 		<cfscript>
 			var whereClause = "";
 			var key = "";

@@ -63,15 +63,11 @@ Notes:
 	--->
 	<cffunction name="list" access="public" returntype="array" output="false"
 		hint="Lists all activities.">
-
-		<cfset var activities = super.list() />
-		<cfset var activity = "" />
-
-		<cfloop array="#activities#" index="activity">
-			<cfset activity.setEvent( getEventService().getEvent( activity.getEventId() ) ) />
-		</cfloop>
-
-		<cfreturn activities />		
+		<cfreturn addEventNamesToActivities(super.list()) />		
+	</cffunction>
+	
+	<cffunction name="listByPropertyMap" access="public" returntype="array" output="false">
+		<cfreturn addEventNamesToActivities(super.listByPropertyMap(arguments)) />
 	</cffunction>
 
 	<cffunction name="getActivityVolunteer" returntype="enlist.model.event.activity.ActivityVolunteer" access="public" output="false"
@@ -124,6 +120,19 @@ Notes:
 		<cfif Len(arguments.aBean.getUser().getId()) >
 			<cfset arguments.aBean.setEvent( getUserService().getUser( arguments.aBean.getUser().getId() ) ) />
 		</cfif>
+	</cffunction>
+	
+	<cffunction name="addEventNamesToActivities" access="private" output="false" returntype="array" 
+		hint="Takes in an activities array an adds the event names">
+		<cfargument name="activities" type="array" required="true" />
+		
+		<cfset var activity = "" />
+		
+		<cfloop array="#arguments.activities#" index="activity">
+			<cfset activity.setEvent( getEventService().getEvent( activity.getEventId() ) ) />
+		</cfloop>
+		
+		<cfreturn arguments.activities />
 	</cffunction>
 
 </cfcomponent>

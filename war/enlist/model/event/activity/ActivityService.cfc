@@ -77,7 +77,8 @@ Notes:
 		<cfargument name="endDate" type="string" required="false" default="" />
 		<cfargument name="pointHours" type="string" required="false" default="" />
 		<cfargument name="location" type="string" required="false" default="" />
-		<cfreturn getGateway().listByPropertyMap( arguments ) />
+		
+		<cfreturn getGateway().listByPropertyMap(argumentcollection = arguments) />
 	</cffunction>
 		
 </cfcomponent>

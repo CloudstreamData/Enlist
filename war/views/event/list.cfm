@@ -47,7 +47,10 @@
 		<td>#events[i].getStartDate()#</td>
 		<td>#events[i].getEndDate()#</td>
 		<td>#events[i].getLocation()#</td>
-		<td><view:a event="event.edit" p:id="#events[i].getID()#">Edit</view:a></td>
+		<td>
+			<view:a event="event.edit" p:id="#events[i].getID()#">Edit</view:a> | 
+			<view:a event="activity.doSearch" p:eventId="#events[i].getID()#">Activities</view:a>
+		</td>
 		<td>#events[i].getStatus()#</td>
 	</tr>	
 </cfloop> 
