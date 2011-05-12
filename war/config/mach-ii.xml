@@ -82,6 +82,8 @@ Notes:
 		<listener name="eventListener" type="enlist.controllers.listeners.EventListener" />
 		<listener name="settingListener" type="enlist.controllers.listeners.SettingListener" />
 		<listener name="userListener" type="enlist.controllers.listeners.UserListener" />
+		<listener name="chapterListener" type="enlist.controllers.listeners.ChapterListener" />
+		
 		<!--
 		<listener name="yourListenerName" type="fully.Qualified.Dot.Delimited.Path.To.CFC">
 			<parameters>
@@ -262,12 +264,9 @@ Notes:
 				<arg name="chapterID" value="${event.id}" />
 			</call-method>
 			<event-bean name="chapter" type="enlist.model.chapter.Chapter" autopopulate="true" reinit="false"  />
-			<call-method bean="chapterService" method="saveChapter">
-				<arg name="chapter" value="${event.chapter}" />
-			</call-method>
-			<event-arg name="message" value="Chapter saved" />
-			<view-page name="chapter.edit" contentArg="layout.content"/>
-			<execute subroutine="doMainLayout"/>
+			<event-mapping event="pass" mapping="chapter.list" />
+			<event-mapping event="fail" mapping="chapter.edit" />
+			<notify listener="chapterListener" method="saveChapter" />
 		</event-handler>
 		
 		<!-- SETTING -->

@@ -60,9 +60,13 @@ Notes:
 		<cfreturn getChapterGateway().getChapters() />
 	</cffunction>
 
-	<cffunction name="saveChapter" access="public" returntype="void" output="false">
+	<cffunction name="saveChapter" access="public" returntype="any" output="false">
 		<cfargument name="chapter" type="enlist.model.chapter.Chapter" required="true">
-		<cfset getChapterGateway().saveChapter(arguments.chapter) />
+		<cfset var errors = chapter.validate() />
+		<cfif structCount(errors) EQ 0>
+			<cfset getChapterGateway().saveChapter(arguments.chapter) />
+		</cfif>
+		<cfreturn errors />
 	</cffunction>
 
 </cfcomponent>
