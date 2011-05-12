@@ -15,7 +15,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Linking this library statically or dynamically with other modules is
     making a combined work based on this library.  Thus, the terms and
     conditions of the GNU General Public License cover the whole
@@ -25,9 +25,9 @@ $Id$
 
 Notes:
 --->
-<cfcomponent 
-	displayname="EventService" 
-	output="false" 
+<cfcomponent
+	displayname="EventService"
+	output="false"
 	extends="enlist.model.BaseService">
 
 	<!---
@@ -40,15 +40,15 @@ Notes:
 
 		<cfreturn this />
 	</cffunction>
-	
+
 	<!---
 	PUBLIC FUNCTIONS
 	--->
 	<cffunction name="getEvent" access="public" returntype="enlist.model.event.Event" output="false">
 		<cfargument name="eventID" type="string" required="false" default="" />
 		<cfreturn getGateway().read(arguments.eventID) />
-	</cffunction> 
-	
+	</cffunction>
+
 	<cffunction name="getEvents" access="public" returntype="array" output="false">
 		<cfreturn getGateway().list() />
 	</cffunction>
@@ -58,18 +58,22 @@ Notes:
 
 		<cfset var events = StructNew() />
 		<cfset var thisEvent = "" />
-		
+
 		<cfloop array="#getEvents()#" index="thisEvent">
 			<cfset events[ thisEvent.getId() ] = thisEvent.getName() />
 		</cfloop>
-		
+
 		<cfreturn events />
 	</cffunction>
-	
-	<cffunction name="saveEvent" access="public" returntype="void" output="false">
+
+	<cffunction name="saveEvent" access="public" returntype="any" output="false">
 		<cfargument name="event" type="enlist.model.event.Event" required="true">
-		<cfset getGateway().save(arguments.event) />
-	</cffunction> 
+		<cfset var errors = arguments.event.validate() />
+		<cfif (structIsEmpty(errors))>
+			<cfset getGateway().save(arguments.event) />
+		</cfif>
+		<cfreturn errors />
+	</cffunction>
 
 	<cffunction name="getEventsBySearch" access="public" returntype="array" output="false">
 		<cfargument name="id" type="string" required="false" default="" />
@@ -80,5 +84,5 @@ Notes:
 		<cfargument name="status" type="string" required="false" default="" />
 		<cfreturn getGateway().listByPropertyMap( arguments ) />
 	</cffunction>
-	
+
 </cfcomponent>

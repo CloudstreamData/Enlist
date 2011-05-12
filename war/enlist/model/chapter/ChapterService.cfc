@@ -62,8 +62,8 @@ Notes:
 
 	<cffunction name="saveChapter" access="public" returntype="any" output="false">
 		<cfargument name="chapter" type="enlist.model.chapter.Chapter" required="true">
-		<cfset var errors = chapter.validate() />
-		<cfif structCount(errors) EQ 0>
+		<cfset var errors = arguments.chapter.validate() />
+		<cfif (structIsEmpty(errors))>
 			<cfset getChapterGateway().saveChapter(arguments.chapter) />
 		</cfif>
 		<cfreturn errors />

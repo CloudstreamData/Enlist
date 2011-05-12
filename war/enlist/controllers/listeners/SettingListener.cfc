@@ -15,7 +15,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Linking this library statically or dynamically with other modules is
     making a combined work based on this library.  Thus, the terms and
     conditions of the GNU General Public License cover the whole
@@ -51,6 +51,26 @@ Notes:
 		<cfargument name="event" type="MachII.framework.Event" required="true" />
 		<cfset var setting = variables.settingService.getLastSetting() />
 		<cfset setProperty('setting',setting) />
+	</cffunction>
+
+	<cffunction name="saveSetting" access="public" returntype="void" output="false"
+		hint="Processes the chapter forms (registration, admin new/edit chapter) and saves the chapter">
+		<cfargument name="event" type="MachII.framework.Event" required="true" />
+
+		<cfscript>
+			var chapter = arguments.event.getArg("chapter");
+			var errors = getSettingService().saveSetting(chapter);
+
+			if (not StructIsEmpty(errors)) {
+				arguments.event.setArg("message", "Please correct the following errors:");
+				arguments.event.setArg("errors", errors);
+				redirectEvent("fail", "", true);
+			} else {
+				arguments.event.setArg("message", "Setting Saved");
+				arguments.event.removeArg("setting");
+				redirectEvent("pass", "", true);
+			}
+		</cfscript>
 	</cffunction>
 
 </cfcomponent>

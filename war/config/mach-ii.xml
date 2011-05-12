@@ -83,6 +83,7 @@ Notes:
 		<listener name="settingListener" type="enlist.controllers.listeners.SettingListener" />
 		<listener name="userListener" type="enlist.controllers.listeners.UserListener" />
 		<listener name="chapterListener" type="enlist.controllers.listeners.ChapterListener" />
+		<listener name="navigationLinkListener" type="enlist.controllers.listeners.NavigationLinkListener" />
 		
 		<!--
 		<listener name="yourListenerName" type="fully.Qualified.Dot.Delimited.Path.To.CFC">
@@ -280,9 +281,9 @@ Notes:
 		<event-handler event="setting.save" access="public">
 			<call-method bean="settingService" method="getLastSetting" resultArg="setting" />
 			<event-bean name="setting" type="enlist.model.setting.Setting" autopopulate="true" reinit="false"  />
-			<call-method bean="settingService" method="saveSetting">
-				<arg name="setting" value="${event.setting}" />
-			</call-method>
+			<event-mapping event="pass" mapping="setting.edit" />
+			<event-mapping event="fail" mapping="setting.edit" />
+			<notify listener="settingListener" method="saveSetting" />
 			<notify listener="settingListener" method="updateSettingProperty" />
 			<event-arg name="message" value="Settings saved" />
 			<view-page name="setting.edit" contentArg="layout.content"/>
@@ -314,12 +315,9 @@ Notes:
 				<arg name="id" value="${event.id:''}" />
 			</call-method>
 			<event-bean name="navigationLink" type="enlist.model.navigation.NavigationLink" autopopulate="true" reinit="false"  />
-			<call-method bean="navigationLinkService" method="saveNavigationLink">
-				<arg name="navigationLink" value="${event.navigationLink}" />
-			</call-method>
-			<event-arg name="message" value="Navigation Link saved" />
-			<view-page name="navigation.edit" contentArg="layout.content"/>
-			<execute subroutine="doMainLayout"/>
+			<event-mapping event="pass" mapping="navigation.list" />
+			<event-mapping event="fail" mapping="navigation.edit" />
+			<notify listener="navigationLinkListener" method="saveNavigationLink" />
 		</event-handler>
 		
 		<!-- USERS -->

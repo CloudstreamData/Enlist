@@ -15,7 +15,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Linking this library statically or dynamically with other modules is
     making a combined work based on this library.  Thus, the terms and
     conditions of the GNU General Public License cover the whole
@@ -25,8 +25,8 @@ $Id: $
 
 Notes:
 --->
-<cfcomponent 
-	displayname="NavigationLinkService" 
+<cfcomponent
+	displayname="NavigationLinkService"
 	output="false">
 
 	<!---
@@ -37,17 +37,17 @@ Notes:
 	INITIALIZATION / CONFIGURATION
 	--->
 	<cffunction name="init" access="public" returntype="NavigationLinkService" output="false"
-		hint="Initializes the service."> 		
+		hint="Initializes the service.">
 		<cfreturn this />
 	</cffunction>
-	
+
 	<cffunction name="getNavigationLinkGateway" access="public" returntype="NavigationLinkGateway" output="false">
 		<cfreturn variables.navigationLinkGateway />
-	</cffunction> 
+	</cffunction>
 	<cffunction name="setNavigationLinkGateway" access="public" returntype="void" output="false">
-		<cfargument name="navigationLinkGateway" type="NavigationLinkGateway" required="true" /> 
+		<cfargument name="navigationLinkGateway" type="NavigationLinkGateway" required="true" />
 		<cfset variables.navigationLinkGateway = arguments.navigationLinkGateway />
-	</cffunction> 
+	</cffunction>
 
 	<!---
 	PUBLIC FUNCTIONS
@@ -58,26 +58,30 @@ Notes:
 		<cfscript>
 			var navigationLink = '';
 			if(arguments.id NEQ '') {
-				navigationLink = getNavigationLinkGateway().read(arguments.id);	
+				navigationLink = getNavigationLinkGateway().read(arguments.id);
 			} else {
 				navigationLink = createObject("component", "NavigationLink").init();
 			}
 			return navigationLink;
 		</cfscript>
-	</cffunction> 
-	
+	</cffunction>
+
 	<cffunction name="getNavigationLinks" access="public" returntype="array" output="false">
 		<cfreturn getNavigationLinkGateway().list() />
 	</cffunction>
-	
+
 	<cffunction name="deleteNavigationLink" access="public" returntype="void" output="false">
 		<cfargument name="id" type="string" required="true">
 		<cfset getNavigationLinkGateway().delete(getNavigationLink(arguments.id)) />
-	</cffunction> 
-	
-	<cffunction name="saveNavigationLink" access="public" returntype="void" output="false">
+	</cffunction>
+
+	<cffunction name="saveNavigationLink" access="public" returntype="any" output="false">
 		<cfargument name="navigationLink" type="enlist.model.navigation.NavigationLink" required="true">
-		<cfset getNavigationLinkGateway().save(arguments.navigationLink) />
-	</cffunction> 
-	
+		<cfset var errors = arguments.navigationLink.validate() />
+		<cfif (structIsEmpty(errors))>
+			<cfset getNavigationLinkGateway().save(arguments.navigationLink) />
+		</cfif>
+		<cfreturn errors />
+	</cffunction>
+
 </cfcomponent>

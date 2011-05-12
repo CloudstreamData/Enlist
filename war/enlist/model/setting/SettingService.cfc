@@ -75,9 +75,13 @@ Notes:
 		<cfset variables.sessionFacade.setSetting( arguments.setting ) />
 	</cffunction>
 
-	<cffunction name="saveSetting" access="public" returntype="void" output="false">
+	<cffunction name="saveSetting" access="public" returntype="any" output="false">
 		<cfargument name="setting" type="enlist.model.setting.Setting" required="true">
-		<cfset variables.settingGateway.saveSetting( arguments.setting ) />
+		<cfset var errors = arguments.setting.validate() />
+		<cfif (structIsEmpty(errors))>
+			<cfset variables.settingGateway.saveSetting( arguments.setting ) />
+		</cfif>
+		<cfreturn errors />
 	</cffunction>
 
 </cfcomponent>

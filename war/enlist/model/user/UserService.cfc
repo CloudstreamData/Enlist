@@ -56,7 +56,7 @@ Notes:
 	<cffunction name="getUsers" access="public" returntype="array" output="false">
 		<cfreturn getGateway().list() />
 	</cffunction>
-	
+
 	<!--- TODO: I think this needs to be converted to something more generic to work with the base gateway --->
 	<cffunction name="getUsersByRole" access="public" returntype="array" output="false">
 		<cfargument name="role" type="string" required="true" />
@@ -91,14 +91,14 @@ Notes:
 		<cfargument name="user" type="enlist.model.user.User" required="true">
 		<cfset getSessionFacade().deleteProperty("authentication")/>
 	</cffunction>
-	
+
 	<cffunction name="registerUser" access="public" returntype="void" output="false">
 		<cfargument name="user" type="enlist.model.user.User" required="true">
 		<cfset saveUser( arguments.user )>
 		<cfset getSessionFacade().getProperty("authentication").setUser( arguments.user )>
 	</cffunction>
 
-	<cffunction name="saveUser" access="public" returntype="void" output="false">
+	<cffunction name="saveUser" access="public" returntype="any" output="false">
 		<cfargument name="user" type="enlist.model.user.User" required="true">
 		<cfif not len( arguments.user.getGoogleEmail() )>
 			<cfif not variables.googleUserService.isUserLoggedIn()>
@@ -106,8 +106,12 @@ Notes:
 			</cfif>
 			<cfset arguments.user.setGoogleEmail( variables.googleUserService.getCurrentUser().getEmail() ) />
 		</cfif>
-		<cfset getGateway().save( arguments.user ) />
-		<cfset getSessionFacade().getProperty("authentication").setUser( arguments.user )>
+		<cfset var errors = arguments.user.validate() />
+		<cfif (structIsEmpty(errors))>
+			<cfset getGateway().save( arguments.user ) />
+			<cfset getSessionFacade().getProperty("authentication").setUser( arguments.user )>
+		</cfif>
+		<cfreturn errors />
 	</cffunction>
 
 	<!---

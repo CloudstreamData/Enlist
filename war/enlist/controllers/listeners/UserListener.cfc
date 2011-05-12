@@ -15,7 +15,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Linking this library statically or dynamically with other modules is
     making a combined work based on this library.  Thus, the terms and
     conditions of the GNU General Public License cover the whole
@@ -25,12 +25,12 @@ $Id$
 
 Notes:
 --->
-<cfcomponent 
-	displayname="UserListener" 
-	extends="MachII.framework.Listener" 
-	output="false" 
+<cfcomponent
+	displayname="UserListener"
+	extends="MachII.framework.Listener"
+	output="false"
 	depends="userService">
-	
+
 	<!---
 	PROPERTIES
 	--->
@@ -48,7 +48,7 @@ Notes:
 	--->
 	<cffunction name="getUser" access="public" returntype="enlist.model.user.User" output="false">
 		<cfargument name="event" type="MachII.framework.Event" required="true" />
-		
+
 		<cfscript>
 			if (not arguments.event.isArgDefined("user")) {
 				return getUserService().getUser(arguments.event.getArg("id", ""));
@@ -57,45 +57,38 @@ Notes:
 			}
 		</cfscript>
 	</cffunction>
-	
-	<cffunction name="saveUser" access="public" returntype="void" output="false" 
+
+	<cffunction name="saveUser" access="public" returntype="void" output="false"
 		hint="Processes the user forms (registration, admin new/edit user) and saves the user">
 		<cfargument name="event" type="MachII.framework.Event" required="true" />
-		
+
 		<cfscript>
 			var user = arguments.event.getArg("user");
 			var existingUser = getUserService().getUserByGoogleEmail(user.getGoogleEmail());
 			var errors = StructNew();
-			
+
 			// set a default message if necessary since this is hit a couple of different ways
 			if (not arguments.event.isArgDefined("message")) {
 				arguments.event.setArg("message", "User saved");
 			}
-			
+
 			// if this isn't an update make sure the user isn't already registered
 			if (user.getID() eq "" and existingUser.getID() neq "") {
 				errors.alreadyRegistered = "A user is already registered with this application using this email address.";
 			} else {
 				// validate the rest of the user input
-				errors = user.validate();
+				errors = getUserService().saveUser(user);
 			}
-			
+
 			if (not StructIsEmpty(errors)) {
 				arguments.event.setArg("message", "Please correct the following errors:");
 				arguments.event.setArg("errors", errors);
 				redirectEvent("fail", "", true);
 			} else {
-				try {
-					getUserService().saveUser(user);
-				} catch (Any e) {
-					arguments.event.setArg("message", "Saving the user data failed. " & e.message);
-					redirectEvent("fail", "", true);
-				}
-				
 				arguments.event.removeArg("user");
 				redirectEvent("pass", "", true);
 			}
 		</cfscript>
 	</cffunction>
-	
+
 </cfcomponent>

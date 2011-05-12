@@ -15,7 +15,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Linking this library statically or dynamically with other modules is
     making a combined work based on this library.  Thus, the terms and
     conditions of the GNU General Public License cover the whole
@@ -59,10 +59,10 @@ Notes:
 		</cfif>
 		<cfreturn result/>
 	</cffunction>
-	
+
 	<cffunction name="getActivity" access="public" returntype="enlist.model.event.activity.Activity" output="false">
 		<cfargument name="event" type="MachII.framework.Event" required="true" />
-		
+
 		<cfscript>
 			if (not arguments.event.isArgDefined("activity")) {
 				return getActivityService().getActivity(arguments.event.getArg("id", ""));
@@ -71,28 +71,24 @@ Notes:
 			}
 		</cfscript>
 	</cffunction>
-	
-	<cffunction name="saveActivity" access="public" returntype="void" output="false">
+
+	<!---
+	PUBLIC FUNCTIONS
+	--->
+	<cffunction name="saveActivity" access="public" returntype="void" output="false"
+		hint="Processes the activity forms (registration, admin new/edit activity) and saves the activity">
 		<cfargument name="event" type="MachII.framework.Event" required="true" />
-		
+
 		<cfscript>
 			var activity = arguments.event.getArg("activity");
-			var errors = activity.validate();
-			
-			arguments.event.setArg("message", "Activity saved");
-			
+			var errors = getActivityService().saveActivity(activity);
+
 			if (not StructIsEmpty(errors)) {
 				arguments.event.setArg("message", "Please correct the following errors:");
 				arguments.event.setArg("errors", errors);
 				redirectEvent("fail", "", true);
 			} else {
-				try {
-					getActivityService().saveActivity(activity);
-				} catch (Any e) {
-					arguments.event.setArg("message", "Saving the activity failed. " & e.message);
-					redirectEvent("fail", "", true);
-				}
-				
+				arguments.event.setArg("message", "Activity Saved");
 				arguments.event.removeArg("activity");
 				redirectEvent("pass", "", true);
 			}

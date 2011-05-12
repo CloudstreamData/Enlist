@@ -21,15 +21,15 @@
     conditions of the GNU General Public License cover the whole
     combination.
 
-$Id: ChapterListener.cfc 166 2011-03-22 07:08:09Z matt_woodward $
+$Id: NavigationLinkListener.cfc 166 2011-03-22 07:08:09Z matt_woodward $
 
 Notes:
 --->
 <cfcomponent
-	displayname="ChapterListener"
+	displayname="NavigationLinkListener"
 	extends="MachII.framework.Listener"
 	output="false"
-	depends="chapterService">
+	depends="navigationLinkService">
 
 	<!---
 	PROPERTIES
@@ -46,21 +46,21 @@ Notes:
 	<!---
 	PUBLIC FUNCTIONS
 	--->
-	<cffunction name="saveChapter" access="public" returntype="void" output="false"
-		hint="Processes the chapter forms (registration, admin new/edit chapter) and saves the chapter">
+	<cffunction name="saveNavigationLink" access="public" returntype="void" output="false"
+		hint="Processes the navigationLink forms (registration, admin new/edit navigationLink) and saves the navigationLink">
 		<cfargument name="event" type="MachII.framework.Event" required="true" />
 
 		<cfscript>
-			var chapter = arguments.event.getArg("chapter");
-			var errors = getChapterService().saveChapter(chapter);
+			var navigationLink = arguments.event.getArg("navigationLink");
+			var errors = getNavigationLinkService().saveNavigationLink(navigationLink);
 
 			if (not StructIsEmpty(errors)) {
 				arguments.event.setArg("message", "Please correct the following errors:");
 				arguments.event.setArg("errors", errors);
 				redirectEvent("fail", "", true);
 			} else {
-				arguments.event.setArg("message", "Chapter Saved");
-				arguments.event.removeArg("chapter");
+				arguments.event.setArg("message", "Link Saved");
+				arguments.event.removeArg("navigationLink");
 				redirectEvent("pass", "", true);
 			}
 		</cfscript>

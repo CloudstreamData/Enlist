@@ -15,7 +15,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Linking this library statically or dynamically with other modules is
     making a combined work based on this library.  Thus, the terms and
     conditions of the GNU General Public License cover the whole
@@ -42,13 +42,13 @@ Notes:
 		hint="Configures the listener.">
 		<!--- Put custom configuration for this listener here. --->
 	</cffunction>
-	
+
 	<!---
 	PUBLIC FUNCTIONS
 	--->
 	<cffunction name="getEvent" access="public" returntype="enlist.model.event.Event" output="false">
 		<cfargument name="event" type="MachII.framework.Event" required="true" />
-		
+
 		<cfscript>
 			if (not arguments.event.isArgDefined("theEvent")) {
 				return getEventService().getEvent(arguments.event.getArg("id", ""));
@@ -57,32 +57,25 @@ Notes:
 			}
 		</cfscript>
 	</cffunction>
-	
-	<cffunction name="saveEvent" access="public" returntype="void" output="false">
+
+	<cffunction name="saveEvent" access="public" returntype="void" output="false"
+		hint="Processes the event forms (registration, admin new/edit event) and saves the event">
 		<cfargument name="event" type="MachII.framework.Event" required="true" />
-		
+
 		<cfscript>
 			var theEvent = arguments.event.getArg("theEvent");
-			var errors = theEvent.validate();
-			
-			arguments.event.setArg("message", "Event saved");
-			
+			var errors = getEventService().saveEvent(theEvent);
+
 			if (not StructIsEmpty(errors)) {
 				arguments.event.setArg("message", "Please correct the following errors:");
 				arguments.event.setArg("errors", errors);
 				redirectEvent("fail", "", true);
 			} else {
-				try {
-					getEventService().saveEvent(theEvent);
-				} catch (Any e) {
-					arguments.event.setArg("message", "Saving the event failed. " & e.message);
-					redirectEvent("fail", "", true);
-				}
-				
-				arguments.event.removeArg("theEvent");
+				arguments.event.setArg("message", "Event Saved");
+				arguments.event.removeArg("event");
 				redirectEvent("pass", "", true);
 			}
 		</cfscript>
 	</cffunction>
-		
+
 </cfcomponent>
