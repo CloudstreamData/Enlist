@@ -54,6 +54,26 @@ Notes:
 	<!---
 	PUBLIC FUNCTIONS
 	--->
+	<cffunction name="validate" access="public" returntype="struct" output="false">
+		<cfscript>
+			var errors = StructNew();
+
+			if (Len(Trim(getName())) eq 0) {
+				errors.name = "You must enter a name for the chapter";
+			}
+
+			if (Len(Trim(getLocation())) eq 0) {
+				errors.location = "You must enter a location for the chapter";
+			}
+
+			if (Len(Trim(getStatusCode())) eq 0) {
+				errors.statusCode = "You must enter a status for the chapter";
+			}
+
+			return errors;
+		</cfscript>
+	</cffunction>
+
 	<cffunction name="setInstanceMemento" access="public" returntype="void" output="false">
 		<cfargument name="data" type="struct" required="true" />
 		<cfset setId(arguments.data.id) />

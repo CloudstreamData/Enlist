@@ -48,7 +48,7 @@ Notes:
 	<cffunction name="init" access="public" returntype="Setting" output="false">
 		<cfargument name="id" type="string" required="false" default="" />
 		<cfargument name="pointName" type="string" required="false" default="Point" />
-		<cfargument name="defaultPointValue" type="string" required="false" default="1" />
+		<cfargument name="defaultPointValue" default="1" type="numeric" required="false">
 		<cfargument name="orgName" type="string" required="false" default="Your Organization Name" />
 		<cfargument name="orgDesc" type="string" required="false" default="Some text about your organization" />
 		<cfargument name="orgAddress" type="string" required="false" default="Your organization address" />
@@ -62,6 +62,45 @@ Notes:
 	<!---
 	PUBLIC FUNCTIONS
 	--->
+	<cffunction name="validate" access="public" returntype="struct" output="false">
+		<cfscript>
+			var errors = StructNew();
+
+			if (Len(Trim(getPointName())) eq 0) {
+				errors.pointName = "You must enter a name for your points";
+			}
+
+			if (Len(Trim(getDefaultPointValue())) eq 0 or not isNumeric(getDefaultPointValue())) {
+				errors.defaultPointValue = "Enter your default points value";
+			}
+
+			if (Len(Trim(getOrgName())) eq 0) {
+				errors.orgName = "You must enter an Organization name";
+			}
+
+			if (Trim(getOrgName()) eq "Your Organization Name") {
+				errors.orgName = "Please enter your organizations name";
+			}
+
+			if (Len(Trim(getOrgDesc())) eq 0) {
+				errors.orgDesc = "You must enter an Organization description";
+			}
+
+			if (Trim(getOrgDesc()) eq "Some text about your organization") {
+				errors.orgDesc = "Please enter your organizations description";
+			}
+
+			if (Len(Trim(getOrgDesc())) eq 0) {
+				errors.orgAddress = "You must enter an Organization address";
+			}
+
+			if (Trim(getOrgDesc()) eq "Your organization address") {
+				errors.orgAddress = "Please enter your organizations address";
+			}
+
+			return errors;
+		</cfscript>
+	</cffunction>
 	<cffunction name="setInstanceMemento" access="public" returntype="void" output="false">
 		<cfargument name="data" type="struct" required="true"/>
 		<cfset setId(arguments.data.id) />
