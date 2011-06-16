@@ -25,7 +25,41 @@ $Id$
 
 Notes:
 -->
-<mach-ii>
+<mach-ii version="1.9">
+
+	<properties>
+		<!-- Set as a property so if ColdSpring is reloaded, the SecurityManager has the rules -->
+		<property name="securityRules">
+			<array>
+				<!-- Bypass security rules in development -->
+				<element>
+					<struct>
+						<key name="environment" value="group:development"/>
+						<key name="eventPattern" value=".*"/>
+						<key name="action" value="allow"/>
+					</struct>
+				</element>
+
+				<!-- Allowed events for any request -->
+				<element>
+					<struct>
+						<key name="eventNames" value="home,logout,register"/>
+						<key name="action" value="allow"/>
+					</struct>
+				</element>
+
+				<!-- Restrict by role -->
+				<element>
+					<struct>
+						<key name="eventPattern" value=".*"/>
+						<key name="action" value="requireRole"/>
+						<key name="roleRequired" value="admin"/>
+					</struct>
+				</element>			
+			</array>
+		</property>
+	</properties>
+	
 	<plugins>
 		<plugin name="security" type="enlist.controllers.plugins.SecurityPlugin">
 			<parameters>

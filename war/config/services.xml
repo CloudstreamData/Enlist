@@ -82,7 +82,7 @@ Notes:
 			<ref bean="logFactory"/>
 		</property>
 	</bean>
-	<bean id="securityManager" class="enlist.model.security.SecurityManager">
+	<bean id="securityManager" class="enlist.model.security.SecurityManager" init-method="load">
 		<constructor-arg name="authenticationService">
 			<bean class="enlist.model.security.AuthenticationService" parent="abstractSecurityObject"/>
 		</constructor-arg>
@@ -91,6 +91,15 @@ Notes:
 		</constructor-arg>
 		<constructor-arg name="securityRuleParser">
 			<bean class="enlist.model.security.EventSecurityRuleParser" parent="abstractSecurityObject"/>
+		</constructor-arg>
+		<constructor-arg name="securityRules">
+			<list>${securityRules}</list>
+		</constructor-arg>
+		<constructor-arg name="environmentName">
+			<bean id="environmentName" factory-bean="utilityConnector" factory-method="getEnvironmentName"/>
+		</constructor-arg>
+		<constructor-arg name="environmentGroup">
+			<bean id="environmentGroup" factory-bean="utilityConnector" factory-method="getEnvironmentGroup"/>
 		</constructor-arg>
 	</bean>	
 

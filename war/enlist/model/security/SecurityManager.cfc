@@ -20,32 +20,49 @@
 	conditions of the GNU General Public License cover the whole
 	combination.
 --->
-<cfcomponent extends="BaseSecurityObject" output="false">
+<cfcomponent 
+	extends="BaseSecurityObject" 
+	output="false">
 
+	<!---
+	PROPERTIES
+	--->
+	<cfset variables.environment = structNew() />
+
+	<!---
+	INIALIZATION / CONFIGURATION
+	--->
 	<cffunction name="init" returntype="SecurityManager" access="public" output="false">
 		<cfargument name="authenticationService" type="enlist.model.security.AuthenticationService" required="false"/>
 		<cfargument name="authorizationService" type="enlist.model.security.EventAuthorizationService" required="false"/>
 		<cfargument name="securityRuleParser" type="enlist.model.security.EventSecurityRuleParser" required="false"/>
+		<cfargument name="securityRules" type="any" required="true" />
+		<cfargument name="environmentName" type="string" required="true" />
+		<cfargument name="environmentGroup" type="string" required="true" />
 
-		<cfset super.init()/>
+		<cfset super.init() />
+		
 		<cfif structKeyExists(arguments, "authenticationService")>
-			<cfset setAuthenticationService(arguments.authenticationService)/>
+			<cfset setAuthenticationService(arguments.authenticationService) />
 		</cfif>
 		<cfif structKeyExists(arguments, "authorizationService")>
-			<cfset setAuthorizationService(arguments.authorizationService)/>
+			<cfset setAuthorizationService(arguments.authorizationService) />
 		</cfif>
 		<cfif structKeyExists(arguments, "securityRuleParser")>
-			<cfset setSecurityRuleParser(arguments.securityRuleParser)/>
+			<cfset setSecurityRuleParser(arguments.securityRuleParser) />
 		</cfif>
-		<cfreturn this/>
+		
+		<cfset variables.securityRules = arguments.securityRules />
+
+		<cfset variables.environment.group = arguments.environmentGroup />
+		<cfset variables.environment.name = arguments.environmentName />
+
+		<cfreturn this />
 	</cffunction>
 
 	<cffunction name="load" returntype="void" access="public" output="false">
-		<cfargument name="securityRules" type="any" required="true"/>
-		<cfargument name="environment" type="struct" required="true"/>
-
-		<cfset getAuthorizationService().setEnvironment(arguments.environment)/>
-		<cfset getAuthorizationService().setSecurityRules(getSecurityRuleParser().parse(arguments.securityRules))/>
+		<cfset getAuthorizationService().setEnvironment(variables.environment) />
+		<cfset getAuthorizationService().setSecurityRules(getSecurityRuleParser().parse(variables.securityRules)) />
 	</cffunction>
 
 	<cffunction name="getSecurityRuleParser" returntype="enlist.model.security.EventSecurityRuleParser" access="private" output="false">
