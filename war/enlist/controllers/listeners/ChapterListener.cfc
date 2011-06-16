@@ -21,7 +21,7 @@
     conditions of the GNU General Public License cover the whole
     combination.
 
-$Id: ChapterListener.cfc 166 2011-03-22 07:08:09Z matt_woodward $
+$Id$
 
 Notes:
 --->

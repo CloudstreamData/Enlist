@@ -21,7 +21,7 @@
     conditions of the GNU General Public License cover the whole
     combination.
 
-$Id: $
+$Id$
 
 Notes:
 To get a reference to the current user, perform the following:
