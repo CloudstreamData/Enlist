@@ -1,4 +1,3 @@
-<cfsilent>
 <!---
 
     Enlist - Volunteer Management Software
@@ -26,8 +25,9 @@ $Id$
 
 Notes:
 --->
-	<cfimport prefix="view" taglib="/MachII/customtags/view" />
-</cfsilent>
-<cfoutput>
-<p><view:a event="sys.about">Powered by Enlist - Volunteer Management</view:a></p>
-</cfoutput>
+<cfif thisTag.ExecutionMode IS "start">
+	<cfparam name="attributes.message" type="string" default="#request.event.getArg("message")#" />
+	<cfif Len(attributes.message)>
+		<cfoutput><p class="alert">#attributes.message#</p></cfoutput>
+	</cfif>
+</cfif>

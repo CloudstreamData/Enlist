@@ -22,7 +22,7 @@
 	    conditions of the GNU General Public License cover the whole
 	    combination.
 	
-	$Id: $
+	$Id$
 	
 	Notes:
 	--->
@@ -40,7 +40,8 @@
 
 <cffunction name="displayNavigation" returntype="any" access="public" output="true">
 	<cfargument name="links" type="any" required="true" />
-	<cfset var link = '' />
+	
+	<cfset var link = "" />
 	
 	<ul id="nav">
 	<cfloop index="link" from="1" to="#arrayLen(arguments.links)#">
@@ -50,4 +51,3 @@
 	</cfloop>
 	</ul>
 </cffunction>
-

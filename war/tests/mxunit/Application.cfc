@@ -19,6 +19,10 @@
 	making a combined work based on this library.  Thus, the terms and
 	conditions of the GNU General Public License cover the whole
 	combination.
+	
+$Id$
+
+Notes:
 --->
 <cfcomponent>
 

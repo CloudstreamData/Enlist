@@ -26,12 +26,10 @@
 	
 	Notes:
 	--->
-	<cfimport prefix="form" taglib="/MachII/customtags/form">
-	<cfset chapters = event.getArg("chapters") />
-	<cfset states = getProperty("usStates") />
-	<cfset roles= getProperty("userRoles") />
-	<cfset statuses = getProperty("userStatuses") />
+	<cfimport prefix="form" taglib="/MachII/customtags/form" />
+	<cfset copyToScope("${event.chapters},states=${properties.usStates},roles=${properties.userRoles},statuses=${userStatuses}") />
 </cfsilent>
+<cfoutput>
 <form:form actionEvent="user.doSearch">
 	<table>
 		<tr>
@@ -51,11 +49,11 @@
 			<td><form:input path="phone" size="40" maxlength="40" /></td>
 		</tr>
 		<tr>
-			<th>Address</th>
+			<th>Address 1</th>
 			<td><form:input path="address1" size="40" maxlength="200" /></td>
 		</tr>
 		<tr>
-			<th>Address (cont.)</th>
+			<th>Address 2</th>
 			<td><form:input path="address2" size="40" maxlength="200" /></td>
 		</tr>
 		<tr>
@@ -108,3 +106,4 @@
 		</tr>
 	</table>
 </form:form>
+</cfoutput>

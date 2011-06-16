@@ -19,25 +19,30 @@
 	making a combined work based on this library.  Thus, the terms and
 	conditions of the GNU General Public License cover the whole
 	combination.
+
+$Id$
+
+Notes:
 --->
 <cfcomponent>
 
 	<cffunction name="assertBeanProperty" returntype="boolean" access="public" output="false">
-		<cfargument name="properties" type="string" required="true"/>
-		<cfargument name="bean" type="any" required="true"/>
+		<cfargument name="properties" type="string" required="true" />
+		<cfargument name="bean" type="any" required="true" />
 
-		<cfset var property = ""/>
-		<cfset var value = ""/>
+		<cfset var property = "" />
+		<cfset var value = "" />
 
 		<cfloop list="#arguments.properties#" index="property">
 			<cftry>
-				<cfinvoke component="#arguments.bean#" method="get#property#" returnVariable="value"/>
+				<cfinvoke component="#arguments.bean#" method="get#property#" returnVariable="value" />
 				<cfcatch>
-					<cfreturn false/>
+					<cfreturn false />
 				</cfcatch>
 			</cftry>
 		</cfloop>
-		<cfreturn true/>
+		
+		<cfreturn true />
 	</cffunction>
 
 </cfcomponent>

@@ -22,20 +22,24 @@
 	    conditions of the GNU General Public License cover the whole
 	    combination.
 
-	$Id: $
+	$Id$
 
 	Notes:
 	--->
-	<cfimport prefix="form" taglib="/MachII/customtags/form">
-	<cfimport prefix="tags" taglib="/customtags">
+	<cfimport prefix="form" taglib="/MachII/customtags/form" />
+	<cfimport prefix="view" taglib="/MachII/customtags/view" />
+	<cfimport prefix="tags" taglib="/customtags" />
+	
+	<view:script>
+		$(document).ready(function(){
+			$("#chapterForm").validate();
+		});
+	</view:script>
 </cfsilent>
 <cfoutput>
-	<cfif event.getArg("message") neq "">
-		<p class="alert">#event.getArg("message")#</p>
-	</cfif>
-	<!--- Output any errors if we have some --->
-	<tags:displayerror errors="#event.getArg("errors",structNew())#" />
-</cfoutput>
+<tags:displaymesssage />
+<tags:displayerror />
+
 <form:form actionEvent="chapter.save" bind="chapter" id="chapterForm">
 	<table>
 		<tr>
@@ -61,8 +65,4 @@
 		</tr>
 	</table>
 </form:form>
-<script>
-	$(document).ready(function(){
-		$("#chapterForm").validate();
-	});
-</script>
+</cfoutput>

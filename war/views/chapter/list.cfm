@@ -22,13 +22,14 @@
 	    conditions of the GNU General Public License cover the whole
 	    combination.
 	
-	$Id: $
+	$Id$
 	
 	Notes:
 	--->
 	<cfimport prefix="view" taglib="/MachII/customtags/view">
-	<cfset chapters = event.getArg("chapters")>
+	<cfset copyToScope("${event.chapters}") />
 </cfsilent>
+<cfoutput>
 <p><view:a event="chapter.edit">Create a new chapter</view:a></p>
 
 <table>
@@ -37,7 +38,7 @@
 	<th>Location</th>
 	<th>Status</th>
 </tr>
-<cfoutput>
+
 <cfloop from="1" to="#arrayLen(chapters)#" index="i">
 	<tr>
 		<td>#chapters[i].getName()#</td>
@@ -46,7 +47,7 @@
 		<td><view:a event="chapter.edit" p:id="#chapters[i].getID()#">Edit</view:a></td>
 	</tr>
 </cfloop>
-</cfoutput>
 </table>
 
 <p><view:a event="chapter.edit">Create a new chapter</view:a></p>
+</cfoutput>

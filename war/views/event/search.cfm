@@ -27,19 +27,16 @@
 	Notes:
 	--->
 	<cfimport prefix="form" taglib="/MachII/customtags/form" />
-	<cfset statuses = getProperty("eventStatuses") />
-</cfsilent>
-
-<cfsavecontent variable="js">
-	<script>
+	<cfimport prefix="view" taglib="/MachII/customtags/view" />
+	<cfset copyToScope("statuses=${properties.eventStatuses}") />
+	
+	<view:script>
 		$(function() {
 			$( "#startDate" ).datepicker();
 			$( "#endDate" ).datepicker();
 		});
-	</script>
-
-</cfsavecontent>
-<cfhtmlhead text="#js#">
+	</view:script>	
+</cfsilent>
 
 <form:form actionEvent="event.doSearch">
 	<table>

@@ -21,7 +21,7 @@
     conditions of the GNU General Public License cover the whole
     combination.
 
-$Id: $
+$Id$
 
 Notes:
 This file must exist, but need not have any code in it.

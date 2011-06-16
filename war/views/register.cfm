@@ -1,56 +1,52 @@
 <cfsilent>
-	<!---
+<!---
 
-	    Enlist - Volunteer Management Software
-	    Copyright (C) 2011 GreatBizTools, LLC
+    Enlist - Volunteer Management Software
+    Copyright (C) 2011 GreatBizTools, LLC
 
-	    This program is free software: you can redistribute it and/or modify
-	    it under the terms of the GNU General Public License as published by
-	    the Free Software Foundation, either version 3 of the License, or
-	    (at your option) any later version.
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-	    This program is distributed in the hope that it will be useful,
-	    but WITHOUT ANY WARRANTY; without even the implied warranty of
-	    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	    GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-	    You should have received a copy of the GNU General Public License
-	    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-	    Linking this library statically or dynamically with other modules is
-	    making a combined work based on this library.  Thus, the terms and
-	    conditions of the GNU General Public License cover the whole
-	    combination.
+    Linking this library statically or dynamically with other modules is
+    making a combined work based on this library.  Thus, the terms and
+    conditions of the GNU General Public License cover the whole
+    combination.
 
-	$Id$
+$Id$
 
-	Notes:
-	--->
+Notes:
+--->
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
 	<cfimport prefix="form" taglib="/MachII/customtags/form" />
+	<cfimport prefix="tags" taglib="/customtags" />
 	<view:meta type="title" content="Register" />
-	<cfset states = getProperty("usStates") />
-	<cfset chapters = event.getArg("chapters") />
-	<cfset user = event.getArg("user") />
-	<cfset googleEmail = event.getArg("googleEmail") />
-	<cfset user.setgoogleEmail(googleEmail) />
+	
+	<cfset copyToScope("states=${properties.usStates},${event.chapters},${event.user},${event.googleEmail}") />
+	<cfset variables.user.setgoogleEmail(googleEmail) />
+	
+	<view:script>
+	$(document).ready(function(){
+		$("#registerForm").validate();
+	});
+</view:script>
 </cfsilent>
 <cfoutput>
 <h2>Register</h2>
 
-<cfif event.isArgDefined("message")>
-	<p><em>#event.getArg("message")#</em></p>
-</cfif>
+<tags:displaymessage />
 
-<cfif event.isArgDefined("errors") and IsStruct(event.getArg("errors")) 
-		and not StructIsEmpty(event.getArg("errors"))>
-	<cfset errors = event.getArg("errors") />
-	<ul>
-	<cfloop collection="#errors#" item="key">
-		<li>#errors[key]#</li>
-	</cfloop>
-	</ul>
-</cfif>
+<!--- Output any errors if we have some --->
+<tags:displayerror />
 
 <form:form actionEvent="register_process" bind="user" id="registerForm">
 	<table>
@@ -91,7 +87,7 @@
 			<th>Alternative Email</th>
 			<td><form:input path="altEmail" size="40" maxlength="200" /></td>
 		</tr>
-		<cfif arrayLen( chapters )>
+		<cfif ArrayLen( chapters )>
 			<tr>
 				<th>Chapter</th>
 				<td>
@@ -110,8 +106,3 @@
 	</table>
 </form:form>
 </cfoutput>
-<script>
-	$(document).ready(function(){
-		$("#registerForm").validate();
-	});
-</script>

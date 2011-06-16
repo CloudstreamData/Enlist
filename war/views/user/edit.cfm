@@ -1,45 +1,46 @@
 ﻿<cfsilent>
-	<!---
+<!---
 
-	    Enlist - Volunteer Management Software
-	    Copyright (C) 2011 GreatBizTools, LLC
+    Enlist - Volunteer Management Software
+    Copyright (C) 2011 GreatBizTools, LLC
 
-	    This program is free software: you can redistribute it and/or modify
-	    it under the terms of the GNU General Public License as published by
-	    the Free Software Foundation, either version 3 of the License, or
-	    (at your option) any later version.
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-	    This program is distributed in the hope that it will be useful,
-	    but WITHOUT ANY WARRANTY; without even the implied warranty of
-	    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	    GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-	    You should have received a copy of the GNU General Public License
-	    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-	    Linking this library statically or dynamically with other modules is
-	    making a combined work based on this library.  Thus, the terms and
-	    conditions of the GNU General Public License cover the whole
-	    combination.
+    Linking this library statically or dynamically with other modules is
+    making a combined work based on this library.  Thus, the terms and
+    conditions of the GNU General Public License cover the whole
+    combination.
 
-	$Id$
+$Id$
 
-	Notes:
-	--->
-	<cfimport prefix="form" taglib="/MachII/customtags/form">
-	<cfimport prefix="tags" taglib="/customtags">
-	<cfset chapters = event.getArg("chapters") />
-	<cfset states = getProperty("usStates") />
-	<cfset roles = getProperty("userRoles") />
-	<cfset statuses = getProperty("userStatuses") />
+Notes:
+--->
+	<cfimport prefix="form" taglib="/MachII/customtags/form" />
+	<cfimport prefix="view" taglib="/MachII/customtags/view" />
+	<cfimport prefix="tags" taglib="/customtags" />
+	<cfset copyToScope("${event.chapters},states=${properties.usStates},roles=${properties.userRoles},statuses=${userStatuses}") />
+	
+	<view:script>
+		$(document).ready(function(){
+			$("#userForm").validate();
+		});
+	</view:script>
 </cfsilent>
 <cfoutput>
-	<cfif event.getArg("message") neq "">
-		<p class="alert">#event.getArg("message")#</p>
-	</cfif>
-	<!--- Output any errors if we have some --->
-	<tags:displayerror errors="#event.getArg("errors",structNew())#" />
-</cfoutput>
+<tags:displaymessage />
+<tags:displayerror />
+
 <form:form actionEvent="user.save" bind="user" id="userForm">
 	<table>
 		<tr>
@@ -83,12 +84,12 @@
 			<th>Alternative Email</th>
 			<td><form:input path="altEmail" size="40" maxlength="200" /></td>
 		</tr>
-		<cfif arrayLen( chapters )>
+		<cfif ArrayLen( chapters )>
 			<tr>
 				<th>Chapter</th>
 				<td>
 					<form:select path="chapterId">
-						<cfloop from="1" to="#arrayLen(chapters)#" index="i">
+						<cfloop from="1" to="#ArrayLen(chapters)#" index="i">
 							<form:option value="#chapters[i].getID()#" label="#chapters[i].getName()#" />
 						</cfloop>
 					</form:select>
@@ -117,8 +118,4 @@
 		</tr>
 	</table>
 </form:form>
-<script>
-	$(document).ready(function(){
-		$("#userForm").validate();
-	});
-</script>
+</cfoutput>

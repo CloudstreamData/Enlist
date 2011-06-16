@@ -22,20 +22,23 @@
 	    conditions of the GNU General Public License cover the whole
 	    combination.
 
-	$Id: $
+	$Id$
 
 	Notes:
 	--->
-	<cfimport prefix="form" taglib="/MachII/customtags/form">
-	<cfimport prefix="tags" taglib="/customtags">
+	<cfimport prefix="form" taglib="/MachII/customtags/form" />
+	<cfimport prefix="view" taglib="/MachII/customtags/view" />
+	<cfimport prefix="tags" taglib="/customtags" />
+	
+	<view:script>
+		$(document).ready(function(){
+			$("#settingForm").validate();
+		});
+	</view:script>
 </cfsilent>
 <cfoutput>
-	<cfif event.getArg("message") neq "">
-		<p class="alert">#event.getArg("message")#</p>
-	</cfif>
-	<!--- Output any errors if we have some --->
-	<tags:displayerror errors="#event.getArg("errors",structNew())#" />
-</cfoutput>
+<tags:displaymessage />
+<tags:displayerror />
 
 <form:form actionEvent="setting.save" bind="setting" id="settingForm">
 	<table>
@@ -61,10 +64,12 @@
 		</tr>
 		<tr>
 			<th nowrap="nowrap">Send Emails:</th>
-			<td><form:select path="sendEmail">
-				<form:option value="true" label="Yes" />
-				<form:option value="false" label="No" />
-			</form:select></td>
+			<td>
+				<form:select path="sendEmail">
+					<form:option value="true" label="Yes" />
+					<form:option value="false" label="No" />
+				</form:select>
+			</td>
 		</tr>
 		<tr>
 			<td><form:hidden name="id" path="id" /></td>
@@ -72,8 +77,4 @@
 		</tr>
 	</table>
 </form:form>
-<script>
-	$(document).ready(function(){
-		$("#settingForm").validate();
-	});
-</script>
+</cfoutput>

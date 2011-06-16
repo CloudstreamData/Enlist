@@ -19,26 +19,37 @@
 	making a combined work based on this library.  Thus, the terms and
 	conditions of the GNU General Public License cover the whole
 	combination.
+	
+$Id$
+
+Notes:
 --->
 <cfcomponent output="false" extends="tests.mxunit.BaseTest">
 
+	<!---
+	INITIALIZATION / CONFIGURATION
+	--->
 	<cffunction name="setup" returntype="void" access="public" output="false">
-		<cfset super.setup()/>
+		<cfset super.setup() />
 	</cffunction>
 
+	<!---
+	PUBLIC FUNCTIONS - TEST CASES
+	--->
 	<cffunction name="testLifecycle" returntype="void" access="public" output="false">
-		<cfset var cfg = getConfig()/>
-		<cfset var result = structNew()/>
-		<cfset var eventGateway = getServiceBean("eventGateway")/>
 
-		<cfset result.newEvent = createObject("component", "enlist.model.event.Event").init(argumentCollection=cfg.testData.event)/>
-		<cfset assertBeanProperty(structKeyList(cfg.testData.event), result.newEvent)/>
+		<cfset var cfg = getConfig() />
+		<cfset var result = structNew() />
+		<cfset var eventGateway = getServiceBean("eventGateway") />
 
-		<cfset eventGateway.saveEvent(result.newEvent)/>
+		<cfset result.newEvent = createObject("component", "enlist.model.event.Event").init(argumentCollection=cfg.testData.event) />
+		<cfset assertBeanProperty(structKeyList(cfg.testData.event), result.newEvent) />
 
-		<cfset result.savedEvent = eventGateway.getEvent(result.newEvent.getId())/>
+		<cfset eventGateway.saveEvent(result.newEvent) />
 
-		<cfset assertBeanProperty(structKeyList(cfg.testData.event), result.savedEvent)/>
+		<cfset result.savedEvent = eventGateway.getEvent(result.newEvent.getId()) />
+
+		<cfset assertBeanProperty(structKeyList(cfg.testData.event), result.savedEvent) />
 	</cffunction>
 
 </cfcomponent>

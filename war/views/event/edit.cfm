@@ -33,13 +33,8 @@
 	<cfset copyToScope("statuses=${properties.eventStatuses}") />
 </cfsilent>
 <cfoutput>
-	<cfif Len(event.getArg("message"))>
-		<p class="alert">#event.getArg("message")#</p>
-	</cfif>
-
-	<!--- Output any errors if we have some (the 'errors' attribute by default uses event.getArg("errors", StructNew())) --->
+	<tags:displaymessage />
 	<tags:displayerror />
-</cfoutput>
 
 <form:form actionEvent="event.save" bind="theEvent" id="eventForm">
 	<table>
@@ -71,6 +66,7 @@
 		</tr>
 	</table>
 </form:form>
+</cfoutput>
 
 <view:script outputType="head">
 	$(function() {

@@ -22,7 +22,7 @@
 	    conditions of the GNU General Public License cover the whole
 	    combination.
 	
-	$Id: $
+	$Id$
 	
 	Notes:
 	--->
@@ -32,20 +32,20 @@
 <h3>Mach-II Exception</h3>
 <table>
 	<tr>
-		<td valign="top"><h4>Message</h4></td>
-		<td valign="top"><p>#variables.exception.getMessage()#</p></td>
+		<td><h4>Message</h4></td>
+		<td><p>#variables.exception.getMessage()#</p></td>
 	</tr>
 	<tr>
-		<td valign="top"><h4>Detail</h4></td>
-		<td valign="top"><p>#variables.exception.getDetail()#</p></td>
+		<td><h4>Detail</h4></td>
+		<td><p>#variables.exception.getDetail()#</p></td>
 	</tr>
 	<tr>
-		<td valign="top"><h4>Extended Info</h4></td>
-		<td valign="top"><p>#variables.exception.getExtendedInfo()#</p></td>
+		<td><h4>Extended Info</h4></td>
+		<td><p>#variables.exception.getExtendedInfo()#</p></td>
 	</tr>
 	<tr>
-		<td valign="top"><h4>Tag Context</h4></td>
-		<td valign="top">
+		<td><h4>Tag Context</h4></td>
+		<td>
 			<cfset variables.tagCtxArr = variables.exception.getTagContext() />
 			<cfloop index="i" from="1" to="#ArrayLen(variables.tagCtxArr)#">
 				<cfset variables.tagCtx = variables.tagCtxArr[i] />
@@ -54,8 +54,8 @@
 		</td>
 	</tr>
 	<tr>
-		<td valign="top"><h4>Caught Exception</h4></td>
-		<td valign="top"><cfdump var="#variables.exception.getCaughtException()#" expand="false" /></td>
+		<td><h4>Caught Exception</h4></td>
+		<td><cfdump var="#variables.exception.getCaughtException()#" expand="false" /></td>
 	</tr>
 </table>
 </cfoutput>
