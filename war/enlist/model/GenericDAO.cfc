@@ -40,13 +40,15 @@ Notes:
 	INITIALIZATION / CONFIGURATION
 	--->
 	<cffunction name="init" access="public" returntype="any" output="false">
-		<cfargument name="entityComponentPath" type="string" required="true" hint="Component path for entity type (e.g., 'foo.model.user.User')." />
-		<cfargument name="kind" type="string" required="false" default="" hint="Google BigTable 'kind' for all CRUD operations of this gateway instance." />
+		<cfargument name="entityComponentPath" type="string" required="true" 
+			hint="Component path for entity type (e.g., 'foo.model.user.User')." />
+		<cfargument name="kind" type="string" required="false" default="" 
+			hint="Google BigTable 'kind' for all CRUD operations of this gateway instance." />
 
 		<cfset setEntityComponentPath( arguments.entityComponentPath ) />
 
-		<cfif arguments.kind eq "">
-			<cfset arguments.kind = listLast( arguments.entityComponentPath, "." )/>
+		<cfif NOT Len(arguments.kind)>
+			<cfset arguments.kind = listLast( arguments.entityComponentPath, "." ) />
 		</cfif>
 		<cfset setKind( arguments.kind ) />
 
@@ -108,7 +110,7 @@ Notes:
 
 		<cfset var whereClause = propertyMapToWhereClause( arguments.map ) />
 		
-		<cfif len( whereClause )>
+		<cfif Len( whereClause )>
 			<cfset var qryResult = googleQuery( "select from #getKind()# #whereClause#" ) />
 	
 			<cfif arrayLen( qryResult )>
@@ -136,28 +138,28 @@ Notes:
 	<!---
 	PROTECTED FUNCTIONS
 	--->
-	<cffunction name="propertyMapToWhereClause" returntype="string" access="private" output="false">
+	<cffunction name="propertyMapToWhereClause" returntype="string" access="private" output="false"
+		hint="Builds a 'where' clause for Google BigTable based on the incoming map.">
 		<cfargument name="map" type="struct" required="true"
 			hint="Property key/value pairs to filter on." />
-		<cfscript>
-			var whereClause = "";
-			var key = "";
 
-			for ( key in arguments.map )
-			{
-				if ( len( arguments.map[ key ] ) )
-				{
-					if ( len( whereClause ) )
-						whereClause = whereClause & " &&";
-					else
-						whereClause = "where";
-					
-					whereClause = whereClause & " #key# == '#trim( arguments.map[ key ] )#'";
-				}
-			}
+		<cfset var whereClause = "" />
+		<cfset var key = "" />
 
-			return whereClause;
-		</cfscript>
+		<cfloop collection="#arguments.map#" item="key">
+			<cfif Len( arguments.map[ key ] ) >
+				<cfif Len( whereClause )>
+						<cfset whereClause = whereClause & " &&" />
+				<cfelse>
+						<cfset whereClause = "where" />
+				</cfif>
+				
+				<cfset whereClause = whereClause & " #key# == '" & Trim( arguments.map[ key ] ) & "'" />
+			</cfif>
+		</cfloop>
+
+			
+		<cfreturn whereClause />
 	</cffunction>
 
 	<!---
