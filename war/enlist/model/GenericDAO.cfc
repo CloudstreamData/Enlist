@@ -109,11 +109,12 @@ Notes:
 			hint="Property key/value pairs to filter on." />
 
 		<cfset var whereClause = propertyMapToWhereClause( arguments.map ) />
+		<cfset var qryResult = "" />
 		
 		<cfif Len( whereClause )>
-			<cfset var qryResult = googleQuery( "select from #getKind()# #whereClause#" ) />
+			<cfset qryResult = googleQuery( "select from #getKind()# #whereClause#" ) />
 	
-			<cfif arrayLen( qryResult )>
+			<cfif ArrayLen( qryResult )>
 				<cfreturn qryResult[1] />
 			</cfif>
 		</cfif>

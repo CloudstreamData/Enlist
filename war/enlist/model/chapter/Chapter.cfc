@@ -54,6 +54,10 @@ Notes:
 	<!---
 	PUBLIC FUNCTIONS
 	--->
+	<cffunction name="getDisplayName" access="public" returntype="string" output="false">
+		<cfreturn getName() & " (" & getLocation() & ")" />
+	</cffunction>
+	
 	<cffunction name="validate" access="public" returntype="struct" output="false">
 		<cfscript>
 			var errors = StructNew();
@@ -76,12 +80,14 @@ Notes:
 
 	<cffunction name="setInstanceMemento" access="public" returntype="void" output="false">
 		<cfargument name="data" type="struct" required="true" />
+		
 		<cfset setId(arguments.data.id) />
 		<cfset setName(arguments.data.name) />
 		<cfset setLocation(arguments.data.location) />
 		<cfset setStatusCode(arguments.data.statusCode) />
  	</cffunction>
 	<cffunction name="getInstanceMemento" access="public" returntype="struct" output="false">
+		
 		<cfset var data = structnew() />
 		<cfset var fieldname = "" />
 

@@ -26,10 +26,17 @@
 	
 	Notes:
 	--->
+	<cfimport prefix="view" taglib="/MachII/customtags/view" />
 	<cfimport prefix="form" taglib="/MachII/customtags/form" />
-	<cfset copyToScope("${event.chapters},states=${properties.usStates},roles=${properties.userRoles},statuses=${userStatuses}") />
+	<cfimport prefix="tags" taglib="/customtags" />
+	<cfset copyToScope("${event.chapters},states=${properties.usStates},roles=${properties.userRoles},statuses=${properties.userStatuses}") />
+	
+	<view:meta type="title" content="Search Users" />
 </cfsilent>
 <cfoutput>
+
+<h3>Search Users</h3>
+	
 <form:form actionEvent="user.doSearch">
 	<table>
 		<tr>
@@ -73,17 +80,19 @@
 			<th>Alternative Email</th>
 			<td><form:input path="altEmail" size="40" maxlength="200" /></td>
 		</tr>
+		<cfif ArrayLen(variables.chapters)>
 		<tr>
 			<th>Chapter</th>
 			<td>
 				<form:select path="chapterId">
 					<form:option label="--Select to search--" value="" />
-					<cfloop from="1" to="#arrayLen(chapters)#" index="i">
-						<form:option value="#chapters[i].getID()#" label="#chapters[i].getName()#" />
+					<cfloop from="1" to="#ArrayLen(variables.chapters)#" index="i">
+						<form:option value="#variables.chapters[i].getID()#" label="#variables.chapters[i].getName()#" />
 					</cfloop>
 				</form:select>
 			</td>
 		</tr>
+		</cfif>
 		<tr>
 			<th>Status</th>
 			<td>

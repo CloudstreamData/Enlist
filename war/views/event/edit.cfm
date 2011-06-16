@@ -30,32 +30,60 @@
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
 	<cfimport prefix="tags" taglib="/customtags">
 	
-	<cfset copyToScope("statuses=${properties.eventStatuses}") />
+	<cfset copyToScope("theEvent=${event.theEvent},statuses=${properties.eventStatuses}") />
+	
+	<cfif NOT Len(variables.theEvent.getId())>
+		<cfset variables.type = "New" />
+		<view:meta type="title" content="New Event" />
+	<cfelse>
+		<cfset variables.type = "Edit" />
+		<view:meta type="title" content="Edit Event | #variables.theEvent.getName()#" />
+	</cfif>
+	
+	<view:script>
+		$(function() {
+			$( "#startDate" ).datepicker();
+			$( "#endDate" ).datepicker();
+		});
+	
+		$(document).ready(function(){
+			jQuery.validator.addMethod("greaterThan", function(value, element, params) {
+				if (!/Invalid|NaN/.test(new Date(value))) {
+					return new Date(value) > new Date($(params).val());
+				}
+				return isNaN(value) && isNaN($(params).val()) || (parseFloat(value) > parseFloat($(params).val()));
+			},'Must be greater than {0}.');
+			$("#eventForm").validate();
+			$("#endDate").rules("add", {greaterThan: "#startDate"});
+		});
+	</view:script>
 </cfsilent>
 <cfoutput>
-	<tags:displaymessage />
-	<tags:displayerror />
+<tags:displaymessage />
+<tags:displayerror />
+
+<h3>#variables.type# Event</h3>
 
 <form:form actionEvent="event.save" bind="theEvent" id="eventForm">
 	<table>
 		<tr>
-			<th>Name:</th>
+			<th>Name</th>
 			<td><form:input path="name" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
-			<th>Location:</th>
+			<th>Location</th>
 			<td><form:input path="location" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
-			<th nowrap="nowrap">Start Date:</th>
+			<th nowrap="nowrap">Start Date</th>
 			<td><form:input path="startDate" id="startDate" size="10" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
-			<th nowrap="nowrap">End Date:</th>
+			<th nowrap="nowrap">End Date</th>
 			<td><form:input path="endDate" id="endDate" size="10" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
-			<th nowrap="nowrap">Status:</th>
+			<th nowrap="nowrap">Status</th>
 			<td><form:select path="status" items="#statuses#" class="required">
 				<form:option value="" label="Choose a status" />
 			</form:select></td>
@@ -67,21 +95,3 @@
 	</table>
 </form:form>
 </cfoutput>
-
-<view:script outputType="head">
-	$(function() {
-		$( "#startDate" ).datepicker();
-		$( "#endDate" ).datepicker();
-	});
-
-	$(document).ready(function(){
-		jQuery.validator.addMethod("greaterThan", function(value, element, params) {
-			if (!/Invalid|NaN/.test(new Date(value))) {
-				return new Date(value) > new Date($(params).val());
-			}
-			return isNaN(value) && isNaN($(params).val()) || (parseFloat(value) > parseFloat($(params).val()));
-		},'Must be greater than {0}.');
-		$("#eventForm").validate();
-		$("#endDate").rules("add", {greaterThan: "#startDate"});
-	});
-</view:script>

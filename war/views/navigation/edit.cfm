@@ -30,6 +30,16 @@
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
 	<cfimport prefix="tags" taglib="/customtags" />
 	
+	<cfset copyToScope("${event.navigation}") />
+	
+	<cfif NOT Len(variables.navigation.getId())>
+		<cfset variables.type = "New" />
+		<view:meta type="title" content="New Navigation Link" />
+	<cfelse>
+		<cfset variables.type = "Edit" />
+		<view:meta type="title" content="Edit Navigation Link | #variables.chapter.getName()#" />
+	</cfif>
+
 	<view:script>
 		$(document).ready(function(){
 			$("#navForm").validate();
@@ -40,19 +50,19 @@
 <tags:displaymessage />
 <tags:displayerror />
 
-<form:form actionEvent="navigation.save" bind="event" id="navForm">
+<form:form actionEvent="navigation.save" bind="navigation" id="navForm">
 	<table>
 		<tr>
 			<th>Name:</th>
-			<td><form:input path="name" size="40" maxlength="200" value="#event.getArg( "navigation" ).getName()#" class="required" /></td>
+			<td><form:input path="name" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
 			<th>Location:</th>
-			<td><form:input path="eventName" size="40" maxlength="200" value="#event.getArg( "navigation" ).getEventName()#"  class="required" /></td>
+			<td><form:input path="eventName" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
 			<td><form:hidden name="id" path="id" value="#event.getArg( "navigation" ).getID()#" /></td>
-			<td colspan="3"><form:button type="submit" name="save" value="Save Navigation" /></td>
+			<td colspan="3"><form:button type="submit" name="save" value="Save Navigation Link" /></td>
 		</tr>
 	</table>
 </form:form>

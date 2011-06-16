@@ -57,4 +57,10 @@ Notes:
 	<li><a href="#BuildUrl('activity.list')#">List All Activities</a></li>
 	<li><a href="#BuildUrl('activity.search')#">Search Activities</a></li>
 </ul>
+
+<p><strong>Chapters</strong></p>
+<ul>
+	<li><a href="#BuildUrl('chapter.edit')#">Add New Chapter</a></li>
+	<li><a href="#BuildUrl('chapter.list')#">List All Chapters</a></li>
+</ul>
 </cfoutput>

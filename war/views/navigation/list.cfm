@@ -28,24 +28,28 @@ Notes:
 --->
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
 	<cfset copyToScope("${event.navigations}") />
+	
+	<view:meta type="title" content="Navigation Link List" />
 </cfsilent>
 <cfoutput>
-<p><view:a event="navigation.edit">Create a new navigation</view:a></p>
+<p><view:a event="navigation.edit">Create a new navigation link</view:a></p>
 
 <table>
 	<tr>
 		<th>Name</th>
 		<th>Event</th>
+		<th>Actions</th>
 	</tr>
 <cfloop from="1" to="#ArrayLen(variables.navigations)#" index="i">
 	<tr>
 		<td>#variables.navigations[i].getName()#</td>
 		<td>#variables.navigations[i].geteventName()#</td>
-		<td><view:a event="navigation.edit" p:id="#variables.navigations[i].getID()#">Edit</view:a></td>
-		<td><view:a event="navigation.delete" p:id="#variables.navigations[i].getID()#" onClick="return confirm('Sure?')">Delete</view:a></td>
+		<td>
+			<view:a event="navigation.edit" p:id="#variables.navigations[i].getID()#">Edit</view:a> | <view:a event="navigation.delete" p:id="#variables.navigations[i].getID()#" onClick="return confirm('Sure?')">Delete</view:a>
+		</td>
 	</tr>	
 </cfloop> 
 </table>
 
-<p><view:a event="navigation.edit">Create a new navigation</view:a></p>
+<p><view:a event="navigation.edit">Create a new navigation link</view:a></p>
 </cfoutput>

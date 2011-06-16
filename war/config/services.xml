@@ -103,7 +103,7 @@ Notes:
 	</bean>
 	<bean id="navigationLinkGateway" class="enlist.model.navigation.NavigationLinkGateway">
 		<constructor-arg name="entityComponentPath">
-			<value>enlist.model.navigation.NavigationLinkGateway</value>
+			<value>enlist.model.navigation.NavigationLink</value>
 		</constructor-arg>
 		<constructor-arg name="kind">
 			<value>NavigationLink</value>

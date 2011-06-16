@@ -58,7 +58,7 @@ Notes:
 	</view:script>
 </cfsilent>
 <cfoutput>
-<tags:displaymesssage />
+<tags:displaymessage />
 <tags:displayerror />
 
 <h3>#variables.type# Activity</h3>

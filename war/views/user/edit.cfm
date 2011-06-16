@@ -29,8 +29,18 @@ Notes:
 	<cfimport prefix="form" taglib="/MachII/customtags/form" />
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
 	<cfimport prefix="tags" taglib="/customtags" />
-	<cfset copyToScope("${event.chapters},states=${properties.usStates},roles=${properties.userRoles},statuses=${userStatuses}") />
+	<cfset copyToScope("${event.user},${event.chapters},states=${properties.usStates},roles=${properties.userRoles},statuses=${properties.userStatuses}") />
+
+	<cfif NOT Len(variables.user.getId())>
+		<cfset variables.type = "New" />
+		<cfset variables.title = "New User" />
+	<cfelse>
+		<cfset variables.type = "Edit" />
+		<cfset variables.title = "Edit User | #variables.user.getDisplayName()#" />
+	</cfif>
 	
+	<view:meta type="title" content="#variables.title#" />
+
 	<view:script>
 		$(document).ready(function(){
 			$("#userForm").validate();
@@ -40,6 +50,8 @@ Notes:
 <cfoutput>
 <tags:displaymessage />
 <tags:displayerror />
+
+<h3>#variables.title#</h3>
 
 <form:form actionEvent="user.save" bind="user" id="userForm">
 	<table>
@@ -60,11 +72,11 @@ Notes:
 			<td><form:input path="phone" size="40" maxlength="40" /></td>
 		</tr>
 		<tr>
-			<th>Address</th>
+			<th>Address 1</th>
 			<td><form:input path="address1" size="40" maxlength="200" /></td>
 		</tr>
 		<tr>
-			<th>Address (cont.)</th>
+			<th>Address 2</th>
 			<td><form:input path="address2" size="40" maxlength="200" /></td>
 		</tr>
 		<tr>

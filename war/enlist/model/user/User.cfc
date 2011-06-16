@@ -30,7 +30,6 @@ Notes:
 	output="false"
 	hint="A bean which models the User form.">
 
-
 	<!---
 	PROPERTIES
 	--->
@@ -78,8 +77,13 @@ Notes:
 	<!---
 	PUBLIC FUNCTIONS
 	--->
+	<cffunction name="getDisplayName" access="public" returntype="string" output="false">
+		<cfreturn getFirstName() & " " & getLastName() />
+	</cffunction>
+	
 	<cffunction name="setInstanceMemento" access="public" returntype="void" output="false">
 		<cfargument name="data" type="struct" required="true"/>
+		
 		<cfset setId(arguments.data.id) />
 		<cfset setStatus(arguments.data.status) />
 		<cfset setRole(arguments.data.role) />
@@ -96,7 +100,9 @@ Notes:
 		<cfset setZip(arguments.data.zip) />
 		<cfset setImportHashCode(arguments.data.importHashCode) />
 	</cffunction>
-	<cffunction name="getInstanceMemento" access="public"returntype="struct" output="false" >
+
+	<cffunction name="getInstanceMemento" access="public"returntype="struct" output="false">
+		
 		<cfset var data = structnew() />
 		<cfset var fieldname = "" />
 

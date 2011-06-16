@@ -26,19 +26,23 @@
 	
 	Notes:
 	--->
-	<cfimport prefix="view" taglib="/MachII/customtags/view">
+	<cfimport prefix="form" taglib="/MachII/customtags/form" />
+	<cfimport prefix="view" taglib="/MachII/customtags/view" />
+	<cfimport prefix="tags" taglib="/customtags" />
+
 	<cfset copyToScope("${event.chapters}") />
+	
+	<view:meta type="title" content="List Chapters" />
 </cfsilent>
 <cfoutput>
 <p><view:a event="chapter.edit">Create a new chapter</view:a></p>
 
 <table>
-<tr>
-	<th>Chapter</th>
-	<th>Location</th>
-	<th>Status</th>
-</tr>
-
+	<tr>
+		<th>Chapter</th>
+		<th>Location</th>
+		<th>Status</th>
+	</tr>
 <cfloop from="1" to="#arrayLen(chapters)#" index="i">
 	<tr>
 		<td>#chapters[i].getName()#</td>

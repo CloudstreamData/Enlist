@@ -26,12 +26,23 @@ $Id$
 
 Notes:
 --->
-	<cfimport prefix="view" taglib="/MachII/customtags/view" />
+	<<cfimport prefix="view" taglib="/MachII/customtags/view" />
+	<cfimport prefix="form" taglib="/MachII/customtags/form" />
+	<cfimport prefix="tags" taglib="/customtags" />
 	<cfset copyToScope("${event.users}") />
+	
+	<cfif event.getName() EQ "user.doSearch">
+		<cfset variables.title = "Users Search Results" />
+	<cfelse>
+		<cfset variables.title = "List Users" />
+	</cfif>
+	<view:meta type="title" content="#variables.title#" />
 </cfsilent>
-
+<cfoutput>
 <p><view:a event="user.search">Search Users</view:a></p>
 <p><view:a event="user.edit">Create a new user</view:a></p>
+
+<h3>#variables.title#</h3>
 
 <table>
 	<tr>
@@ -41,16 +52,16 @@ Notes:
 		<th>Role</th>
 		<th>Status</th>
 	</tr>
-<cfoutput>
-<cfif arrayLen(users)>
-<cfloop from="1" to="#arrayLen(users)#" index="i">
+
+<cfif ArrayLen(users)>
+<cfloop array="#variables.users#" index="user">
 	<tr>
-		<td>#users[i].getFirstName()#</td>
-		<td>#users[i].getLastName()#</td>
-		<td>#users[i].getGoogleEmail()#</td>
-		<td>#users[i].getRole()#</td>
-		<td>#users[i].getStatus()#</td>
-		<td><view:a event="user.edit" p:id="#users[i].getID()#">Edit</view:a></td>
+		<td>#user.getFirstName()#</td>
+		<td>#user.getLastName()#</td>
+		<td>#user.getGoogleEmail()#</td>
+		<td>#user.getRole()#</td>
+		<td>#user.getStatus()#</td>
+		<td><view:a event="user.edit" p:id="#user.getID()#">Edit</view:a></td>
 	</tr>
 </cfloop>
 <cfelse>

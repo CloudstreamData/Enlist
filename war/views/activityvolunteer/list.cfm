@@ -27,18 +27,18 @@ $Id$
 Notes:
 --->
 	<cfimport prefix="view" taglib="/MachII/customtags/view">
-	<cfset activityVolunteerEntities = event.getArg("activityVolunteerEntities")>
+	<cfset copyToScope("${event.activityVolunteerEntities}") />
 </cfsilent>
-<table>
-<tr>
-	<th>Activity</th>
-	<th>Description</th>
-	<th>Event</th>
-	<th>Start</th>
-	<th>End</th>
-	<th>Action</th>
-</tr>
 <cfoutput>
+<table>
+	<tr>
+		<th>Activity</th>
+		<th>Description</th>
+		<th>Event</th>
+		<th>Start</th>
+		<th>End</th>
+		<th>Action</th>
+	</tr>
 <cfloop from="1" to="#arrayLen(activityVolunteerEntities)#" index="i">
 	<tr>
 		<td>#activityVolunteerEntities[i].getActivity().getTitle()#</td>
@@ -57,5 +57,5 @@ Notes:
 		</td>
 	</tr>
 </cfloop> 
-</cfoutput>
 </table>
+</cfoutput>

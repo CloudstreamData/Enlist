@@ -30,14 +30,17 @@
 	<cfset copyToScope("${event.activities}") />	
 	
 	<cfif event.getName() EQ "activity.doSearch">
-		<view:meta type="title" content="Activities Search Results" />
+		<cfset variables.title = "Activities Search Results" />
 	<cfelse>
-		<view:meta type="title" content="List Activities" />
+		<cfset variables.title = "List Activities" />
 	</cfif>
+	<view:meta type="title" content="#variables.title#" />
+
 </cfsilent>
 <cfoutput>
 <p><view:a event="activity.edit">Create a new activity</view:a></p>
 
+<h3>#variables.title#</h3>
 <table>
 	<tr>
 		<th>Title</th>
@@ -47,7 +50,7 @@
 		<th>Point Hours</th>
 		<th>Location</th>
 		<th>Event</th>
-		<th>Options</th>
+		<th>Actions</th>
 	</tr>
 	<cfloop array="#variables.activities#" index="activity">
 		<tr>

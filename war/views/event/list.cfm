@@ -26,35 +26,44 @@
 	
 	Notes:
 	--->
-	<cfimport prefix="view" taglib="/MachII/customtags/view">
-	<cfset events = event.getArg("events")>
+	<cfimport prefix="view" taglib="/MachII/customtags/view" />
+	<cfset copyToScope("${event.events}") />
+	
+	<cfif event.getName() EQ "event.doSearch">
+		<cfset variables.title = "Event Search Results" />
+	<cfelse>
+		<cfset variables.title = "List Events" />
+	</cfif>
+	<view:meta type="title" content="#variables.title#" />
 </cfsilent>
+<cfoutput>
 <p><view:a event="event.edit">Create a new event</view:a></p>
 
+<h3>#variables.title#</h3>
+
 <table>
-<tr>
-	<th>Event</th>
-	<th>Start Date</th>
-	<th>End Date</th>
-	<th>Location</th>
-	<th>Options</th>
-	<th>Status</th>
-</tr>
-<cfoutput>
-<cfloop from="1" to="#arrayLen(events)#" index="i">
 	<tr>
-		<td>#events[i].getName()#</td>
-		<td>#events[i].getStartDate()#</td>
-		<td>#events[i].getEndDate()#</td>
-		<td>#events[i].getLocation()#</td>
+		<th>Event</th>
+		<th>Start Date</th>
+		<th>End Date</th>
+		<th>Location</th>
+		<th>Status</th>
+		<th>Actions</th>
+	</tr>
+<cfloop array="#variables.events#" index="thisEvent">
+	<tr>
+		<td>#variables.thisEvent.getName()#</td>
+		<td>#variables.thisEvent.getStartDate()#</td>
+		<td>#variables.thisEvent.getEndDate()#</td>
+		<td>#variables.thisEvent.getLocation()#</td>
+		<td>#variables.thisEvent.getStatus()#</td>
 		<td>
-			<view:a event="event.edit" p:id="#events[i].getID()#">Edit</view:a> | 
-			<view:a event="activity.doSearch" p:eventId="#events[i].getID()#">Activities</view:a>
+			<view:a event="event.edit" p:id="#variables.thisEvent.getID()#">Edit</view:a> | 
+			<view:a event="activity.doSearch" p:eventId="#variables.thisEvent.getID()#">Activities</view:a>
 		</td>
-		<td>#events[i].getStatus()#</td>
 	</tr>	
 </cfloop> 
-</cfoutput>
 </table>
 
 <p><view:a event="event.edit">Create a new event</view:a></p>
+</cfoutput>

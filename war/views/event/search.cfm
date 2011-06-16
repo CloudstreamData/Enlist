@@ -37,6 +37,9 @@
 		});
 	</view:script>	
 </cfsilent>
+<cfoutput>
+
+<h3>Search Events</h3>
 
 <form:form actionEvent="event.doSearch">
 	<table>
@@ -70,3 +73,4 @@
 		</tr>
 	</table>
 </form:form>
+</cfoutput>

@@ -29,6 +29,16 @@
 	<cfimport prefix="form" taglib="/MachII/customtags/form" />
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
 	<cfimport prefix="tags" taglib="/customtags" />
+
+	<cfset copyToScope("${event.chapter}") />
+	
+	<cfif NOT Len(variables.chapter.getId())>
+		<cfset variables.type = "New" />
+		<view:meta type="title" content="New Chapter" />
+	<cfelse>
+		<cfset variables.type = "Edit" />
+		<view:meta type="title" content="Edit Chapter | #variables.chapter.getDisplayName()#" />
+	</cfif>
 	
 	<view:script>
 		$(document).ready(function(){
@@ -37,21 +47,23 @@
 	</view:script>
 </cfsilent>
 <cfoutput>
-<tags:displaymesssage />
+<tags:displaymessage />
 <tags:displayerror />
+
+<h3>#variables.type# Chapter</h3>
 
 <form:form actionEvent="chapter.save" bind="chapter" id="chapterForm">
 	<table>
 		<tr>
-			<th>Name:</th>
+			<th>Name</th>
 			<td><form:input path="name" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
-			<th>Location:</th>
+			<th>Location</th>
 			<td><form:input path="location" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
-			<th>Status:</th>
+			<th>Status</th>
 			<td>
 				<form:select path="statusCode">
 					<form:option value="Active" />
