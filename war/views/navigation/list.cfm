@@ -34,18 +34,20 @@ Notes:
 <cfoutput>
 <p><view:a event="navigation.edit">Create a new navigation link</view:a></p>
 
+<h3>Navigation Link List</h3>
+
 <table>
 	<tr>
 		<th>Name</th>
 		<th>Event</th>
 		<th>Actions</th>
 	</tr>
-<cfloop from="1" to="#ArrayLen(variables.navigations)#" index="i">
+<cfloop array="#variables.navigations#" index="link">
 	<tr>
-		<td>#variables.navigations[i].getName()#</td>
-		<td>#variables.navigations[i].geteventName()#</td>
+		<td>#variables.link.getName()#</td>
+		<td>#variables.link.geteventName()#</td>
 		<td>
-			<view:a event="navigation.edit" p:id="#variables.navigations[i].getID()#">Edit</view:a> | <view:a event="navigation.delete" p:id="#variables.navigations[i].getID()#" onClick="return confirm('Sure?')">Delete</view:a>
+			<view:a event="navigation.edit" p:id="#variables.link.getID()#">Edit</view:a> | <view:a event="navigation.delete" p:id="#variables.link.getID()#" onClick="return confirm('Sure?')">Delete</view:a>
 		</td>
 	</tr>	
 </cfloop> 

@@ -34,11 +34,13 @@
 	
 	<cfif NOT Len(variables.navigation.getId())>
 		<cfset variables.type = "New" />
-		<view:meta type="title" content="New Navigation Link" />
+		<cfset variables.title = "New Navigation Link" />
 	<cfelse>
 		<cfset variables.type = "Edit" />
-		<view:meta type="title" content="Edit Navigation Link | #variables.chapter.getName()#" />
+		<cfset variables.title = "Edit Navigation Link | #variables.navigation.getName()#" />
 	</cfif>
+	
+	<view:meta type="title" content="#variables.title#" />
 
 	<view:script>
 		$(document).ready(function(){
@@ -49,6 +51,8 @@
 <cfoutput>
 <tags:displaymessage />
 <tags:displayerror />
+
+<h3>#variables.title#</h3>
 
 <form:form actionEvent="navigation.save" bind="navigation" id="navForm">
 	<table>

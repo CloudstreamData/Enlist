@@ -30,6 +30,8 @@
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
 	<cfimport prefix="tags" taglib="/customtags" />
 	
+	<view:meta type="title" content="Edit Application Settings" />
+	
 	<view:script>
 		$(document).ready(function(){
 			$("#settingForm").validate();
@@ -39,6 +41,8 @@
 <cfoutput>
 <tags:displaymessage />
 <tags:displayerror />
+
+<h3>Edit Application Settings</h3>
 
 <form:form actionEvent="setting.save" bind="setting" id="settingForm">
 	<table>
