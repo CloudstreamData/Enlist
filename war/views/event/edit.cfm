@@ -27,28 +27,19 @@
 	Notes:
 	--->
 	<cfimport prefix="form" taglib="/MachII/customtags/form" />
+	<cfimport prefix="view" taglib="/MachII/customtags/view" />
 	<cfimport prefix="tags" taglib="/customtags">
-	<cfset statuses = getProperty("eventStatuses") />
+	
+	<cfset copyToScope("statuses=${properties.eventStatuses}") />
 </cfsilent>
 <cfoutput>
-	<cfif event.getArg("message") neq "">
+	<cfif Len(event.getArg("message"))>
 		<p class="alert">#event.getArg("message")#</p>
 	</cfif>
 
-	<!--- Output any errors if we have some --->
-	<tags:displayerror errors="#event.getArg("errors",structNew())#" />
+	<!--- Output any errors if we have some (the 'errors' attribute by default uses event.getArg("errors", StructNew())) --->
+	<tags:displayerror />
 </cfoutput>
-
-<cfsavecontent variable="js">
-	<script>
-		$(function() {
-			$( "#startDate" ).datepicker();
-			$( "#endDate" ).datepicker();
-		});
-	</script>
-
-</cfsavecontent>
-<cfhtmlhead text="#js#">
 
 <form:form actionEvent="event.save" bind="theEvent" id="eventForm">
 	<table>
@@ -80,7 +71,13 @@
 		</tr>
 	</table>
 </form:form>
-<script>
+
+<view:script outputType="head">
+	$(function() {
+		$( "#startDate" ).datepicker();
+		$( "#endDate" ).datepicker();
+	});
+
 	$(document).ready(function(){
 		jQuery.validator.addMethod("greaterThan", function(value, element, params) {
 			if (!/Invalid|NaN/.test(new Date(value))) {
@@ -91,4 +88,4 @@
 		$("#eventForm").validate();
 		$("#endDate").rules("add", {greaterThan: "#startDate"});
 	});
-</script>
+</view:script>
