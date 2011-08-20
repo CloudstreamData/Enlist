@@ -56,35 +56,35 @@ Notes:
 <form:form actionEvent="user.save" bind="user" id="userForm">
 	<table>
 		<tr>
-			<th>First Name</th>
+			<th><label id="firstName">First Name</label></th>
 			<td><form:input path="firstName" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
-			<th>Last Name</th>
+			<th><label id="lastName">Last Name</label></th>
 			<td><form:input path="lastName" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
-			<th>Google Email</th>
+			<th><label id="googleEmail">Google Email</label></th>
 			<td><form:input path="googleEmail" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
-			<th>Phone</th>
+			<th><label id="phone">Phone</label></th>
 			<td><form:input path="phone" size="40" maxlength="40" /></td>
 		</tr>
 		<tr>
-			<th>Address 1</th>
+			<th><label id="address1">Address 1</label></th>
 			<td><form:input path="address1" size="40" maxlength="200" /></td>
 		</tr>
 		<tr>
-			<th>Address 2</th>
+			<th><label id="address2">Address 2</label></th>
 			<td><form:input path="address2" size="40" maxlength="200" /></td>
 		</tr>
 		<tr>
-			<th>City</th>
+			<th><label id="city">City</label></th>
 			<td><form:input path="city" size="40" maxlength="200" /></td>
 		</tr>
 		<tr>
-			<th>State / Zip</th>
+			<th><label id="state">State / Zip</label></th>
 			<td>
 				<form:select path="state" items="#states#" labelKey="abbr" valueKey="abbr">
 					<form:option value="" label="--" />
@@ -93,12 +93,12 @@ Notes:
 			</td>
 		</tr>
 		<tr>
-			<th>Alternative Email</th>
+			<th><label id="altEmail">Alternative Email</label></th>
 			<td><form:input path="altEmail" size="40" maxlength="200" /></td>
 		</tr>
 		<cfif ArrayLen( chapters )>
 			<tr>
-				<th>Chapter</th>
+				<th><label id="chapterId">Chapter</label></th>
 				<td>
 					<form:select path="chapterId">
 						<cfloop from="1" to="#ArrayLen(chapters)#" index="i">
@@ -109,7 +109,7 @@ Notes:
 			</tr>
 		</cfif>
 		<tr>
-			<th>Status:</th>
+			<th><label id="status">Status</label></th>
 			<td>
 				<form:select path="status" items="#statuses#">
 					<form:option value="" label="- select -" />
@@ -117,7 +117,7 @@ Notes:
 			</td>
 		</tr>
 		<tr>
-			<th>Role:</th>
+			<th><label id="role">Role</label></th>
 			<td>
 				<form:select path="role" items="#roles#">
 					<form:option value="" label="- select -" />

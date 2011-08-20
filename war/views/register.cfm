@@ -51,31 +51,31 @@ Notes:
 <form:form actionEvent="register_process" bind="user" id="registerForm">
 	<table>
 		<tr>
-			<th style="width:40%;">First Name</th>
+			<th style="width:40%;"><label id="firstName">First Name *</label></th>
 			<td style="width:60%;"><form:input path="firstName" size="40" maxlength="200"  class="required" /></td>
 		</tr>
 		<tr>
-			<th>Last Name</th>
+			<th><label id="lastName">Last Name *</label></th>
 			<td><form:input path="lastName" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
-			<th>Phone</th>
+			<th><label id="phone">Phone</label></th>
 			<td><form:input path="phone" size="40" maxlength="40" /></td>
 		</tr>
 		<tr>
-			<th>Address</th>
+			<th><label id="address1">Address 1</label></th>
 			<td><form:input path="address1" size="40" maxlength="200" /></td>
 		</tr>
 		<tr>
-			<th>Address (cont.)</th>
+			<th><label id="address2">Address 2</label></th>
 			<td><form:input path="address2" size="40" maxlength="200" /></td>
 		</tr>
 		<tr>
-			<th>City</th>
+			<th><label id="city">City</label></th>
 			<td><form:input path="city" size="40" maxlength="200" /></td>
 		</tr>
 		<tr>
-			<th>State / Zip</th>
+			<th><label id="state">State / Zip</label></th>
 			<td>
 				<form:select path="state" items="#states#" labelKey="abbr" valueKey="abbr">
 					<form:option value="" label="--" />
@@ -84,12 +84,15 @@ Notes:
 			</td>
 		</tr>
 		<tr>
-			<th>Alternative Email</th>
-			<td><form:input path="altEmail" size="40" maxlength="200" /></td>
+			<th><label id="altEmail">Alternative Email</label></th>
+			<td>
+				<form:input path="altEmail" size="40" maxlength="200" />
+				<p>An additional non-Google email to use for email communications.</p>
+			</td>
 		</tr>
 		<cfif ArrayLen( chapters )>
 			<tr>
-				<th>Chapter</th>
+				<th><label id="chapterId">Chapter</label></th>
 				<td>
 					<form:select path="chapterId">
 						<cfloop from="1" to="#arrayLen(chapters)#" index="i">
