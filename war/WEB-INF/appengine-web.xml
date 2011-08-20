@@ -10,6 +10,7 @@
 		<include path="/img/**.jpg" />
 		<include path="/js/**.js" />
 		<include path="/css/**.css" />
+		<include path="/css/**.gif" />
 		<include path="/mxunit/resources/**" />
 		<include path="/mxunit/images/*.gif" />
 		<include path="/mxunit/images/*.png" />

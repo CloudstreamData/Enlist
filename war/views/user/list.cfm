@@ -51,6 +51,7 @@ Notes:
 		<th>Google Email</th>
 		<th>Role</th>
 		<th>Status</th>
+		<th>Actions</th>
 	</tr>
 
 <cfif ArrayLen(users)>

@@ -59,6 +59,13 @@ Notes:
 			<td><form:input path="lastName" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
+			<th><label id="altEmail">Alternative Email</label></th>
+			<td>
+				<form:input path="altEmail" size="40" maxlength="200" />
+				<p>An additional non-Google email to use for email communications.</p>
+			</td>
+		</tr>
+		<tr>
 			<th><label id="phone">Phone</label></th>
 			<td><form:input path="phone" size="40" maxlength="40" /></td>
 		</tr>
@@ -78,16 +85,9 @@ Notes:
 			<th><label id="state">State / Zip</label></th>
 			<td>
 				<form:select path="state" items="#states#" labelKey="abbr" valueKey="abbr">
-					<form:option value="" label="--" />
+					<form:option value="" label="" />
 				</form:select>&nbsp;
 				<form:input path="zip" size="11" maxlength="10" />
-			</td>
-		</tr>
-		<tr>
-			<th><label id="altEmail">Alternative Email</label></th>
-			<td>
-				<form:input path="altEmail" size="40" maxlength="200" />
-				<p>An additional non-Google email to use for email communications.</p>
 			</td>
 		</tr>
 		<cfif ArrayLen( chapters )>

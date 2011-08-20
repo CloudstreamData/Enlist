@@ -100,6 +100,13 @@ Notes:
 								<element value="libraries/jquery/jquery.validate-1.6.0.min.js" />
 							</array>
 						</key>
+						<key name="jquery-tablesorter">
+							<array>
+								<element value="libraries/jquery/jquery-1-5.js" />
+								<element value="libraries/jquery/jquery-tablesorter-2.0.min.js" />
+								<element value="tablesorter/style.css" />
+							</array>
+						</key>
 					</struct>
 				</parameter>
 			</parameters>
@@ -144,6 +151,12 @@ Notes:
 					<struct>
 						<key name="label" value="Valid" />
 						<key name="value" value="valid" />
+					</struct>
+				</element>
+				<element>
+					<struct>
+						<key name="label" value="Archived" />
+						<key name="value" value="archived" />
 					</struct>
 				</element>
 			</array>

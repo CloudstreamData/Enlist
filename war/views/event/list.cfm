@@ -35,34 +35,46 @@
 		<cfset variables.title = "List Events" />
 	</cfif>
 	<view:meta type="title" content="#variables.title#" />
+	
+	<view:asset package="jquery-tablesorter" />
+	<view:script>
+		$(document).ready(function() {
+				$("#eventList").tablesorter( { widgets: ['zebra'], headers: { 5:{sorter: false}}} );
+			}
+		);
+	</view:script>
 </cfsilent>
 <cfoutput>
 <p><view:a event="event.edit">Create a new event</view:a></p>
 
 <h3>#variables.title#</h3>
 
-<table>
-	<tr>
-		<th>Event</th>
-		<th>Start Date</th>
-		<th>End Date</th>
-		<th>Location</th>
-		<th>Status</th>
-		<th>Actions</th>
-	</tr>
-<cfloop array="#variables.events#" index="thisEvent">
-	<tr>
-		<td>#variables.thisEvent.getName()#</td>
-		<td>#variables.thisEvent.getStartDate()#</td>
-		<td>#variables.thisEvent.getEndDate()#</td>
-		<td>#variables.thisEvent.getLocation()#</td>
-		<td>#variables.thisEvent.getStatus()#</td>
-		<td>
-			<view:a event="event.edit" p:id="#variables.thisEvent.getID()#">Edit</view:a> | 
-			<view:a event="activity.doSearch" p:eventId="#variables.thisEvent.getID()#">Activities</view:a>
-		</td>
-	</tr>	
-</cfloop> 
+<table id="eventList" class="tablesorter">
+	<thead>
+		<tr>
+			<th>Status</th>
+			<th>Event</th>
+			<th>Start Date</th>
+			<th>End Date</th>
+			<th>Location</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		<cfloop array="#variables.events#" index="thisEvent">
+			<tr>
+				<td>#variables.thisEvent.getStatus()#</td>
+				<td>#variables.thisEvent.getName()#</td>
+				<td>#variables.thisEvent.getStartDate()#</td>
+				<td>#variables.thisEvent.getEndDate()#</td>
+				<td>#variables.thisEvent.getLocation()#</td>
+				<td>
+					<view:a event="event.edit" p:id="#variables.thisEvent.getID()#">Edit</view:a> | 
+					<view:a event="activity.doSearch" p:eventId="#variables.thisEvent.getID()#">Activities</view:a>
+				</td>
+			</tr>	
+		</cfloop>
+	</tbody>
 </table>
 
 <p><view:a event="event.edit">Create a new event</view:a></p>

@@ -56,16 +56,36 @@ Notes:
 <form:form actionEvent="user.save" bind="user" id="userForm">
 	<table>
 		<tr>
-			<th><label id="firstName">First Name</label></th>
+			<th><label id="status">Status *</label></th>
+			<td>
+				<form:select path="status" items="#statuses#" class="required">
+					<form:option value="" label="" />
+				</form:select>
+			</td>
+		</tr>
+		<tr>
+			<th><label id="role">Role *</label></th>
+			<td>
+				<form:select path="role" items="#roles#" class="required">
+					<form:option value="" label="" />
+				</form:select>
+			</td>
+		</tr>	
+		<tr>
+			<th><label id="firstName">First Name *</label></th>
 			<td><form:input path="firstName" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
-			<th><label id="lastName">Last Name</label></th>
+			<th><label id="lastName">Last Name *</label></th>
 			<td><form:input path="lastName" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
-			<th><label id="googleEmail">Google Email</label></th>
+			<th><label id="googleEmail">Google Email *</label></th>
 			<td><form:input path="googleEmail" size="40" maxlength="200" class="required" /></td>
+		</tr>
+		<tr>
+			<th><label id="altEmail">Alternative Email</label></th>
+			<td><form:input path="altEmail" size="40" maxlength="200" /></td>
 		</tr>
 		<tr>
 			<th><label id="phone">Phone</label></th>
@@ -87,14 +107,10 @@ Notes:
 			<th><label id="state">State / Zip</label></th>
 			<td>
 				<form:select path="state" items="#states#" labelKey="abbr" valueKey="abbr">
-					<form:option value="" label="--" />
+					<form:option value="" label="" />
 				</form:select>&nbsp;
 				<form:input path="zip" size="11" maxlength="10" />
 			</td>
-		</tr>
-		<tr>
-			<th><label id="altEmail">Alternative Email</label></th>
-			<td><form:input path="altEmail" size="40" maxlength="200" /></td>
 		</tr>
 		<cfif ArrayLen( chapters )>
 			<tr>
@@ -108,22 +124,6 @@ Notes:
 				</td>
 			</tr>
 		</cfif>
-		<tr>
-			<th><label id="status">Status</label></th>
-			<td>
-				<form:select path="status" items="#statuses#">
-					<form:option value="" label="- select -" />
-				</form:select>
-			</td>
-		</tr>
-		<tr>
-			<th><label id="role">Role</label></th>
-			<td>
-				<form:select path="role" items="#roles#">
-					<form:option value="" label="- select -" />
-				</form:select>
-			</td>
-		</tr>
 		<tr>
 			<td><form:hidden name="id" path="id" /></td>
 			<td colspan="3"><form:button type="submit" name="save" value="Save User" /></td>

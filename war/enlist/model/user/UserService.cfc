@@ -39,9 +39,13 @@ Notes:
 	INITIALIZATION / CONFIGURATION
 	--->
 	<cffunction name="init" access="public" returntype="UserService" output="false">
-		<cfset super.init( argumentCollection = arguments ) />
+
 		<cfset var googleUserFactory = CreateObject("java", "com.google.appengine.api.users.UserServiceFactory") />
+
+		<cfset super.init( argumentCollection = arguments ) />
+
 		<cfset variables.googleUserService = googleUserFactory.getUserService() />
+
 		<cfreturn this />
 	</cffunction>
 
@@ -55,12 +59,6 @@ Notes:
 
 	<cffunction name="getUsers" access="public" returntype="array" output="false">
 		<cfreturn getGateway().list() />
-	</cffunction>
-
-	<!--- TODO: I think this needs to be converted to something more generic to work with the base gateway --->
-	<cffunction name="getUsersByRole" access="public" returntype="array" output="false">
-		<cfargument name="role" type="string" required="true" />
-		<cfreturn getGateway().getUsersByRole( arguments.role ) />
 	</cffunction>
 
 	<cffunction name="getUsersBySearch" access="public" returntype="array" output="false">
@@ -89,28 +87,32 @@ Notes:
 
 	<cffunction name="logoutUser" access="public" returntype="void" output="false">
 		<cfargument name="user" type="enlist.model.user.User" required="true">
-		<cfset getSessionFacade().deleteProperty("authentication")/>
+		<cfset getSessionFacade().deleteProperty("authentication") />
 	</cffunction>
 
 	<cffunction name="registerUser" access="public" returntype="void" output="false">
 		<cfargument name="user" type="enlist.model.user.User" required="true">
 		<cfset saveUser( arguments.user )>
-		<cfset getSessionFacade().getProperty("authentication").setUser( arguments.user )>
+		<cfset getSessionFacade().getProperty("authentication").setUser( arguments.user ) />
 	</cffunction>
 
 	<cffunction name="saveUser" access="public" returntype="any" output="false">
 		<cfargument name="user" type="enlist.model.user.User" required="true">
+
 		<cfif not len( arguments.user.getGoogleEmail() )>
 			<cfif not variables.googleUserService.isUserLoggedIn()>
 				<cfthrow message="Unable to save user without googleEmail." />
 			</cfif>
 			<cfset arguments.user.setGoogleEmail( variables.googleUserService.getCurrentUser().getEmail() ) />
 		</cfif>
+
 		<cfset var errors = arguments.user.validate() />
+
 		<cfif (structIsEmpty(errors))>
 			<cfset getGateway().save( arguments.user ) />
-			<cfset getSessionFacade().getProperty("authentication").setUser( arguments.user )>
+			<cfset getSessionFacade().getProperty("authentication").setUser( arguments.user ) />
 		</cfif>
+
 		<cfreturn errors />
 	</cffunction>
 

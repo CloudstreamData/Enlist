@@ -113,6 +113,46 @@ Notes:
 		<cfreturn data />
 	</cffunction>
 
+	<cffunction name="validate" access="public" returntype="struct" output="false">
+		<cfscript>
+			var errors = StructNew();
+			
+			if (Len(Trim(getFirstName())) EQ 0) {
+				errors.firstName = "First Name is required";
+			}
+			
+			if (Len(Trim(getLastName())) EQ 0) {
+				errors.lastName = "Last name is required";
+			}
+			
+			if (Len(Trim(getGoogleEmail())) EQ 0 
+				or not IsValid("email", getGoogleEmail())) {
+				errors.googleEmail = "A valid Google email address is required";
+			}
+			
+			if (Len(Trim(getAltEmail())) GT 0 
+				and not IsValid("email", getAltEmail())) {
+				errors.altEmail = "The alternate email address you provided is not valid";
+			}
+			
+			return errors;
+		</cfscript>
+	</cffunction>
+	
+	<cffunction name="dump" access="public" returntype="void" output="false">
+		<cfargument name="abort" type="boolean" required="false" default="false" />
+		
+		<cfset var property = "" />
+		
+		<cfloop collection="#variables#" item="property">
+			<cfdump var="#variables[property]#" /><br />
+		</cfloop>
+		
+		<cfif arguments.abort>
+			<cfabort />
+		</cfif>
+	</cffunction>
+
 	<!---
 	ACCESSORS
 	--->
@@ -234,46 +274,6 @@ Notes:
 	</cffunction>
 	<cffunction name="getImportHashCode" access="public" returntype="UUID" output="false">
 		<cfreturn variables.importHashCode />
-	</cffunction>
-	
-	<cffunction name="validate" access="public" returntype="struct" output="false">
-		<cfscript>
-			var errors = StructNew();
-			
-			if (Len(Trim(getFirstName())) eq 0) {
-				errors.firstName = "First Name is required";
-			}
-			
-			if (Len(Trim(getLastName())) eq 0) {
-				errors.lastName = "Last name is required";
-			}
-			
-			if (Len(Trim(getGoogleEmail())) eq 0 
-				or not IsValid("email", getGoogleEmail())) {
-				errors.googleEmail = "A valid Google email address is required";
-			}
-			
-			if (Len(Trim(getAltEmail())) neq 0 
-				and not IsValid("email", getAltEmail())) {
-				errors.altEmail = "The alternate email address you provided is not valid";
-			}
-			
-			return errors;
-		</cfscript>
-	</cffunction>
-	
-	<cffunction name="dump" access="public" returntype="void" output="false">
-		<cfargument name="abort" type="boolean" required="false" default="false" />
-		
-		<cfset var property = "" />
-		
-		<cfloop collection="#variables#" item="property">
-			<cfdump var="#variables[property]#" /><br />
-		</cfloop>
-		
-		<cfif arguments.abort>
-			<cfabort />
-		</cfif>
 	</cffunction>
 
 </cfcomponent>
