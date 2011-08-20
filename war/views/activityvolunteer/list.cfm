@@ -28,6 +28,8 @@ Notes:
 --->
 	<cfimport prefix="view" taglib="/MachII/customtags/view">
 	<cfset copyToScope("${event.activityVolunteerEntities}") />
+	
+	<view:meta type="title" content="Search Volunteer Activities" />
 </cfsilent>
 <cfoutput>
 <table>

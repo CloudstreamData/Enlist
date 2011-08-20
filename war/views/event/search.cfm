@@ -63,7 +63,7 @@
 			<th>Status</th>
 			<td>
 				<form:select path="status" items="#statuses#">
-					<form:option label="--Select to search--" value="" />
+					<form:option label="Any" value="" />
 				</form:select>
 			</td>
 		</tr>
