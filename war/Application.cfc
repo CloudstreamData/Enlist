@@ -15,15 +15,13 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
     Linking this library statically or dynamically with other modules is
     making a combined work based on this library.  Thus, the terms and
     conditions of the GNU General Public License cover the whole
     combination.
 
 $Id$
-
-Notes:
 --->
 <cfcomponent
 	displayname="Application"
@@ -43,18 +41,18 @@ Notes:
 
 	<!---
 	PROPERTIES - MACH-II SPECIFIC
-	--->	
+	--->
 	<cfset MACHII_CONFIG_PATH = ExpandPath("/config/mach-ii.xml") />
 
 	<!---
-		Most of the rest of the properties, methods, etc. have "intelligent defaults" 
-		set in MachII.mach-ii (which Application.cfc extends). The typical Mach-II 
-		properties such as MACHII_CONFIG_PATH, MACHII_APP_KEY, MACHII_CONFIG_MODE, etc. 
-		can be overridden here, as can the Application CFC methods to which you wish 
+		Most of the rest of the properties, methods, etc. have "intelligent defaults"
+		set in MachII.mach-ii (which Application.cfc extends). The typical Mach-II
+		properties such as MACHII_CONFIG_PATH, MACHII_APP_KEY, MACHII_CONFIG_MODE, etc.
+		can be overridden here, as can the Application CFC methods to which you wish
 		to add custom functionality.
-		
-		If you do override any of the methods, make sure to call super or copy/paste 
-		the contents from MachII.mach-ii into your overridden methods. This is particularly 
+
+		If you do override any of the methods, make sure to call super or copy/paste
+		the contents from MachII.mach-ii into your overridden methods. This is particularly
 		important with:
 		* onApplicationStart(): this must call loadFramework()
 		* onRequestStart(): this must call handleRequest()
@@ -66,12 +64,12 @@ Notes:
 	<cffunction name="onRequestStart" access="public" returntype="void" output="true"
 		hint="Overrides the Mach-II bootstrapper and then calls the super method.">
 		<cfargument name="targetPage" type="string" required="true" />
-		
+
 		<cfif StructKeyExists(url, "reloadApp")>
 			<cfset reloadConfig() />
 		</cfif>
-		
+
 		<cfset super.onRequestStart(arguments.targetPage) />
-	</cffunction>	
+	</cffunction>
 
 </cfcomponent>
