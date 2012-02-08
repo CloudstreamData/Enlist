@@ -27,6 +27,7 @@ $Id$
 Notes:
 --->
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
+	<view:meta type="title" content="About This Application" />
 </cfsilent>
 <cfoutput>
 <h3>What is Enlist?</h3>

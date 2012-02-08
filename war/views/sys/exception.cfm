@@ -26,7 +26,9 @@
 	
 	Notes:
 	--->
+	<cfimport prefix="view" taglib="/MachII/customtags/view" />
 	<cfset copyToScope("${event.exception}") />
+	<view:meta type="title" content="Exception" />
 </cfsilent>
 <cfoutput>
 <h3>Mach-II Exception</h3>
