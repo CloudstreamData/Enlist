@@ -42,7 +42,7 @@ Notes:
 		<cfreturn this />
 	</cffunction>
 
-	<cffunction name="setSettingGateway" access="public" returntype="SettingService" output="false">
+	<cffunction name="setSettingGateway" access="public" returntype="void" output="false">
 		<cfargument name="settingGateway" type="any" required="true" />
 		<cfset variables.settingGateway = arguments.settingGateway />
 	</cffunction>
