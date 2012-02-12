@@ -38,6 +38,8 @@ $Id$
 	<cfset this.setDomainCookies = false />
 	<cfset this.sessionTimeOut = CreateTimeSpan(0,0,30,0) />
 	<cfset this.applicationTimeOut = CreateTimeSpan(1,0,0,0) />
+	
+	<cfset this.mappings["/enlist"] = ExpandPath("../enlist") />
 
 	<!---
 	PROPERTIES - MACH-II SPECIFIC
