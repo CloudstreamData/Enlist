@@ -53,7 +53,7 @@ Notes:
 		<cfif arguments.id neq 0>
 			<cfset setting = read( arguments.id ) />
 		<cfelse>
-			<cfset setting = createObject("component", "enlist.model.setting.setting").init() />
+			<cfset setting = createObject("component", "enlist.model.setting.Setting").init() />
 		</cfif>
 		<cfreturn setting />
 	</cffunction>
@@ -149,7 +149,7 @@ Notes:
 		<cfloop list="#readsetting.columnList#" index="field">
 			<cfset 'data.#field#' = evaluate('readsetting.#field#')>
 		</cfloop>
-		<cfset setting = createObject("component", "enlist.model.setting.setting").init(argumentcollection=data)>
+		<cfset setting = createObject("component", "enlist.model.setting.Setting").init(argumentcollection=data)>
 		<cfreturn setting>
 	</cffunction>
 

@@ -1,3 +1,7 @@
+CREATE SCHEMA IF NOT EXISTS enlist;
+
+SET SCHEMA enlist;
+
 CREATE TABLE `setting` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `defaultPointValue` int(11) DEFAULT NULL,
@@ -7,4 +11,3 @@ CREATE TABLE `setting` (
   `sendEmail` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
