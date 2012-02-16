@@ -1,0 +1,543 @@
+------------------------------------------------
+    __  ___           __          ________
+   /  |/  /___ ______/ /_        /  _/  _/
+  / /|_/ / __ `/ ___/ __ \______ / / / /  
+ / /  / / /_/ / /__/ / / /_____// /_/ /   
+/_/  /_/\__,_/\___/_/ /_/     /___/___/  
+
+Version: 1.9.0.@minorVersion@ (Integrity)
+Built-on: @buildDatetime@
+$Id: CHANGELOG 2842 2011-08-31 00:41:10Z jason_york $
+------------------------------------------------
+If version number and built-on are placeholders (e.g. @xyz@), you are 
+using a  bleeding edge release (BER) of the framework.
+------------------------------------------------
+
+    Mach-II - A framework for object oriented MVC web applications in CFML
+    Copyright (C) 2003-2010 GreatBizToolsl, LLC
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    
+    Linking this library statically or dynamically with other modules is
+    making a combined work based on this library.  Thus, the terms and
+    conditions of the GNU General Public License cover the whole
+    combination.
+ 
+	As a special exception, the copyright holders of this library give you
+	permission to link this library with independent modules to produce an
+	executable, regardless of the license terms of these independent
+	modules, and to copy and distribute the resultant executable under
+	the terms of your choice, provided that you also meet, for each linked
+	independent module, the terms and conditions of the license of that
+	module.  An independent module is a module which is not derived from
+	or based on this library and communicates with Mach-II solely through
+	the public interfaces* (see definition below). If you modify this library,
+	but you may extend this exception to your version of the library,
+	but you are not obligated to do so. If you do not wish to do so,
+	delete this exception statement from your version.
+
+
+	* An independent module is a module which not derived from or based on
+	this library with the exception of independent module components that
+	extend certain Mach-II public interfaces (see README for list of public
+	interfaces).
+
+------------------------------------------------
+ _                         
+/ |_  _.._  _  _   |  _  _ 
+\_| |(_|| |(_|(/_  |_(_)(_|
+            _|           _|
+------------------------------------------------
+Fixed Defects
+------------------------------------------------
+* preRedirect lifecycle method is only called when persist=true
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/810
+(2011-08-30 jasonyork)
+
+* Comma delimited 'args' for Call-Method includes spaces in key if included
+
+Thanks to Scott Smith for reporting and fixing this issue.
+
+For more information see:
+http://trac.mach-ii.com/machii/ticket/804
+(2011-08-17 peterfarrell)
+
+* Form auto-focus on field not displayed or hidden throws JS error
+
+For more information see:
+http://trac.mach-ii.com/machii/ticket/806
+(2011-08-04 peterfarrell)
+
+* UtilityConnector does not have access to AppManager if non-lazy loaded beans are present
+
+Thanks to Adam Ness for reporting this issue.
+
+For more information see:
+http://trac.mach-ii.com/machii/ticket/799
+(2011-06-29 peterfarrell)
+
+* HtmlHelper does not HTML escape scr/html for addScript/Style
+
+For more information see:
+http://trac.mach-ii.com/machii/ticket/797
+(2011-06-29 peterfarrell)
+
+* AppLoader occasionally deconfigured the old AppManager before 
+all the running requests were completed
+
+Thanks to Jason York for reporting this issue.
+
+For more information see:
+http://trac.mach-ii.com/machii/ticket/726
+(2011-06-07 peterfarrell)
+
+* Optional params with value of '' in routes are incorrectly built 
+
+For more information see:
+http://trac.mach-ii.com/machii/ticket/773
+(2011-04-25 peterfarrell)
+
+* Redirect command did not obey event-mappings
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/727
+(2010-11-15 peterfarrell)
+
+* File tag does not compute tag "name" from path 
+and add ability to set enctype if file tag exists
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/707
+(2010-09-06 peterfarrell)
+
+* Options form tag fails to pass on additional tag attributes
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/706
+(2010-09-06 peterfarrell)
+
+* Redirect command incorrectly computer event-arg name in 
+"args" and "persistArgs" with expression
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/546
+(2010-08-21 peterfarrell)
+
+------------------------------------------------
+Improvements / Enhancements
+------------------------------------------------
+* Allow Url Parameters in View Tag Library Style and Script Tags
+
+Special thanks to Brian Fitzgerald for suggeting this issue.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/807
+(2011-08-29 peterjfarrell)
+
+* Enforce a known loading order for configurable properties
+
+Special thanks to Jason York for suggesting and committing 
+the fix for this issue.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/805
+(2011-08-04 jasonyork)
+
+* Add M2EL support for complex datatypes in event-arg command
+
+Special thanks to Jorge Loyo for suggesting this enhancement.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/801
+(2011-07-14 peterfarrell)
+
+* Add M2EL support for runtime parameters in event-filter command
+
+Special thanks to Jorge Loyo for suggesting this enhancement.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/796
+(2011-07-06 peterfarrell)
+
+* Add a way to override the "magic" type for addMeta() in HtmlHelper
+
+Use type="name:nameOfMeta" or type="http-equiv:nameOfHttpEquiv".
+
+Special thanks to Jason York for suggesting and writing a patch
+for this enhancement.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/798
+(2011-06-29 peterfarrell)
+
+* Enable EnvironmentProperty.cfc to get server name using other "scopes"
+like properties.*, headers.* or cgi.*
+
+Special thanks to Joseph Lamoree for suggesting and writing a patch
+for this enhancement.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/775
+(2011-06-06 peterfarrell)
+
+* Allow request content reset to be configurable for bootstrappers
+
+Special thanks to Dave Shuck and Kurt Wiersma for suggesting this
+enhancement.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/784
+(2011-06-04 peterfarrell)
+
+* Make empty URL string placeholder to be configurable for framework built URLs
+
+Special thanks to Brian Hendel for suggesting this enhancement.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/774
+(2011-05-06 peterfarrell)
+
+* Allow the ability to set a module for default exception event
+via the exceptionModule property.
+
+Special thanks to Andrew Leaf for suggesting this enhancement
+and providing a patch.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/751
+(2011-01-28 peterfarrell)
+
+* Fixed BaseProxy exception if any target path of the object hierarchy 
+changes or gets deleted
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/746
+(2011-01-28 peterfarrell)
+
+* Improve exception message with computed path when view page path is incorrect
+This would help people troubleshoot pathing problems related to view-pages. 
+
+Special thanks to Bill Peddy for suggesting this enhancement.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/743
+(2011-01-18 peterfarrell)
+
+* Allow for anonymous property CFCs
+Allow for anonymous property CFCs so you do not have to arbitrarily name
+property CFCs that are used for configuration (such as UrlRoutes).
+
+Special thanks to Brian Hendel for suggesting this enhancement.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/742
+(2011-01-17 peterfarrell)
+
+* Use listInfo attribute in cfdirectory (if available) in FileMatcher
+This dramatically increases the performance of the PatternViewLoader
+if listInfo is available in cfdirectory on the deployed CFML engine.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/735
+(2010-12-20 peterfarrell)
+
+* Added support for redirect persist with route based urls
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/246
+(2010-11-15 peterfarrell)
+
+* Support for http/https Redirection and Secure URLS in BuildURL/BuildRouteUrl
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/287
+(2010-10-22 peterfarrell)
+
+* Provide cache strategy that uses native cacheXXX() functions
+
+Special thanks to Joe Roberts for donating the base code for the
+TimeSpanNativeCfmlCache.cfc.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/724
+(2010-10-22 peterfarrell)
+
+* Added the ability to set MACHII_CONFIG_MODE in xml configuration file
+Allows you to set a property "machii:configMode" with 1, 0 or -1 to configure
+the config mode in the Application.cfc bootstrapper.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/44
+(2010-10-22 peterfarrell)
+
+* Added ability to use wildcards when defined include file paths
+Allows you to use ANT style path matchers *, ** and ? in <include>
+nodes.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/722
+(2010-10-14 peterfarrell)
+
+* Add support to auto-format route parameters
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/392
+(2010-09-19 peterfarrell)
+
+* Add ability to reload view-loaders in the dashboard
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/225
+(2010-09-12 peterfarrell)
+
+* Add property to set the interval in which to reload all changed 
+components in the dashboard
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/695
+(2010-09-09 peterfarrell)
+
+* View library tags now support "event" and "module" attributes to
+dynamically build URLs to a Mach-II event
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/431
+(2010-09-09 peterfarrell)
+
+* Add scribble pad to dashboard
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/708
+(2010-09-07 peterfarrell)
+
+* Add property viewer to dashboard
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/684
+(2010-09-07 jorgeloyo)
+
+* Add ability to set enctype if file tag exists
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/707
+(2010-09-06 peterfarrell)
+
+* Add support for threading on Railo
+
+This adds support for multi-threading for message-subscribers
+on the Railo engine.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/85
+(2010-09-02 peterfarrell)
+
+
+* Add support for threading on OpenBD
+
+This adds support for multi-threading for message-subscribers
+on the OpenBD engine.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/112
+(2010-09-02 peterfarrell)
+
+* Add file extension to MIME-type conversion in accept attribute in uploadFile()
+
+The accept argument for uploadFile() will now convert file extensions (like
+.jpg) to MIME types for you automatically.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/455
+(2010-08-02 peterfarrell)
+
+* Added the optgroup form tag for HTML selects
+
+For more information on the HTML optgroup tag:
+http://www.w3schools.com/tags/tag_optgroup.asp
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/527
+(2010-03-02 peterfarrell)
+
+------------------------------------------------
+Internal Framework Improvements / Enhancements / Other Changes
+------------------------------------------------
+* Enable redirect persist data to live across requests when MACHII CONFIG MODE is 1
+
+Thanks to Brian Hendel for suggesting this improvement.
+
+For more info see:
+http://trac.mach-ii.com/machii/ticket/793
+(2011-06-07 peterfarrell)
+
+* Refactored bootstrapper common functionality into common.cfm
+
+This was part of the process to simplify our bootstrapping process
+so we could easily add in plugins to other projects like Mura.
+
+For more info see:
+http://trac.mach-ii.com/machii/ticket/790
+(2011-06-01 peterfarrell)
+
+* Added Event object to the EventArgsInvoker
+
+For more info see:
+http://trac.mach-ii.com/machii/ticket/772
+(2011-04-25 peterfarrell)
+
+* Fixed defect when using structs for params with buildCurrentUrl()
+
+For more info see:
+http://trac.mach-ii.com/machii/ticket/750
+(2011-02-16 peterfarrell)
+
+* Add ability to get selected event args via event.getArgs()
+
+Special thanks to Joe Bodell for suggesting this enhancement and
+providing a patch.
+
+For more info see:
+http://trac.mach-ii.com/machii/ticket/749
+(2011-02-16 peterfarrell)
+
+* Added try/catch around configureable property deconfigure()
+If a developer replaces a configurable property with another
+datatype, the framework will throw an exception saying deconfigure
+failed.  This is not a bug because developers really should not
+be doing this, however we added a fix so this does not happen.
+
+For more info see:
+http://trac.mach-ii.com/machii/ticket/720
+(2010-12-21 peterfarrell)
+
+* AppKey in bootstrapper causes unexpected behavior
+This is an user reported improvement over what we fixed in 1.6.
+
+For more info see:
+http://trac.mach-ii.com/machii/ticket/29
+(2010-12-20 peterfarrell)
+
+* Improved XML DTD validation order
+
+We now validate against the DTD (when the declared in the bootstrapper) before trying
+to parse an XML configuration file.  This improves the exception handling when a
+configuration file XML syntax is incorrect.
+
+For more info see:
+http://trac.mach-ii.com/machii/ticket/733
+(2010-12-07 peterfarrell)
+
+* Throw exception when any configurable property CFC is overrided by another during load
+
+For more info see:
+http://trac.mach-ii.com/machii/ticket/730
+(2010-12-01 peterfarrell)
+
+* Improved performance by using getFileInfo() instead of cfdirectory action='list'
+
+For more info see:
+http://trac.mach-ii.com/machii/ticket/729
+(2010-11-16 peterfarrell)
+
+* Improved performance of ViewContext
+This improvement can reduce the number of method calls when building urls.
+
+For more info see:
+http://trac.mach-ii.com/machii/ticket/728
+(2010-11-15 peterfarrell)
+
+* Add ability to remove an route via the UrlRoutesProperty
+
+For more info see:
+http://trac.mach-ii.com/machii/ticket/668
+(2010-09-29 peterfarrell)
+
+* Rewrite config file generated by URLRoutesProperty now writes rewrite rules for 
+endpoints and also only one rewrite file is now generated.
+(2010-09-29 peterfarrell)
+
+* Allow assets in HTMLHelper and File Endpoint to not throw exception if timestamp cannot be generated
+
+For more info see:
+http://trac.mach-ii.com/machii/ticket/712
+(2010-09-23 peterfarrell)
+
+* Form custom tag library has complete unit test suite
+(2010-09-20 peterfarrell)
+
+* Changed CacheStats over to use AtomicInteger when present (Java 1.5+). 
+
+For more info see:
+http://trac.mach-ii.com/machii/ticket/121
+(2010-09-12 kurtwiersma)
+
+* Refactor PluginManager findPluginPoints() to use new Introspector.cfc
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/665
+(2010-09-12 peterfarrell)
+
+* Added removeCacheStrategy() method to CacheStrategyManager
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/548
+(2010-09-12 peterfarrell)
+
+* Migrate dashboard license to GPL
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/704
+(2010-09-04 peterfarrell)
+
+* Added property type shortcuts
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/696
+(2010-08-21 peterfarrell)
+
+* Switch to java.lang.StringBuffer for performance in form tag library "group" tags
+
+Large test case sets show up to a 33% performance improvement for options, radiogroup
+and checkboxgroup form library tags.  Small test case sets show no degradation or
+improvement so this affects larger sets to iterate over.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/632
+(2010-04-17 peterfarrell)
+
+* Reduced generated whitespace and improved performance of checkboxgroup and radiogroup 
+form tags. We have reduced the amount of whitespace the custom tag generates and improved
+the performance of the tag by approximately 1,100% - 1,500% in our test cases.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/529
+https://trac.mach-ii.com/machii/ticket/530
+(2010-02-02 peterfarrell)
+
+* Improved logging messages in CacheManager
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/554
+(2010-03-10 peterfarrell)
+
+* Refactored how cache strategies are wired into cache handlers
+This change resulted in a 3.8% performance improvement on a test application.
+Performance improvement is directly related to the number of cache handlers
+that are implemented in an application.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/555
+(2010-03-10 peterfarrell) 
