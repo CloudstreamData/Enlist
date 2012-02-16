@@ -25,7 +25,7 @@ $Id$
 --->
 <cfcomponent
 	displayname="Application"
-	extends="MachII.mach-ii"
+	extends="mach-ii"
 	output="false">
 
 	<!---
@@ -38,8 +38,13 @@ $Id$
 	<cfset this.setDomainCookies = false />
 	<cfset this.sessionTimeOut = CreateTimeSpan(0,0,30,0) />
 	<cfset this.applicationTimeOut = CreateTimeSpan(1,0,0,0) />
-	
-	<cfset this.mappings["/enlist"] = ExpandPath("../enlist") />
+
+	<!---
+	OPENBD SPECIFIC
+	--->
+	<cfmapping logicalpath="/enlist" relativepath="../enlist" />
+	<cfmapping logicalpath="/MachII" relativepath="../lib/MachII" />
+	<cfmapping logicalpath="/coldspring" relativepath="../lib/coldspring" />
 
 	<!---
 	PROPERTIES - MACH-II SPECIFIC
