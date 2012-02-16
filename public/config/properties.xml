@@ -73,7 +73,6 @@ Notes:
 					<struct>
 						<key name="sessionFacade" value="sessionFacade" />
 						<key name="udfs" value="udfs" />
-						<key name="googleUserService" value="googleUserService" />
 						<key name="settingService" value="settingService" />
 					</struct>
 				</parameter>
