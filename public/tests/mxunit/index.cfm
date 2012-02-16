@@ -33,12 +33,12 @@
 	<cffunction name="createTestCase">
 		<cfargument name="name" />
 		<cfargument name="path" />
-		
+
 		<cfset var testCase = structNew() />
-		
+
 		<cfset testCase.name = arguments.name />
 		<cfset testCase.path = arguments.path />
-		
+
 		<cfreturn testCase />
 	</cffunction>
 

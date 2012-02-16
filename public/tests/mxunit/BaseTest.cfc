@@ -34,7 +34,7 @@ Notes:
 		<cfset var config = structNew() />
 
 		<cfset config.coldspring = structNew() />
-		<cfset config.coldspring.configFile = "/config/services.xml" />
+		<cfset config.coldspring.configFile = "/enlist/config/services.xml" />
 		<cfset config.coldspring.attributes = structNew() />
 		<cfset config.coldspring.properties = structNew() />
 		<cfset config.coldspring.factory = createObject("component", "coldspring.beans.DefaultXmlBeanFactory").init(config.coldspring.attributes, config.coldspring.properties) />
