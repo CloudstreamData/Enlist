@@ -28,7 +28,7 @@ Notes:
 --->
 	<<cfimport prefix="view" taglib="/MachII/customtags/view" />
 	<cfimport prefix="form" taglib="/MachII/customtags/form" />
-	<cfimport prefix="tags" taglib="/customtags" />
+	<cfimport prefix="tags" taglib="/enlist/customtags" />
 	<cfset copyToScope("${event.users}") />
 	
 	<cfif event.getName() EQ "user.doSearch">

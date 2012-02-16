@@ -49,7 +49,7 @@ $Id$
 	<!---
 	PROPERTIES - MACH-II SPECIFIC
 	--->
-	<cfset MACHII_CONFIG_PATH = ExpandPath("/config/mach-ii.xml") />
+	<cfset MACHII_CONFIG_PATH = ExpandPath("/enlist/config/mach-ii.xml") />
 
 	<!---
 		Most of the rest of the properties, methods, etc. have "intelligent defaults"
@@ -71,7 +71,7 @@ $Id$
 	<cffunction name="onApplicationStart" access="public" returntype="void" output="false"
 		hint="Overrides the Mach-II bootstrapper and then calls the super method.">
 
-		<!--- Setup datasource --->
+		<!--- Setup datasource and create db schema --->
 		<cfset DatasourceCreate("enlist"
 			, {
 				drivername: "org.h2.Driver"

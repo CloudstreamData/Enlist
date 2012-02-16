@@ -28,13 +28,23 @@
 	--->
 	<cfimport prefix="form" taglib="/MachII/customtags/form" />
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
-	<cfimport prefix="tags" taglib="/customtags" />
+	<cfimport prefix="tags" taglib="/enlist/customtags" />
 	
-	<view:meta type="title" content="Edit Application Settings" />
+	<cfset copyToScope("${event.navigation}") />
 	
+	<cfif NOT Len(variables.navigation.getId())>
+		<cfset variables.type = "New" />
+		<cfset variables.title = "New Navigation Link" />
+	<cfelse>
+		<cfset variables.type = "Edit" />
+		<cfset variables.title = "Edit Navigation Link | #variables.navigation.getName()#" />
+	</cfif>
+	
+	<view:meta type="title" content="#variables.title#" />
+
 	<view:script>
 		$(document).ready(function(){
-			$("#settingForm").validate();
+			$("#navForm").validate();
 		});
 	</view:script>
 </cfsilent>
@@ -42,42 +52,21 @@
 <tags:displaymessage />
 <tags:displayerror />
 
-<h3>Edit Application Settings</h3>
+<h3>#variables.title#</h3>
 
-<form:form actionEvent="setting.save" bind="setting" id="settingForm">
+<form:form actionEvent="navigation.save" bind="navigation" id="navForm">
 	<table>
 		<tr>
-			<th>Organization Name:</th>
-			<td><form:input path="orgName" size="40" maxlength="200" class="required" /></td>
+			<th>Name:</th>
+			<td><form:input path="name" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
-			<th>Description:</th>
-			<td><form:textarea path="orgDesc" class="required" /></td>
+			<th>Location:</th>
+			<td><form:input path="eventName" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
-			<th nowrap="nowrap">Address:</th>
-			<td><form:textarea path="orgAddress" class="required" /></td>
-		</tr>
-		<tr>
-			<th nowrap="nowrap">Points Name:</th>
-			<td><form:input path="pointName" size="10" maxlength="200"  class="required" /></td>
-		</tr>
-		<tr>
-			<th nowrap="nowrap">Default Point Value:</th>
-			<td><form:input path="defaultPointValue" size="10" maxlength="200" class="required" /></td>
-		</tr>
-		<tr>
-			<th nowrap="nowrap">Send Emails:</th>
-			<td>
-				<form:select path="sendEmail">
-					<form:option value="true" label="Yes" />
-					<form:option value="false" label="No" />
-				</form:select>
-			</td>
-		</tr>
-		<tr>
-			<td><form:hidden name="id" path="id" /></td>
-			<td colspan="3"><form:button type="submit" name="save" value="Save Setting" /></td>
+			<td><form:hidden name="id" path="id" value="#event.getArg( "navigation" ).getID()#" /></td>
+			<td colspan="3"><form:button type="submit" name="save" value="Save Navigation Link" /></td>
 		</tr>
 	</table>
 </form:form>

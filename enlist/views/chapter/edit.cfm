@@ -28,23 +28,21 @@
 	--->
 	<cfimport prefix="form" taglib="/MachII/customtags/form" />
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
-	<cfimport prefix="tags" taglib="/customtags" />
+	<cfimport prefix="tags" taglib="/enlist/customtags" />
+
+	<cfset copyToScope("${event.chapter}") />
 	
-	<cfset copyToScope("${event.navigation}") />
-	
-	<cfif NOT Len(variables.navigation.getId())>
+	<cfif NOT Len(variables.chapter.getId())>
 		<cfset variables.type = "New" />
-		<cfset variables.title = "New Navigation Link" />
+		<view:meta type="title" content="New Chapter" />
 	<cfelse>
 		<cfset variables.type = "Edit" />
-		<cfset variables.title = "Edit Navigation Link | #variables.navigation.getName()#" />
+		<view:meta type="title" content="Edit Chapter | #variables.chapter.getDisplayName()#" />
 	</cfif>
 	
-	<view:meta type="title" content="#variables.title#" />
-
 	<view:script>
 		$(document).ready(function(){
-			$("#navForm").validate();
+			$("#chapterForm").validate();
 		});
 	</view:script>
 </cfsilent>
@@ -52,21 +50,30 @@
 <tags:displaymessage />
 <tags:displayerror />
 
-<h3>#variables.title#</h3>
+<h3>#variables.type# Chapter</h3>
 
-<form:form actionEvent="navigation.save" bind="navigation" id="navForm">
+<form:form actionEvent="chapter.save" bind="chapter" id="chapterForm">
 	<table>
 		<tr>
-			<th>Name:</th>
+			<th>Name</th>
 			<td><form:input path="name" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
-			<th>Location:</th>
-			<td><form:input path="eventName" size="40" maxlength="200" class="required" /></td>
+			<th>Location</th>
+			<td><form:input path="location" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
-			<td><form:hidden name="id" path="id" value="#event.getArg( "navigation" ).getID()#" /></td>
-			<td colspan="3"><form:button type="submit" name="save" value="Save Navigation Link" /></td>
+			<th>Status</th>
+			<td>
+				<form:select path="statusCode">
+					<form:option value="Active" />
+					<form:option value="Archive" />
+				</form:select>
+			</td>
+		</tr>
+		<tr>
+			<td><form:hidden name="id" path="id" /></td>
+			<td colspan="3"><form:button type="submit" name="save" value="Save Chapter" /></td>
 		</tr>
 	</table>
 </form:form>
