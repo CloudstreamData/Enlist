@@ -42,7 +42,7 @@
 	interfaces).
 
 Copyright: GreatBizTools, LLC
-$Id: header.cfm 2372 2010-09-08 00:17:06Z peterjfarrell $
+$Id: header.cfm 2756 2011-04-14 06:57:24Z peterjfarrell $
 
 Created version: 1.0.0
 Updated version: 1.1.0
@@ -74,17 +74,20 @@ Notes:
 	<ul>
 		<li>
 			<view:img endpoint="dashboard.serveAsset" p:file="/img/icons/world_link.png" width="16" height="16" alt="Domain Name" title="Domain Name" />
-			 #cgi.server_name#</li>
+			 #cgi.server_name#
+		</li>
 		<li>
 			<view:img endpoint="dashboard.serveAsset" p:file="/img/icons/server.png" width="16" height="16" alt="Machine Name" title="Machine Name" />
 			 #CreateObject("java", "java.net.InetAddress").getLocalHost().getHostName()#
 		</li>
 		<li>
 			<view:img endpoint="dashboard.serveAsset" p:file="/img/icons/instance.png" width="16" height="16" alt="Instance Name" title="Instance Name" />
-			#variables.instanceName#</li>
+			#variables.instanceName#
+		</li>
 		<li>
 			<view:img endpoint="dashboard.serveAsset" p:file="/img/icons/application.png" width="16" height="16" alt="Application Name" title="Application Name" />
-			#application.applicationName#</li>
+			#application.applicationName#
+		</li>
 	<cfif getProperty("enableLogin")>
 		<li class="red">
 			<view:img endpoint="dashboard.serveAsset" p:file="/img/icons/cancel.png" width="16" height="16" alt="Logout" title="Logout"

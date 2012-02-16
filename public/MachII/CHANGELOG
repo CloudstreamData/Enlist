@@ -5,9 +5,9 @@
  / /  / / /_/ / /__/ / / /_____// /_/ /   
 /_/  /_/\__,_/\___/_/ /_/     /___/___/  
 
-Version: 1.9.0.2706 (Integrity)
-Built-on: 2011-03-24 18:36:57
-$Id: CHANGELOG 2670 2011-02-16 21:50:43Z peterjfarrell $
+Version: 1.9.0.@minorVersion@ (Integrity)
+Built-on: @buildDatetime@
+$Id: CHANGELOG 2842 2011-08-31 00:41:10Z jason_york $
 ------------------------------------------------
 If version number and built-on are placeholders (e.g. @xyz@), you are 
 using a  bleeding edge release (BER) of the framework.
@@ -61,13 +61,63 @@ using a  bleeding edge release (BER) of the framework.
 ------------------------------------------------
 Fixed Defects
 ------------------------------------------------
+* preRedirect lifecycle method is only called when persist=true
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/810
+(2011-08-30 jasonyork)
+
+* Comma delimited 'args' for Call-Method includes spaces in key if included
+
+Thanks to Scott Smith for reporting and fixing this issue.
+
+For more information see:
+http://trac.mach-ii.com/machii/ticket/804
+(2011-08-17 peterfarrell)
+
+* Form auto-focus on field not displayed or hidden throws JS error
+
+For more information see:
+http://trac.mach-ii.com/machii/ticket/806
+(2011-08-04 peterfarrell)
+
+* UtilityConnector does not have access to AppManager if non-lazy loaded beans are present
+
+Thanks to Adam Ness for reporting this issue.
+
+For more information see:
+http://trac.mach-ii.com/machii/ticket/799
+(2011-06-29 peterfarrell)
+
+* HtmlHelper does not HTML escape scr/html for addScript/Style
+
+For more information see:
+http://trac.mach-ii.com/machii/ticket/797
+(2011-06-29 peterfarrell)
+
+* AppLoader occasionally deconfigured the old AppManager before 
+all the running requests were completed
+
+Thanks to Jason York for reporting this issue.
+
+For more information see:
+http://trac.mach-ii.com/machii/ticket/726
+(2011-06-07 peterfarrell)
+
+* Optional params with value of '' in routes are incorrectly built 
+
+For more information see:
+http://trac.mach-ii.com/machii/ticket/773
+(2011-04-25 peterfarrell)
+
 * Redirect command did not obey event-mappings
 
 For more information see:
 https://trac.mach-ii.com/machii/ticket/727
 (2010-11-15 peterfarrell)
 
-* File tag does not compute tag "name" from path and 
+* File tag does not compute tag "name" from path 
+and add ability to set enctype if file tag exists
 
 For more information see:
 https://trac.mach-ii.com/machii/ticket/707
@@ -79,8 +129,8 @@ For more information see:
 https://trac.mach-ii.com/machii/ticket/706
 (2010-09-06 peterfarrell)
 
-* Redirect command incorrectly computer event-arg name in "args" and "persistArgs" 
-with expression
+* Redirect command incorrectly computer event-arg name in 
+"args" and "persistArgs" with expression
 
 For more information see:
 https://trac.mach-ii.com/machii/ticket/546
@@ -89,6 +139,87 @@ https://trac.mach-ii.com/machii/ticket/546
 ------------------------------------------------
 Improvements / Enhancements
 ------------------------------------------------
+* Allow Url Parameters in View Tag Library Style and Script Tags
+
+Special thanks to Brian Fitzgerald for suggeting this issue.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/807
+(2011-08-29 peterjfarrell)
+
+* Enforce a known loading order for configurable properties
+
+Special thanks to Jason York for suggesting and committing 
+the fix for this issue.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/805
+(2011-08-04 jasonyork)
+
+* Add M2EL support for complex datatypes in event-arg command
+
+Special thanks to Jorge Loyo for suggesting this enhancement.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/801
+(2011-07-14 peterfarrell)
+
+* Add M2EL support for runtime parameters in event-filter command
+
+Special thanks to Jorge Loyo for suggesting this enhancement.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/796
+(2011-07-06 peterfarrell)
+
+* Add a way to override the "magic" type for addMeta() in HtmlHelper
+
+Use type="name:nameOfMeta" or type="http-equiv:nameOfHttpEquiv".
+
+Special thanks to Jason York for suggesting and writing a patch
+for this enhancement.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/798
+(2011-06-29 peterfarrell)
+
+* Enable EnvironmentProperty.cfc to get server name using other "scopes"
+like properties.*, headers.* or cgi.*
+
+Special thanks to Joseph Lamoree for suggesting and writing a patch
+for this enhancement.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/775
+(2011-06-06 peterfarrell)
+
+* Allow request content reset to be configurable for bootstrappers
+
+Special thanks to Dave Shuck and Kurt Wiersma for suggesting this
+enhancement.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/784
+(2011-06-04 peterfarrell)
+
+* Make empty URL string placeholder to be configurable for framework built URLs
+
+Special thanks to Brian Hendel for suggesting this enhancement.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/774
+(2011-05-06 peterfarrell)
+
+* Allow the ability to set a module for default exception event
+via the exceptionModule property.
+
+Special thanks to Andrew Leaf for suggesting this enhancement
+and providing a patch.
+
+For more information see:
+https://trac.mach-ii.com/machii/ticket/751
+(2011-01-28 peterfarrell)
+
 * Fixed BaseProxy exception if any target path of the object hierarchy 
 changes or gets deleted
 
@@ -244,6 +375,29 @@ https://trac.mach-ii.com/machii/ticket/527
 ------------------------------------------------
 Internal Framework Improvements / Enhancements / Other Changes
 ------------------------------------------------
+* Enable redirect persist data to live across requests when MACHII CONFIG MODE is 1
+
+Thanks to Brian Hendel for suggesting this improvement.
+
+For more info see:
+http://trac.mach-ii.com/machii/ticket/793
+(2011-06-07 peterfarrell)
+
+* Refactored bootstrapper common functionality into common.cfm
+
+This was part of the process to simplify our bootstrapping process
+so we could easily add in plugins to other projects like Mura.
+
+For more info see:
+http://trac.mach-ii.com/machii/ticket/790
+(2011-06-01 peterfarrell)
+
+* Added Event object to the EventArgsInvoker
+
+For more info see:
+http://trac.mach-ii.com/machii/ticket/772
+(2011-04-25 peterfarrell)
+
 * Fixed defect when using structs for params with buildCurrentUrl()
 
 For more info see:

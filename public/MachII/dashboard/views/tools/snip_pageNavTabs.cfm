@@ -41,7 +41,7 @@
 	extend certain Mach-II public interfaces (see README for list of public
 	interfaces).
 
-$Id: snip_pageNavTabs.cfm 2578 2010-11-10 06:52:51Z peterjfarrell $
+$Id: snip_pageNavTabs.cfm 2727 2011-04-02 19:33:33Z derrick_jackson $
 
 Created version: 1.1.0
 Updated version: 1.1.0
@@ -64,12 +64,12 @@ Notes:
 			&nbsp;RegEx Tester
 		</view:a>
 	</li>
-<!--- 	<li>
+<li>
 		<view:a event="tools.beanGenerator">
 			<view:img endpoint="dashboard.serveAsset" p:file="/img/icons/arrow_rotate_clockwise.png" alt="Use Bean Generator Tool" />
 			&nbsp;Bean Generator
 		</view:a>
-	</li> --->
+	</li>
 	<li>
 		<view:a event="tools.scribble" class="#getProperty("udfs").highlight("tools.scribble")#">
 			<view:img endpoint="dashboard.serveAsset" p:file="/img/icons/page_gear.png" alt="Use Scribble Pad" />

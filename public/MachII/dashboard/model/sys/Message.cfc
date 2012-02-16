@@ -40,7 +40,7 @@
 	extend certain Mach-II public interfaces (see README for list of public
 	interfaces).
 
-$Id: Message.cfc 2558 2010-10-23 20:49:26Z peterjfarrell $
+$Id: Message.cfc 2755 2011-04-14 06:33:35Z peterjfarrell $
 
 Created version: 1.0.0
 Updated version: 1.0.0
@@ -62,10 +62,12 @@ Notes:
 	INITIALIZATION / CONFIGURATION
 	--->
 	<cffunction name="init" access="public" returntype="Message" output="false">
-		<cfargument name="message" type="string" required="false" default="" />
+		<cfargument name="message" type="string" required="false" default=""
+			hint="A human readable string that defines what the message." />
 		<cfargument name="type" type="string" required="false" default="info"
 			hint="Sets the level of the message. 'info', 'warn' or 'exception'." />
-		<cfargument name="caughtException" type="struct" required="false" default="#StructNew()#" />
+		<cfargument name="caughtException" type="struct" required="false" default="#StructNew()#"
+			hint="The value from cfcatch if it helps to convey the original caught exception to the user." />
 
 		<!--- run setters --->
 		<cfset setMessage(arguments.message) />
@@ -82,13 +84,32 @@ Notes:
 		hint="Checks if there is a caught exception.">
 		<cfreturn StructCount(getCaughtException()) />
 	</cffunction>
+	
+	<cffunction name="isExceptionOfType" access="public" returntype="boolean" output="false"
+		hint="Checks if the current exception type is specified type.">
+		<cfargument name="types" type="any" required="true"
+			hint="Accepts a comma-delimited list or an array of exception types." />
+		
+		<cfset var i = 0 />
+		
+		<!--- Convert array to list --->
+		<cfif NOT IsSimplevalue(arguments.types)>
+			<cfset arguments.types = ArrayTolist(arguments.types) />
+		</cfif>
+		
+		<cfif ListFindNoCase(arguments.types, getType())>
+			<cfreturn true />
+		</cfif>
+		
+		<cfreturn false />
+	</cffunction>
 
 	<!---
 	ACCESSORS
 	--->
 	<cffunction name="setMessage" access="public" returntype="void" output="false">
 		<cfargument name="message" type="string" required="true" />
-		<cfset variables.instance.message = trim(arguments.message) />
+		<cfset variables.instance.message = Trim(arguments.message) />
 	</cffunction>
 	<cffunction name="getMessage" access="public" returntype="string" output="false">
 		<cfreturn variables.instance.message />
@@ -97,7 +118,7 @@ Notes:
 	<cffunction name="setType" access="public" returntype="void" output="false"
 		hint="Sets the level of the message. 'info', 'warn' or 'exception'." >
 		<cfargument name="type" type="string" required="true" />
-		<cfset variables.instance.type = trim(arguments.type) />
+		<cfset variables.instance.type = Trim(arguments.type) />
 	</cffunction>
 	<cffunction name="getType" access="public" returntype="string" output="false">
 		<cfreturn variables.instance.type />

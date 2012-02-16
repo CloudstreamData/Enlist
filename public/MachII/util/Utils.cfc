@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Peter J. Farrell (peter@mach-ii.com)
-$Id: Utils.cfc 2679 2011-02-19 04:42:00Z peterjfarrell $
+$Id: Utils.cfc 2868 2011-11-18 01:12:24Z peterjfarrell $
 
 Created version: 1.5.0
 Updated version: 1.9.0
@@ -67,29 +67,29 @@ Notes:
 		hint="Initialization function called by the framework.">
 		<cfargument name="loadResources" type="boolean" required="false" default="true"
 			hint="Directive to load in resource files. Defaults to true." />
-		
+
 		<cfset var temp = "" />
 
 		<cfif arguments.loadResources>
 			<cfset variables.statusCodeShortcutMap = loadResourceData("/MachII/util/resources/data/httpStatuscodes.properties") />
 			<cfset variables.mimeTypeMap = loadResourceData("/MachII/util/resources/data/mimeTypes.properties") />
 		</cfif>
-		
+
 		<!--- Test if native ListItemTrim() is available (OpenBD 1.4 and Railo 3.2) --->
 		<cftry>
 			<cfset ListItemTrim("temp, temp") />
 
-			<cfset variables.listTrim = variables.listTrim_native />
-			<cfset this.listTrim = this.listTrim_native />
+			<cfset variables.listTrim = variables.trimList_native />
+			<cfset this.listTrim = this.trimList_native />
 
 			<cfcatch type="any">
 				<!--- Any exception means the BIF is unavailable so ignore this exception --->
 			</cfcatch>
 		</cftry>
-		
+
 		<!--- Test if native HtmlEditFormat() does not escape already escaped entities --->
 		<cfset temp = escapeHtml_native("&lt;&gt;&quot;&amp;") />
-		
+
 		<cfif temp EQ "&lt;&gt;&quot;&amp;">
 			<cfset variables.escapeHtml = variables.escapeHtml_native />
 			<cfset this.escapeHtml = this.escapeHtml_native />
@@ -201,16 +201,16 @@ Notes:
 				<cfset resourceMap[ListFirst(line, "=")] = ListGetAt(line, 2, "=") />
 			</cfif>
 		</cfloop>
-		
+
 		<!--- Explode value of the resouce into structs if we have value keys --->
 		<cfif StructKeyExists(arguments, "expandValueKeys")>
 			<cfset valueKeys = ListToArray(arguments.expandValueKeys) />
-			
+
 			<cfloop collection="#resourceMap#" item="key">
 				<cfset values = ListToArray(resourceMap[key], arguments.expandValueKeyDelimiters)  />
-				
+
 				<cfset temp = StructNew() />
-				
+
 				<cfloop from="1" to="#ArrayLen(valueKeys)#" index="i">
 				<!--- The values may not be of equal length to the number of value keys so check --->
 					<cfif i LTE ArrayLen(values)>
@@ -219,7 +219,7 @@ Notes:
 						<cfset temp[valueKeys[i]] = "" />
 					</cfif>
 				</cfloop>
-				
+
 				<!--- Replace the value of the resource key with the exploded struct --->
 				<cfset resourceMap[key] = temp />
 			</cfloop>
@@ -239,7 +239,7 @@ Notes:
 		<cfif FindNoCase("ColdFusion", engineInfo.Name) AND engineInfo.majorVersion GTE 8>
 			<cfset threadingAdapter = CreateObject("component", "MachII.util.threading.ThreadingAdapterCF").init() />
 		<!--- OpenBD 1.3+ (BlueDragon 7+ threading engine is not currently compatible) --->
-		<cfelseif FindNoCase("BlueDragon", engineInfo.Name) AND  engineInfo.productLevel EQ "GPL" AND engineInfo.majorVersion GTE 1 AND engineInfo.minorVersion GTE 3>
+		<cfelseif FindNoCase("BlueDragon", engineInfo.Name) AND  engineInfo.productLevel EQ "GPL" AND ((engineInfo.majorVersion EQ 1 AND engineInfo.minorVersion GTE 3) OR engineInfo.majorVersion GTE 2)>
 			<cfset threadingAdapter = CreateObject("component", "MachII.util.threading.ThreadingAdapterBD").init() />
 		<!--- Railo 3 --->
 		<cfelseif FindNoCase("Railo", engineInfo.Name) AND engineInfo.majorVersion GTE 3>
@@ -283,7 +283,7 @@ Notes:
 		<cfif NOT IsObject(adminApiAdapter)>
 			<cfthrow type="MachII.utils.NoAdminApiAdapterAvailable"
 				message="Cannot create an admin API adapter for the target system. No compatible adapter available."
-				detail="Engine Name: '#engineInfo.Name#', Major Version: '#engineInfo.majorVersion#', Minor Version: '#engineInfo.minorVersion#', Product Level: '#engineInfo.productLeve#'" />
+				detail="Engine Name: '#engineInfo.Name#', Major Version: '#engineInfo.majorVersion#', Minor Version: '#engineInfo.minorVersion#', Product Level: '#engineInfo.productLevel#'" />
 		</cfif>
 
 		<cfreturn adminApiAdapter />
@@ -361,14 +361,14 @@ Notes:
 
 		<cfreturn trimmedList />
 	</cffunction>
-	
+
 	<cffunction name="trimList_native" access="public" returntype="string" output="false"
 		hint="Trims each list item and returns a cleaned list using the native ListItemTrim() BIF if available on this engine.">
 		<cfargument name="list" type="string" required="true"
 			hint="List to trim each item." />
 		<cfargument name="delimiters" type="string" required="false" default=","
 			hint="The delimiters of the list. Defaults to ',' when not defined." />
-		<cfreturn ListItemTrim(arguments.list, arguments.delimiters) />		
+		<cfreturn ListItemTrim(arguments.list, arguments.delimiters) />
 	</cffunction>
 
 	<cffunction name="parseAttributesIntoStruct" access="public" returntype="struct" output="false"
@@ -512,22 +512,22 @@ Notes:
 			hint="String to escape." />
 		<cfreturn HtmlEditFormat(arguments.input) />
 	</cffunction>
-	
+
 	<cffunction name="getFileInfo_cfdirectory" access="public" returntype="any" output="false"
 		hint="Mocks the getFileInfo() BIF for CFML engines that don't already support it.">
 		<cfargument name="path" type="string" required="true" />
-		
+
 		<cfset var fileInfo = "" />
-		
+
 		<cfdirectory action="LIST" directory="#GetDirectoryFromPath(arguments.path)#"
 			name="fileInfo" filter="#GetFileFromPath(arguments.path)#" />
-		
+
 		<cfset QueryAddColumn(fileInfo, "lastModified", "varchar", ArrayNew(1)) />
-		
+
 		<cfif fileInfo.recordcount EQ 1>
 			<cfset fileInfo.lastModified[1] = fileInfo.dateLastModified[1] />
 		</cfif>
-		
+
 		<cfreturn fileInfo />
 	</cffunction>
 
@@ -648,9 +648,9 @@ Notes:
 		<cfset var output = "" />
 		<cfset var mimeTypes= StructNew() />
 		<cfset var i = 0 />
-		
+
 		<cfif NOT IsArray(arguments.input)>
-			<cfset arguments.input = ListToArray(trimList(arguments.input)) />		
+			<cfset arguments.input = ListToArray(trimList(arguments.input)) />
 		</cfif>
 
 		<!--- Use StructAppend to not pollute base mime-type map via references when "mixing" custom mime types --->

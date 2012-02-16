@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Peter J. Farrell (peter@mach-ii.com)
-$Id: HtmlHelperProperty.cfc 2693 2011-03-06 19:27:46Z kurt_wiersma $
+$Id: HtmlHelperProperty.cfc 2852 2011-09-09 04:40:56Z peterjfarrell $
 
 Created version: 1.8.0
 Updated version: 1.9.0
@@ -167,7 +167,7 @@ from the parent application.
 		<cfset var cacheAssetPaths = StructNew() />
 		<cfset var webrootBasePath  = "" />
 		<cfset var engineInfo = getUtils().getCfmlEngineInfo() />
-		
+
 		<!--- Test for getFileInfo() --->
 		<cftry>
 			<cfset getFileInfo(ExpandPath("/MachII/properties/HtmlHelperProperty.cfc")) />
@@ -184,19 +184,19 @@ from the parent application.
 				<!--- We must explicitly throw an exception because the GAE version silently fails --->
 				<cfthrow type="MachII.framework.AWTNotSupportedOnThisEngine" />
 			</cfif>
-			
+
 			<cfset variables.AWT_TOOLKIT = CreateObject("java", "java.awt.Toolkit").getDefaultToolkit() />
-			
+
 			<!---
-			AWT may not be supported if the server is running in headless. Try adding 
+			AWT may not be supported if the server is running in headless. Try adding
 			"-Djava.awt.headless=true" without the quotes to your JAVA_OPTS for your application engine
 			--->
 			<cfcatch type="any">
 				<cfset variables.getImageDimensions = variables.mock_getImageDimensions />
-				<cfset this.getImageDimensions = this.mock_getImageDimensions />				
+				<cfset this.getImageDimensions = this.mock_getImageDimensions />
 			</cfcatch>
 		</cftry>
-		
+
 		<!--- Assert and set parameters --->
 		<cfset setMetaTitleSuffix(getParameter("metaTitleSuffix")) />
 
@@ -230,7 +230,7 @@ from the parent application.
 
 		<!--- Add a reference of the helper in a known property location --->
 		<cfset setProperty(variables.HTML_HELPER_PROPERTY_NAME, this) />
-		
+
 		<cfset variables.requestManager = getAppManager().getRequestManager() />
 	</cffunction>
 
@@ -391,7 +391,6 @@ from the parent application.
 
 		<cfset var code = "" />
 		<cfset var i = 0 />
-		<cfset var assetPath = "" />
 		<cfset var temp = "" />
 
 		<!--- Explode the list to an array --->
@@ -400,13 +399,7 @@ from the parent application.
 		</cfif>
 
 		<cfloop from="1" to="#ArrayLen(arguments.src)#" index="i">
-			<cfif NOT arguments.src[i].startsWith("external:")>
-				<cfset assetPath = computeAssetPath("js", arguments.src[i]) />
-			<cfelse>
-				<cfset assetPath = Replace(arguments.src[i], "external:", "", "one") />
-			</cfif>
-
-			<cfset temp = '<script type="text/javascript" src="' & assetPath & '"></script>' & Chr(13) />
+			<cfset temp = '<script type="text/javascript" src="' & computeAssetPath("js", arguments.src[i]) & '"></script>' & Chr(13) />
 
 			<!--- Enclose in an IE conditional comment if available --->
 			<cfif StructKeyExists(arguments, "forIEVersion") AND Len(arguments.forIEVersion)>
@@ -467,7 +460,6 @@ from the parent application.
 		<cfset var attributesCode = "" />
 		<cfset var i = 0 />
 		<cfset var key = "" />
-		<cfset var assetPath = "" />
 		<cfset var temp = "" />
 
 		<!--- Explode the list to an array --->
@@ -484,13 +476,7 @@ from the parent application.
 		</cfloop>
 
 		<cfloop from="1" to="#ArrayLen(arguments.href)#" index="i">
-			<cfif NOT arguments.href[i].startsWith("external:")>
-				<cfset assetPath = computeAssetPath("css", arguments.href[i]) />
-			<cfelse>
-				<cfset assetPath = Replace(arguments.href[i], "external:", "", "one") />
-			</cfif>
-
-			<cfset temp = '<link type="text/css" href="' & assetPath & '" rel="stylesheet"' & attributesCode & ' />' & Chr(13) />
+			<cfset temp = '<link type="text/css" href="' & computeAssetPath("css", arguments.href[i]) & '" rel="stylesheet"' & attributesCode & ' />' & Chr(13) />
 
 			<!--- Enclose in an IE conditional comment if available --->
 			<cfif StructKeyExists(arguments, "forIEVersion") AND Len(arguments.forIEVersion)>
@@ -661,13 +647,21 @@ from the parent application.
 
 		<cfset var code = "" />
 		<cfset var key = "" />
+		<cfset var attribute = "name" />
+		<cfset var value = arguments.type />
 
 		<cfif arguments.type EQ "title">
 			<cfset code = '<title>' & getUtils().escapeHtml(cleanupContent(arguments.content) & getMetaTitleSuffix()) & '</title>' & Chr(13) />
-		<cfelseif StructKeyExists(getHttpEquivReferenceMap(), arguments.type)>
-			<cfset code = '<meta http-equiv="' & arguments.type & '" content="' & getUtils().escapeHtml(cleanupContent(arguments.content)) & '" />' & Chr(13) />
 		<cfelse>
-			<cfset code = '<meta name="' & arguments.type & '" content="' & getUtils().escapeHtml(cleanupContent(arguments.content)) & '" />' & Chr(13) />
+			<!--- Get the correct type if it is first in the string (do not use ListLen as it could be a false positive) --->
+			<cfif FindNoCase("http-equiv:", arguments.type) EQ 1 OR FindNoCase("name:", arguments.type) EQ 1>
+				<cfset attribute = ListGetAt(arguments.type, 1, ":") />
+				<!--- Use ListRest in case the "value" has a ":" colon in it --->
+				<cfset value = ListRest(arguments.type, ":") />
+			<cfelseif StructKeyExists(getHttpEquivReferenceMap(), arguments.type) >
+				<cfset attribute = 'http-equiv' />
+			</cfif>
+			<cfset code = '<meta ' & attribute & '="' & value & '" content="' & getUtils().escapeHtml(cleanupContent(arguments.content)) & '" />' & Chr(13) />
 		</cfif>
 
 		<cfif arguments.outputType EQ "inline">
@@ -717,13 +711,16 @@ from the parent application.
 		<!--- Check for external path --->
 		<cfif arguments.assetPath.toLowercase().startsWith("http://")
 			OR arguments.assetPath.toLowercase().startsWith("https://")>
-			<cfreturn arguments.assetPath />
+			<cfreturn getUtils().escapeHtml(arguments.assetPath) />
+		<cfelseif arguments.assetPath.toLowercase().startsWith("external:")>
+			<cfreturn getUtils().escapeHtml(Replace(arguments.assetPath, "external:", "", "one")) />
 		<!--- Resolve local path --->
 		<cfelse>
 			<cfset resolvedPath = buildAssetPath(arguments.assetType, arguments.assetPath) />
 
 			<!--- Check if we are caching asset paths --->
 			<cfif getCacheAssetPaths()>
+				<!--- Include the query string if any otherwise the hash may not update if only the QS is updated --->
 				<cfset assetPathHash = createAssetPathHash(resolvedPath) />
 
 				<cfif StructKeyExists(variables.assetPathsCache, assetPathHash)>
@@ -733,7 +730,11 @@ from the parent application.
 					<cfset variables.assetPathsCache[assetPathHash] = assetPathTimestamp />
 				</cfif>
 
-				<cfreturn resolvedPath & "?" & assetPathTimestamp />
+				<cfif FindNoCase("?", resolvedPath)>
+					<cfreturn resolvedPath & "&amp;" & assetPathTimestamp />
+				<cfelse>
+					<cfreturn resolvedPath & "?" & assetPathTimestamp />
+				</cfif>
 			<cfelse>
 				<cfreturn resolvedPath />
 			</cfif>
@@ -959,9 +960,10 @@ from the parent application.
 			hint="The asset path to append the file extension to." />
 
 		<cfset var file = ListLast(arguments.assetPath, "/") />
-		<cfset var fileExt = ListLast(arguments.assetPath, ".") />
+		<cfset var fileExt = ListLast(file, ".") />
 
-		<cfif fileExt NEQ arguments.assetType AND fileExt NEQ "cfm">
+		<!--- Files with ? query string data must have an file extension already --->
+		<cfif NOT FindNoCase("?", file) AND fileExt NEQ arguments.assetType AND fileExt NEQ "cfm">
 			<cfreturn arguments.assetPath & "." & arguments.assetType />
 		<cfelse>
 			<cfreturn arguments.assetPath />
@@ -973,20 +975,21 @@ from the parent application.
 		<cfargument name="resolvedPath" type="string" required="true"
 			hint="This is the full resolved asset path from the webroot." />
 
-		<cfset var fullPath =  Replace(getWebrootBasePath() & "/" & arguments.resolvedPath, "//", "/", "all") />
+		<!--- Remove the query string if any --->
+		<cfset var fullPath =  Replace(getWebrootBasePath() & "/" & ListFirst(arguments.resolvedPath, "?"), "//", "/", "all") />
 		<cfset var fileResults = "" />
 
 		<cftry>
 			<cfset fileResults = getFileInfo(fullPath) />
 
-			<!--- Convert current time to UTC because epoch is essentially UTC --->			
+			<!--- Convert current time to UTC because epoch is essentially UTC --->
 			<cfreturn DateDiff("s", variables.EPOCH_TIMESTAMP, DateConvert("local2Utc", fileResults.lastModified)) />
 
 			<!--- Log an exception if asset cannot be found and only soft fail --->
 			<cfcatch type="any">
 				<cfset getLog().warn("Cannot fetch a timestamp for an asset because it cannot be located. Check for your asset path. Resolved asset path: '#fullPath#'") />
-	
-				<cfreturn 0 />			
+
+				<cfreturn 0 />
 			</cfcatch>
 		</cftry>
 	</cffunction>

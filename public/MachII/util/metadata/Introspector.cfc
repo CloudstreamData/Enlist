@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Doug Smith (doug.smith@daveramsey.com)
-$Id: Introspector.cfc 2398 2010-09-12 15:41:23Z peterjfarrell $
+$Id: Introspector.cfc 2853 2011-09-09 04:46:04Z peterjfarrell $
 
 Created version: 1.9.0
 Updated version: 1.9.0
@@ -162,24 +162,24 @@ in an XML config file.
 
 		<cfreturn definitions />
 	</cffunction>
-	
+
 	<cffunction name="isObjectInstanceOf" access="public" returntype="boolean" output="false"
 		hint="Returns a boolen if the input component is of a the passed type by walking through the inheritence hierarchy automatically.">
 		<cfargument name="object" type="any" required="true"
 			hint="The component to introspect for its definition." />
 		<cfargument name="type" type="string" required="true"
 			hint="The type of object to check for." />
-		
+
 		<cfset var definition = getComponentDefinition(arguments.object, "true") />
 		<cfset var i = "" />
-		
+
 		<!--- Walk the inheritance tree looking for a type match --->
 		<cfloop from="1" to="#ArrayLen(definition)#" index="i">
 			<cfif definition[i].name EQ arguments.type>
 				<cfreturn true />
 			</cfif>
 		</cfloop>
-		
+
 		<cfreturn false />
 	</cffunction>
 

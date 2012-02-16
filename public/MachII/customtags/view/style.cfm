@@ -42,7 +42,7 @@
 	interfaces).
 
 Author: Peter J. Farrell (peter@mach-ii.com)
-$Id: style.cfm 2361 2010-09-06 07:26:24Z peterjfarrell $
+$Id: style.cfm 2848 2011-09-09 03:32:21Z peterjfarrell $
 
 Created version: 1.8.0
 Updated version: 1.9.0
@@ -91,19 +91,19 @@ Notes:
 		<cfset attributes.href = "external:" & makeUrl() />
 	</cfif>
 
-  <!--- Cleanup additional tag attributes so additional attributes is not polluted with duplicate attributes --->
-  <cfset variables.additionalAttributes = StructNew() />
-  <cfset StructAppend(variables.additionalAttributes, attributes) />
-  <cfset StructDelete(variables.additionalAttributes, "href", "false") />
-  <cfset StructDelete(variables.additionalAttributes, "forIEVersion", "false") />
-  <cfset StructDelete(variables.additionalAttributes, "output", "false") />
-  <cfset StructDelete(variables.additionalAttributes, "outputType", "false") />
-  <cfset StructDelete(variables.additionalAttributes, "event", "false") />
-  <cfset StructDelete(variables.additionalAttributes, "module", "false") />
-  <cfset StructDelete(variables.additionalAttributes, "route", "false") />
-  <cfset StructDelete(variables.additionalAttributes, "endpoint", "false") />
-  <cfset StructDelete(variables.additionalAttributes, "p", "false") />
-  <cfset StructDelete(variables.additionalAttributes, "q", "false") />
+	<!--- Cleanup additional tag attributes so additional attributes is not polluted with duplicate attributes --->
+	<cfset variables.additionalAttributes = StructNew() />
+	<cfset StructAppend(variables.additionalAttributes, attributes) />
+	<cfset StructDelete(variables.additionalAttributes, "href", "false") />
+	<cfset StructDelete(variables.additionalAttributes, "forIEVersion", "false") />
+	<cfset StructDelete(variables.additionalAttributes, "output", "false") />
+	<cfset StructDelete(variables.additionalAttributes, "outputType", "false") />
+	<cfset StructDelete(variables.additionalAttributes, "event", "false") />
+	<cfset StructDelete(variables.additionalAttributes, "module", "false") />
+	<cfset StructDelete(variables.additionalAttributes, "route", "false") />
+	<cfset StructDelete(variables.additionalAttributes, "endpoint", "false") />
+	<cfset StructDelete(variables.additionalAttributes, "p", "false") />
+	<cfset StructDelete(variables.additionalAttributes, "q", "false") />
 
 	<!--- For external files --->
 	<cfif StructKeyExists(attributes, "href")>

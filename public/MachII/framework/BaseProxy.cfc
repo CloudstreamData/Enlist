@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Peter J. Farrell (peter@mach-ii.com)
-$Id: BaseProxy.cfc 2679 2011-02-19 04:42:00Z peterjfarrell $
+$Id: BaseProxy.cfc 2815 2011-07-07 07:44:27Z peterjfarrell $
 
 Created version: 1.8.0
 Updated version: 1.8.0
@@ -84,7 +84,7 @@ Notes:
 
 		<!--- Test for getFileInfo() --->
 		<cftry>
-			<cfset getFileInfo("ExpandPath(./BaseProxy.cfc)") />
+			<cfset getFileInfo(ExpandPath("./BaseProxy.cfc")) />
 			<cfcatch type="any">
 				<cfset variables.computeObjectReloadHash = variables.computeObjectReloadHash_cfdirectory />
 				<cfset this.computeObjectReloadHash = variables.computeObjectReloadHash_cfdirectory />

@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Peter J. Farrell (peter@mach-ii.com)
-$Id: ApiEndpoint.cfc 2551 2010-10-21 06:11:11Z peterjfarrell $
+$Id: ApiEndpoint.cfc 2812 2011-06-30 07:07:38Z peterjfarrell $
 
 Created version: 1.9.0
 Updated version: 1.9.0
@@ -52,7 +52,7 @@ Notes:
 	extends="MachII.endpoints.rest.BaseEndpoint"
 	hint="An endpoint that provides a REST API to dashboard functionality."
 	output="false"
-	rest:authenticate="true">
+	rest:authenticate="false">
 
 	<!---
 	PROPERTIES
@@ -71,7 +71,7 @@ Notes:
 	</cffunction>
 
 	<!---
-	PUBLIC METHODS - REQUEST
+	PUBLIC FUNCTIONS - REQUEST
 	--->
 	<cffunction name="onAuthenticate" access="public" returntype="void" output="false"
 		hint="Runs authentication.">
@@ -104,14 +104,15 @@ Notes:
 	</cffunction>
 
 	<!---
-	PUBLIC METHODS - REST
+	PUBLIC FUNCTIONS - REST
 	--->
 	<cffunction name="temp" access="public" returntype="string" output="false"
 		hint="Temp testing method. To be removed"
-		rest:uri="/temp"
-		rest:method="PUT">
+		rest:uri="/temp/{email}"
+		rest:method="GET">
+		<cfargument name="event">
 		
-		<cfreturn "temp" />
+		<cfreturn event.getArg("email") />
 	</cffunction>
 
 </cfcomponent>

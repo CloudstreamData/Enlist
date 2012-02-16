@@ -41,13 +41,15 @@
 	extend certain Mach-II public interfaces (see README for list of public
 	interfaces).
 
-$Id: wrapper.cfm 2462 2010-09-24 01:31:25Z peterjfarrell $
+$Id: wrapper.cfm 2756 2011-04-14 06:57:24Z peterjfarrell $
 
 Created version: 1.0.0
 Updated version: 1.9.0
 
 Notes:
  - Leave cfcontent reset next to DocType to remove a line break that cause some browsers to go into quirks mode
+ - The 'dashboardCssStart/End' and 'dashboardJsStart/End' are used as placeholder bookends for our ANT build
+	to replace multiple files with a concatenated file.
 --->
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
 </cfsilent>

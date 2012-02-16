@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Peter J. Farrell (peter@mach-ii.com)
-$Id: UtilityConnector.cfc 2410 2010-09-17 19:04:29Z peterjfarrell $
+$Id: UtilityConnector.cfc 2853 2011-09-09 04:46:04Z peterjfarrell $
 
 Created version: 1.6.0
 Updated version: 1.8.0
@@ -179,7 +179,7 @@ Do not inject the UtilityConnector into beans, use the 'factory' like methods in
 		<cfargument name="endpointName" type="string" required="true"
 			hint="Name of the target endpoint." />
 		<cfargument name="urlParameters" type="any" required="false" default=""
-			hint="Name/value pairs (urlArg1=value1|urlArg2=value2) to build the url with or a struct of data." />		
+			hint="Name/value pairs (urlArg1=value1|urlArg2=value2) to build the url with or a struct of data." />
 		<cfreturn getAppManager().getEndpointManager().buildEndpointUrl(argumentcollection=arguments) />
 	</cffunction>
 

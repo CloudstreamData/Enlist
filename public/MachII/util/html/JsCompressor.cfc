@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Peter J. Farrell (peter@mach-ii.com)
-$Id: JsCompressor.cfc 2229 2010-06-19 18:02:19Z peterjfarrell $
+$Id: JsCompressor.cfc 2853 2011-09-09 04:46:04Z peterjfarrell $
 
 Created version: 1.9.0
 Updated version: 1.9.0
@@ -93,7 +93,9 @@ This CFC *cannot* be used as a singleton and therefore is not thread-safe.
 	<cfset variables.line = 1 />
 	<cfset variables.column = 0 />
 
-	<!--- "Static" --->
+	<!---
+	CONSTANTS
+	--->
 	<cfset variables.EOF = -1 />
 
 	<!---

@@ -42,7 +42,7 @@
 	interfaces).
 
 Author: Peter J. Farrell (peter@mach-ii.com)
-$Id: form.cfm 2365 2010-09-06 20:42:09Z peterjfarrell $
+$Id: form.cfm 2830 2011-08-05 04:35:39Z peterjfarrell $
 
 Created version: 1.8.0
 Updated version: 1.8.0
@@ -135,8 +135,12 @@ Notes:
 			--->
 			<cfoutput><script type="text/javascript">
 				if (window._MachIIFormLib_autoFocusOccurred !== 'undefined') {
-					document.getElementById('#attributes.autoFocus#').focus();
-					window._MachIIFormLib_autoFocusOccurred = true;
+					try {
+						document.getElementById('#attributes.autoFocus#').focus();
+						window._MachIIFormLib_autoFocusOccurred = true;
+					} catch(e) {
+						// Do nothing. Element is hidden and not focusable.
+					}
 				}
 			</script></cfoutput>
 		</cfif>

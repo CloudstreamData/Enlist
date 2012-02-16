@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Peter J. Farrell (peter@mach-ii.com)
-$Id: CommandLoaderBase.cfc 2412 2010-09-19 20:54:49Z peterjfarrell $
+$Id: CommandLoaderBase.cfc 2865 2011-10-03 13:18:25Z jason_york $
 
 Created version: 1.5.0
 Updated version: 1.9.0
@@ -308,12 +308,12 @@ Notes:
 			<cfset resultArg = arguments.commandNode.xmlAttributes["resultArg"] />
 		</cfif>
 		<cfif StructKeyExists(arguments.commandNode.xmlAttributes, "args")>
-			<cfset args = arguments.commandNode.xmlAttributes["args"] />
+			<cfset args = variables.utils.trimList(arguments.commandNode.xmlAttributes["args"]) />
 		</cfif>
 
 		<cfset command = CreateObject("component", "MachII.framework.commands.CallMethodCommand").init(bean, method, args, resultArg, overwrite) />
 		<cfset command.setLog(variables.callMethodCommandLog) />
-		<cfset command.setExpressionEvaluator(getAppManager().getExpressionEvaluator()) />
+		<cfset command.setExpressionEvaluator(variables.ExpressionEvaluator) />
 		<cfset command.setUtils(variables.utils) />
 		<cfset command.setParentHandlerName(arguments.parentHandlerName) />
 		<cfset command.setParentHandlerType(arguments.parentHandlerType) />
@@ -463,6 +463,7 @@ Notes:
 		</cfif>
 
 		<cfset command = CreateObject("component", "MachII.framework.commands.EventMappingCommand").init(eventName, mappingName, mappingModule) />
+		<cfset command.setExpressionEvaluator(variables.expressionEvaluator) />
 
 		<cfreturn command />
 	</cffunction>
@@ -486,6 +487,7 @@ Notes:
 		<cfset var command = "" />
 		<cfset var filterName = arguments.commandNode.xmlAttributes["name"] />
 		<cfset var filterParams = StructNew() />
+		<cfset var parseFilterParams = false />
 		<cfset var paramNodes = arguments.commandNode.xmlChildren />
 		<cfset var paramName = "" />
 		<cfset var paramValue = "" />
@@ -501,8 +503,15 @@ Notes:
 			</cfif>
 			<cfset filterParams[paramName] = paramValue />
 		</cfloop>
+		
+		<!--- Check if the runtime parameters need to be parsed for M2EL expressions at runtime --->
+		<cfif REFindNoCase("\${(.)*?}", paramNodes.toString())>
+			<cfset parseFilterParams = true />
+		</cfif>
 
-		<cfset command = CreateObject("component", "MachII.framework.commands.FilterCommand").init(filterProxy, filterParams) />
+		<cfset command = CreateObject("component", "MachII.framework.commands.FilterCommand").init(filterProxy, filterParams, parseFilterParams) />
+		<cfset command.setExpressionEvaluator(variables.expressionEvaluator) />
+		<cfset command.setUtils(variables.utils) />
 
 		<cfreturn command />
 	</cffunction>
@@ -749,11 +758,23 @@ Notes:
 		<cfset var argVariable = "" />
 		<cfset var overwrite = true />
 		<cfset var argName = arguments.commandNode.xmlAttributes["name"] />
+		<cfset var parse = false />
+		
 
 		<cfif NOT StructKeyExists(arguments.commandNode.xmlAttributes, "value")>
 			<cfset argValue = variables.utils.recurseComplexValues(arguments.commandNode) />
+
+			<!--- Check if the arg need to be parsed for M2EL expressions at runtime --->
+			<cfif REFindNoCase("\${(.)*?}", arguments.commandNode.xmlChildren.toString())>
+				<cfset parse = true />
+			</cfif>
 		<cfelse>
 			<cfset argValue = arguments.commandNode.xmlAttributes["value"] />
+			
+			<!--- Check if the arg need to be parsed for M2EL expressions at runtime --->
+			<cfif REFindNoCase("\${(.)*?}", argValue)>
+				<cfset parse = true />
+			</cfif>
 		</cfif>
 		<cfif StructKeyExists(arguments.commandNode.xmlAttributes, "variable")>
 			<cfset argVariable = arguments.commandNode.xmlAttributes["variable"] />
@@ -762,8 +783,10 @@ Notes:
 			<cfset overwrite = arguments.commandNode.xmlAttributes["overwrite"] />
 		</cfif>
 
-		<cfset command = CreateObject("component", "MachII.framework.commands.EventArgCommand").init(argName, argValue, argVariable, overwrite) />
+		<cfset command = CreateObject("component", "MachII.framework.commands.EventArgCommand").init(argName, argValue, argVariable, overwrite, parse) />
 
+		<cfset command.setExpressionEvaluator(variables.expressionEvaluator) />
+		<cfset command.setUtils(variables.utils) />
 		<cfset command.setLog(variables.eventArgCommandLog) />
 		<cfset command.setExpressionEvaluator(variables.expressionEvaluator) />
 		<cfset command.setParentHandlerName(arguments.parentHandlerName) />

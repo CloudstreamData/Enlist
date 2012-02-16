@@ -41,7 +41,7 @@
 	extend certain Mach-II public interfaces (see README for list of public
 	interfaces).
 
-$Id: index.cfm 2693 2011-03-06 19:27:46Z kurt_wiersma $
+$Id: index.cfm 2768 2011-05-14 16:05:09Z peterjfarrell $
 
 Created version: 1.0.0
 Updated version: 1.1.0
@@ -66,11 +66,6 @@ Notes:
 <cfoutput>
 
 <dashboard:displayMessage />
-
-<!--- TODO: remove dumps
-<cfdump var="#url#" label="url">
-<cfdump var="#CGI#" label="cgi">
- --->
  
 <h1>Configuration File Status</h1>
 
@@ -325,6 +320,15 @@ Notes:
 </table>
 
 <h1>Component Status</h1>
+
+<div <cfif event.isArgDefined('message') AND NOT Len(event.getArg('message').getMessage())> style="display: none;"</cfif>>
+	<h2>Reload Log</h2>
+	<div id="changedComponentsLog" class="logOutput">
+		<div id="changedComponentsLogDetails"><cfif event.isArgDefined('message')>#event.getArg('message').getMessage()#<cfelse>#TimeFormat(Now(), "medium")#: No actions</cfif></div>
+	</div>
+</div>
+
+
 <ul class="pageNavTabs">
 	<li>
 		<a onclick="myConfigHandler.reloadAllChangedComponents();">

@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Peter J. Farrell (peter@mach-ii.com)
-$Id: DummyListener.cfc 2204 2010-04-27 07:36:11Z peterfarrell $
+$Id: DummyListener.cfc 2812 2011-06-30 07:07:38Z peterjfarrell $
 
 Created version: 1.8.0
 Updated version: 1.8.0
@@ -64,7 +64,7 @@ Notes:
 	</cffunction>
 	
 	<!---
-	PUBLIC METHODS
+	PUBLIC FUNCTIONS
 	--->
 	<cffunction name="testEventInvoker" access="public" returntype="any" output="false">
 		<cfargument name="Event" type="MachII.framework.Event" required="true" />

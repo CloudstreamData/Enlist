@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Peter J. Farrell (peter@mach-ii.com)
-$Id: RequestRedirectPersist.cfc 2204 2010-04-27 07:36:11Z peterfarrell $
+$Id: RequestRedirectPersist.cfc 2796 2011-06-07 09:12:54Z peterjfarrell $
 
 Created version: 1.6.0
 Updated version: 1.6.0
@@ -93,6 +93,7 @@ machinery.
 		<cfset parameters.scope = getAppManager().getPropertyManager().getProperty("redirectPersistScope") />
 		<cfset parameters.scopeKey = getAppManager().getAppKey() & "._MachIIRequestRedirectPersistStorage" />
 		<cfset parameters.cleanupIntervalInMinutes = 1 />
+		<cfset parameters.enableInitialFlush = false />
 
 		<cfset variables.timeSpanCache = CreateObject("component", "MachII.caching.strategies.TimeSpanCache").init(parameters) />
 

@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Ben Edwards (ben@ben-edwards.com)
-$Id: EventFilter.cfc 2204 2010-04-27 07:36:11Z peterfarrell $
+$Id: EventFilter.cfc 2814 2011-07-06 20:59:39Z peterjfarrell $
 
 Created version: 1.0.0
 Updated version: 1.8.0
@@ -55,6 +55,7 @@ Updated version: 1.8.0
 	<!---
 	PROPERTIES
 	--->
+	<cfset variables.parseRuntimeParameters = false />
 
 	<!---
 	INITIALIZATION / CONFIGURATION

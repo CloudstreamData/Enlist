@@ -41,7 +41,7 @@
 	extend certain Mach-II public interfaces (see README for list of public
 	interfaces).
 
-$Id: snip_components.cfm 2693 2011-03-06 19:27:46Z kurt_wiersma $
+$Id: snip_components.cfm 2762 2011-05-05 22:06:46Z peterjfarrell $
 
 Created version: 1.0.0
 Updated version: 1.1.0
@@ -56,7 +56,9 @@ Notes:
 </cfsilent>
 <cfoutput>
 
-<dashboard:displayMessage />
+<div id="changedComponentsMessage" style="display: none;">
+	<dashboard:displayMessage />
+</div>
 
 <h2 style="margin:1em 0 3px 0;">Base Module</h2>
 <table>
@@ -84,27 +86,13 @@ Notes:
 							</span>
 						</cfif>
 						</view:a></p>
-						<p><a href="##dummy" onclick="openFile('#variables.baseComponentData.listeners[i].type#');" 
-								>Open in CF Builder</a></p>
-						<!--- For some reason I couldn't get the JS below to run in CFBuilder 2.0
- 							 myConfigHandler.openInCFBuilder('#variables.baseComponentData.listeners[i].type#'); --->
+						<cfif event.getArg("agent") EQ "machbuilder">
+						<p><a href="##" onclick="openFile('#variables.baseComponentData.listeners[i].type#');">Open in CF Builder</a></p>
+						</cfif>
 					</td>
 				</tr>
 			</table>
 			</cfloop>
-			<script language="JavaScript">
-				function openFile(cfctype) {
-					alert(cfctype);
-					var currentObject = this;
-					var arequest = new Ajax.Request('#buildUnescapedUrl("builder.openfile")#', {
-						method: 'post',
-						parameters: { filename: cfctype },
-						onSuccess: function(transport) {
-							// empty for now
-						}
-					});
-				}
-			</script>
 		</td>
 		<td style="padding:0;">
 			<cfloop from="1" to="#ArrayLen(variables.baseComponentData.filters)#" index="i">
@@ -399,4 +387,21 @@ Notes:
 		</table>
 	</cfif>
 </cfloop>
+
+<!--- For some reason I couldn't get the JS below to run in CFBuilder 2.0
+		 myConfigHandler.openInCFBuilder('#variables.baseComponentData.listeners[i].type#'); --->
+<view:script>
+	function openFile(cfctype) {
+		alert(cfctype);
+		var currentObject = this;
+		var arequest = new Ajax.Request('#buildUnescapedUrl("builder.openfile")#', {
+			method: 'post',
+			parameters: { filename: cfctype },
+			onSuccess: function(transport) {
+				// empty for now
+			}
+		});
+	}
+</view:script>
+
 </cfoutput>

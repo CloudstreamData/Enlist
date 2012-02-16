@@ -42,7 +42,7 @@
 	interfaces).
 
 Author: Peter J. Farrell (peter@mach-ii.com)
-$Id: a.cfm 2204 2010-04-27 07:36:11Z peterfarrell $
+$Id: a.cfm 2856 2011-09-09 05:10:33Z peterjfarrell $
 
 Created version: 1.8.0
 Updated version: 1.8.0
@@ -69,8 +69,10 @@ Notes:
 	<cfinclude template="/MachII/customtags/view/helper/viewTagBuilder.cfm" />
 	<cfset setupTag("a", false) />
 
-	<!--- This tag requires one of these attributes: 'href', 'event', 'route' or 'useCurrentUrl'
-		or an exception will be thrown. ensureOneByList() is not used for performance. --->
+	<!---
+	This tag requires one of these attributes: 'href', 'event', 'route', 'useCurrentUrl'
+	or 'endpoint' or an exception will be thrown. ensureOneByList() is not used for performance.
+	--->
 
 	<!--- If the href is not present, then make an URL using event/module/route --->
 	<cfif StructKeyExists(attributes, "href")>

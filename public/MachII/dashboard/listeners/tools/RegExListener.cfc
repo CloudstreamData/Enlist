@@ -41,7 +41,7 @@
 	interfaces).
 
 Copyright: GreatBizTools, LLC
-$Id: RegExListener.cfc 2660 2011-02-08 07:24:15Z peterjfarrell $
+$Id: RegExListener.cfc 2722 2011-03-31 08:07:04Z peterjfarrell $
 
 Created version: 1.0.0
 Updated version: 1.0.0
@@ -173,9 +173,9 @@ Notes:
 			<cfif Len(arguments.patterns[i])>
 				<cftry>
 					<cfif arguments.caseSensitive>
-						<cfset results[i] = REReplace(arguments.input, arguments.patterns[i], arguments.replaces[i], "all") />
+						<cfset results[i].matches = REReplace(arguments.input, arguments.patterns[i], arguments.replaces[i], "all") />
 					<cfelse>
-						<cfset results[i] = REReplaceNoCase(arguments.input, arguments.patterns[i], arguments.replaces[i], "all") />
+						<cfset results[i].matches = REReplaceNoCase(arguments.input, arguments.patterns[i], arguments.replaces[i], "all") />
 					</cfif>
 					<cfcatch type="any">
 						<cfset results[i].exception = true />

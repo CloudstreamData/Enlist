@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Ben Edwards (ben@ben-edwards.com)
-$Id: EventManager.cfc 2569 2010-11-04 19:08:59Z doug_smith $
+$Id: EventManager.cfc 2708 2011-03-26 22:42:25Z peterjfarrell $
 
 Created version: 1.0.0
 Updated version: 1.8.0
@@ -191,6 +191,8 @@ Notes:
 				<cfthrow type="MachII.framework.noDefaultEvent"
 					message="A default event named '#defaultEvent#' has been not defined in the base app, but is required. Please create one." />				
 			</cfif>
+			
+			<!--- No need to check for exceptionModule because it defaults to th current module / base app if not defined--->
 			<cfset exceptionEvent = propertyManager.getProperty("exceptionEvent") />
 			<cfif NOT isEventDefined(exceptionEvent, false)>
 				<cfthrow type="MachII.framework.noExceptionEvent"

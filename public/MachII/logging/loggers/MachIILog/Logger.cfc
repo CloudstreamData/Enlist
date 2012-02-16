@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Peter J. Farrell (peter@mach-ii.com)
-$Id: Logger.cfc 2587 2010-11-15 01:08:31Z peterjfarrell $
+$Id: Logger.cfc 2851 2011-09-09 04:07:56Z peterjfarrell $
 
 Created version: 1.6.0
 Updated version: 1.9.0
@@ -164,7 +164,7 @@ See that file header for configuration of filter criteria.
 		</cfif>
 
 		<cfset setOutputType(decideOutputType()) />
-		
+
 		<cftry>
 			<cfset ArrayConcat(ArrayNew(1), ArrayNew(1)) />
 			<cfcatch type="any">

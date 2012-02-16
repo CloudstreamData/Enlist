@@ -40,7 +40,7 @@
 	extend certain Mach-II public interfaces (see README for list of public
 	interfaces).
 
-$Id: ApplicationPlugin.cfc 2693 2011-03-06 19:27:46Z kurt_wiersma $
+$Id: ApplicationPlugin.cfc 2726 2011-03-31 23:36:44Z peterjfarrell $
 
 Created version: 1.0.0
 Updated version: 1.0.0
@@ -94,7 +94,7 @@ Notes:
 		<cfset var event = arguments.eventContext.getNextEvent() />
 		<cfset var requestEventName = event.getRequestName() />
 		<cfset var message = "" />
-		<cfset var httpRequestData = "" />
+		<cfset var httpRequestData = GetHttpRequestData() />
 
 		<cfif event.isArgDefined("logout")>
 			<cfset setLoggedIn(false) />
@@ -111,6 +111,9 @@ Notes:
 		<cfif NOT getAppManager().getEventManager().isEventDefined(requestEventName)>
 			<cfset redirectEvent("info.index") />
 		</cfif>
+		
+		<!--- Disable CFML debugging output for all requests --->
+		<cfsetting showdebugoutput="false" />
 
 		<!--- Check if login is restricted by IP --->
 		<cfif getLoginIPsEnabled() AND NOT isLoginIP() AND isProtectedEvent(requestEventName)>
@@ -134,8 +137,6 @@ Notes:
 					</cfif>
 				<cfelse>
 					<cfset arguments.eventContext.clearEventQueue() />
-
-					<cfset httpRequestData = GetHttpRequestData() />
 
 					<!--- Check to see if this is an AJAX request --->
 					<cfif StructKeyExists(httpRequestData.headers, "X-Prototype-Version")>

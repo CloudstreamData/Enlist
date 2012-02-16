@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Ben Edwards (ben@ben-edwards.com)
-$Id: XmlValidationException.cfc 2540 2010-10-13 05:56:36Z peterjfarrell $
+$Id: XmlValidationException.cfc 2853 2011-09-09 04:46:04Z peterjfarrell $
 
 Created version: 1.1.0
 Updated version: 1.1.1
@@ -65,6 +65,10 @@ Notes:
 	<!---
 	INITIALIZATION / CONFIGURATION
 	--->
+
+	<!---
+	PUBLIC FUNCTIONS
+	--->
 	<cffunction name="wrapValidationResult" access="public" returntype="XmlValidationException" output="false"
 		hint="Wraps the result of a failed XML validation.">
 		<cfargument name="validationResult" type="struct" required="true"
@@ -77,52 +81,119 @@ Notes:
 		<cfset setFatalErrors(arguments.validationResult.fatalErrors) />
 		<cfset setErrors(arguments.validationResult.errors) />
 		<cfset setWarnings(arguments.validationResult.warnings) />
+		<cfset setExceptionStatus(NOT arguments.validationResult.status) />
 		<cfset setXmlPath(arguments.xmlPath) />
 		<cfset setDtdPath(arguments.dtdPath) />
 
 		<cfreturn this />
 	</cffunction>
 
-	<!---
-	PUBLIC FUNCTIONS
-	--->
 	<cffunction name="getFormattedMessage" access="public" returntype="string" output="false"
 		hint="Gets a message from the errors/warnings for display.">
+		<cfargument name="rawMessage" type="string" required="false" default="#findMostSevereMessage()#"
+			hint="A raw message or this method will select the most severe message available." />
 
-		<cfset var rawMessage = "" />
-		<cfset var formattedMessage = "" />
+		<cfset var formattedMessage = "Error validating XML file: " />
+		<cfset var partedMessage = getPartedMessage(arguments.rawMessage)/>
 
-		<!--- Display error messages in order of important: fatal, error and warning --->
-		<cfif ArrayLen(variables.fatalErrors) GT 0>
-			<cfset rawMessage = variables.fatalErrors[1] />
-		<cfelseif ArrayLen(variables.errors) GT 0>
-			<cfset rawMessage = variables.errors[1] />
-		<cfelseif ArrayLen(variables.warnings) GT 0>
-			<cfset rawMessage = variables.warnings[1] />
-		<cfelse>
-			<cfthrow type="MachII.framework.NoMessagesDefined"
-				message="There are no XML validation error messages defined. Cannot display a formatted message." />
-		</cfif>
-
-		<cfset formattedMessage = "Error validating XML file: " />
 		<cfif getXmlPath() NEQ ''>
 			<cfset formattedMessage = formattedMessage & getXmlPath() & ": " />
 		</cfif>
-		
-		<cfif ListLen(rawMessage, ":") GTE 2>
-			<cfset formattedMessage = formattedMessage & "Line " & ListGetAt(rawMessage,2,':') & ", " />
+
+		<cfset formattedMessage = formattedMessage & "Line " & partedMessage.line & ", " />
+		<cfset formattedMessage = formattedMessage & "Column " & partedMessage.column />
+		<cfif Len(partedMessage.message)>
+			<cfset formattedMessage = formattedMessage & ": " & partedMessage.message />
 		</cfif>
-		<cfif ListLen(rawMessage, ":") GTE 3>
-			<cfset formattedMessage = formattedMessage & "Column " & ListGetAt(rawMessage,3,':') & ": " />
-		</cfif>
-		<cfif ListLen(rawMessage, ":") GTE 4>
-			<cfset formattedMessage = formattedMessage & ListGetAt(rawMessage,4,':') />
-		</cfif>
-		<cfif ListLen(rawMessage, ":") GTE 5>
-			<cfset formattedMessage = formattedMessage & " - " & ListGetAt(rawMessage,5,':') />
+		<cfif Len(partedMessage.detail)>
+			<cfset formattedMessage = formattedMessage & " - " & partedMessage.detail />
 		</cfif>
 
 		<cfreturn formattedMessage />
+	</cffunction>
+
+	<cffunction name="getPartedMessage" access="public" returntype="struct" output="false"
+		hint="Takes a message breaks it into a parted message struct.">
+		<cfargument name="rawMessage" type="string" required="false" default="#findMostSevereMessage()#"
+			hint="A raw message or this method will select the most severe message available." />
+
+		<cfset var partedMessage = StructNew() />
+
+		<!---
+			ACF stupidly uses ":" for list when namespaces are being used.
+			This causes issues because ";" is the list delim. Change all:
+			'{"": to '{"";;;;
+			'{namespace; to '{namespace;;;;
+			Then we convert back.
+		--->
+		<cfset arguments.rawMessage = REReplaceNoCase(arguments.rawMessage, "\'\{(""|.*):(.*?)}", "'{\1;;;;\2?}", "all") />
+
+		<cfset partedMessage.line = "" />
+		<cfset partedMessage.column = "" />
+		<cfset partedMessage.message = "" />
+		<cfset partedMessage.detail = "" />
+
+		<cfset partedMessage.severity = REReplaceNoCase(ListGetAt(arguments.rawMessage, 1, ":"), "\[(.*)\]", "\1", "all") />
+
+		<cfif ListLen(arguments.rawMessage, ":") GTE 2>
+			<cfset partedMessage.line = ListGetAt(arguments.rawMessage, 2, ':') />
+		</cfif>
+		<cfif ListLen(arguments.rawMessage, ":") GTE 3>
+			<cfset partedMessage.column = ListGetAt(arguments.rawMessage, 3, ':') />
+		</cfif>
+		<cfif ListLen(arguments.rawMessage, ":") GTE 4>
+			<cfset partedMessage.message = REReplaceNoCase(Trim(ListGetAt(arguments.rawMessage, 4, ':')), "\'\{(""|.*?);;;;(.*?)}", "'{\1:.\2}", "all") />
+		</cfif>
+		<cfif ListLen(arguments.rawMessage, ":") GTE 5>
+			<cfset partedMessage.detail = REReplaceNoCase(Trim(ListGetAt(arguments.rawMessage, 5, ':')), "\'\{(""|.*?);;;;(.*?)}", "'{\1:.\2}", "all") />
+		</cfif>
+
+		<cfreturn partedMessage />
+	</cffunction>
+
+	<cffunction name="findMostSevereMessage" access="public" returntype="string" output="false"
+		hint="Find most severe message available by the provided position.">
+		<cfargument name="position" type="numeric" required="false" default="1" />
+
+		<cfset var exceptionStack = getOrderedMessages() />
+
+		<cfif arguments.position LTE ArrayLen(exceptionStack)>
+			<cfreturn exceptionStack[arguments.position] />
+		<cfelse>
+			<cfthrow type="MachII.framework.NoMessagesDefined"
+				message="There are no XML validation error messages defined that are located in position '#arguments.position#'. There are '#ArrayLen(exceptionStack)#' items in the exception array." />
+		</cfif>
+	</cffunction>
+
+	<cffunction name="getOrderedMessages" access="public" returntype="array" output="false"
+		hint="Gets a stack of messages.">
+
+		<cfset var exceptionStack = ArrayNew(1) />
+
+		<!--- Display error messages in order of important: fatal, error and warning --->
+		<cfset exceptionStack = variables.arrayConcat(exceptionStack, variables.fatalErrors) />
+		<cfset exceptionStack = variables.arrayConcat(exceptionStack, variables.errors) />
+		<cfset exceptionStack = variables.arrayConcat(exceptionStack, variables.warnings) />
+
+		<cfreturn exceptionStack />
+	</cffunction>
+
+	<!---
+	PROTECTED FUNCTIONS
+	--->
+	<cffunction name="arrayConcat" access="private" returntype="array" output="false"
+		hint="Concats two arrays together.">
+		<cfargument name="array1" type="array" required="true" />
+		<cfargument name="array2" type="array" required="true" />
+
+		<cfset var result = arguments.array1 />
+		<cfset var i = 0 />
+
+		<cfloop from="1" to="#ArrayLen(arguments.array2)#" index="i">
+			<cfset ArrayAppend(result, arguments.array2[i]) />
+		</cfloop>
+
+		<cfreturn result />
 	</cffunction>
 
 	<!---
@@ -142,6 +213,14 @@ Notes:
 	</cffunction>
 	<cffunction name="getDtdPath" access="public" returntype="string" output="false">
 		<cfreturn variables.dtdPath />
+	</cffunction>
+
+	<cffunction name="setExceptionStatus" access="public" returntype="void" output="false">
+		<cfargument name="exceptionStatus" type="boolean" required="false" />
+		<cfset variables.exceptionStatus = arguments.exceptionStatus />
+	</cffunction>
+	<cffunction name="getExceptionStatus" access="public" returntype="boolean" output="false">
+		<cfreturn variables.exceptionStatus />
 	</cffunction>
 
 	<cffunction name="setErrors" access="public" returntype="void" output="false">

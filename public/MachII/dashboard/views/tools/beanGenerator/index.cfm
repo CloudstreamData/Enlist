@@ -41,20 +41,105 @@
 	extend certain Mach-II public interfaces (see README for list of public
 	interfaces).
 
-$Id: index.cfm 2372 2010-09-08 00:17:06Z peterjfarrell $
+$Id: index.cfm 2756 2011-04-14 06:57:24Z peterjfarrell $
 
 Created version: 1.1.0
 Updated version: 1.1.0
 
 Notes:
 --->
+	<cfimport prefix="dashboard" taglib="/MachII/dashboard/customtags" />
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
+	<cfimport prefix="form" taglib="/MachII/customtags/form" />
 	<view:meta type="title" content="Tools - Bean Generator" />
+	<!--- By default, all script and style are put in the head --->
+	<view:script endpoint="dashboard.serveAsset" p:file="/js/handler/tools/beangenerator.js" />
 </cfsilent>
 <cfoutput>
+<dashboard:displayMessage />
+
 <h1>Bean Generator</h1>
 
-<!--- Output the pageNavTabs --->
-#event.getArg("layout.snip_pageNavTabs")#
+<form:form name="configureForm" id="configureForm" autoFocus="false">
+	<table>
+		<tr>
+			<td style="width:50%;">
+				<h2 style="margin-bottom:5px;"><label id="propertyInfo">Bean Template</label></h2>
+				<p><form:textarea name="propertyInfo" style="width:100%;height:250px" /></p>
+			</td>
+			<td style="width:50%;">
+				<h2>Bean Options</h2>
+				<table>
+					<tr>
+						<th style="width:25%;"><h3>Bean Name</h3></th>
+						<td style="width:75%;"><p><form:input name="beanName" size="35" /></p></td>
+					</tr>
+					<tr>
+						<th><h3>Path to Bean</h3></th>
+						<td><p><form:input name="beanPath" size="35" /></p></td>
+					</tr>
+					<tr>
+						<th><h3>Extends</h3></td>
+						<td><p><form:input name="cfcextends" size="35" /></p></td>
+					</tr>
+					<tr>
+						<th><h3>Date Format</h3></td>
+						<td><p><form:input name="dateFormat" value="MM/DD/YYYY" size="15" onclick="javascript:clearText(this)" /></p></td>
+					</tr>
+					<tr>
+						<th><h3>Options</h3></th>
+						<td>
+							<p><label><form:checkbox name="callSuper" value="y" />Call super.init()?</label></p>
+							<p><label><form:checkbox name="comments" value="y" />Template code in bean?</label> </p>
+							<p><label><form:checkbox name="setMemento" value="y" />setMemento()</label></p>
+							<p><label><form:checkbox name="getMemento" value="y" />getMemento()</label></p>
+							<p><label><form:checkbox name="setStepInstance" value="y" />setStepInstance()</label></p>
+							<p><label><form:checkbox name="dump" value="y" />Add dump()</label></p>
+							<p><label><form:checkbox name="addTrim" value="y" />Add trim() in setters</label></p>
+							<p><label><form:checkbox name="validate" value="y" />validate()</label></p>
+							<p><label><form:checkbox name="validateInterior" value="y" />Create boilerplate validate interior?</label></p>
+						</td>
+					</tr>
+				</table>
+	
+			</td>
+		</tr>
+	</table>
+	<p class="right">
+		<form:button value="Execute" name="Execute" />
+		<form:button value="Example" name="Example" />
+		<form:button onclick="javascript:document.beanResults.results.value=''" type="reset" value="Reset" name="reset" />
+	</p>
+</form:form>
 
+<p class="clear" style="padding-top:24px;" />
+
+<h2>Generated Bean</h2>
+<form:form name="showBeanResults" actionEvent="tools.beanGenerator.saveGeneratedBean" autoFocus="false">
+	<p style="margin-top:24px;margin-bottom:24px;">
+		<form:textarea name="results" style="width:100%;height:400px;" class="beanResults" />
+	</p>
+	<table>
+		<tr>
+			<th style="width:15%;"><h3>Write CFC to file?</h3></th>
+			<td style="width:85%;">
+				<p><form:input name="fileLocation" size="75" value="" /></p>
+				<p>Enter full path and file name in relation to: <pre class="small">#ExpandPath('/')#</pre></p>
+			</td>
+		</tr>
+	</table>
+	<p class="right"><form:button name="save" value="Create Bean CFC" /></p>
+</form:form>
+
+<view:script outputType="inline">
+	Event.observe('Execute', 'click', function(event) {
+		Event.stop(event); // stop the form from submitting first in case we encounter an error
+		$('results').value = executeRooibos();
+	});
+
+	Event.observe('Example', 'click', function(event) {
+		Event.stop(event); // stop the form from submitting first in case we encounter an error
+		$('results').value = executeExample();
+	});
+</view:script>
 </cfoutput>

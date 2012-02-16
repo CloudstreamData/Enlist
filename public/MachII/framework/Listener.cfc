@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Ben Edwards (ben@ben-edwards.com)
-$Id: Listener.cfc 2204 2010-04-27 07:36:11Z peterfarrell $
+$Id: Listener.cfc 2811 2011-06-30 06:41:13Z peterjfarrell $
 
 Created version: 1.0.0
 Updated version: 1.8.0
@@ -89,7 +89,7 @@ All user-defined listeners extend this base listener component.
 		<cfargument name="invoker" type="MachII.framework.ListenerInvoker" required="true" />
 		<cfset variables.invoker = arguments.invoker />
 	</cffunction>
-	<cffunction name="getInvoker" access="public" type="MachII.framework.ListenerInvoker" output="false"
+	<cffunction name="getInvoker" access="public" returntype="MachII.framework.ListenerInvoker" output="false"
 		hint="Gets the ListenerInvoker to use when invoking methods for this Listener.">
 		<cfreturn variables.invoker />
 	</cffunction>

@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Kurt Wiersma (kurt@mach-ii.com)
-$Id: CallMethodCommand.cfc 2247 2010-07-03 20:52:06Z peterjfarrell $
+$Id: CallMethodCommand.cfc 2826 2011-07-14 11:14:11Z peterjfarrell $
 
 Created version: 1.8.0
 Updated version: 1.8.0
@@ -155,11 +155,12 @@ or
 			</cfloop>
 			<cfcatch type="any">
 				<cfif log.isErrorEnabled()>
-					<cfset log.error("An exception has occurred while trying to evaluate an argument expression '#args[i].value#' in a call-method command in #getParentHandlerType()# named '#getParentHandlerName()#' in module '#arguments.eventContext.getAppManager().getModuleName()#'.",  cfcatch) />
+					<cfset log.error("An exception has occurred while trying to evaluate an argument expression '#args[i].value#' in a call-method command in #getParentHandlerType()# named '#getParentHandlerName()#' in module '#arguments.eventContext.getAppManager().getModuleName()#'. "
+						& getUtils().buildMessageFromCfCatch(cfcatch),  cfcatch) />
 				</cfif>
 				<cfthrow type="MachII.framework.commands.InvalidExpression"
 					message="An exception has occurred while trying to evaluate an argument expression '#args[i].value#' in a call-method command in #getParentHandlerType()# named '#getParentHandlerName()#' in module '#arguments.eventContext.getAppManager().getModuleName()#'. See details for more information."
-					detail="#cfcatch.message# || #cfcatch.detail#" />
+					detail="#getUtils().buildMessageFromCfCatch(cfcatch)#" />
 			</cfcatch>
 		</cftry>
 

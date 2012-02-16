@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Ben Edwards (ben@ben-edwards.com)
-$Id: EventContext.cfc 2524 2010-10-09 02:18:29Z peterjfarrell $
+$Id: EventContext.cfc 2865 2011-10-03 13:18:25Z jason_york $
 
 Created version: 1.0.0
 Updated version: 1.9.0
@@ -98,10 +98,7 @@ Notes:
 		<cfif IsObject(arguments.currentEvent)>
 			<cfset setCurrentEvent(arguments.currentEvent) />
 		</cfif>
-
-		<!--- Set the exception event --->
-		<cfset setExceptionEventName(getAppManager().getPropertyManager().getProperty("exceptionEvent")) />
-
+		
 		<!--- (re)init the ViewContext. --->
 		<cfset getViewContext().init(getAppManager()) />
 
@@ -405,7 +402,7 @@ Notes:
 			AND NOT getAppManager().getModuleManager().isModuleDefined(arguments.mappingModuleName)>
 
 			<cfif log.isErrorEnabled()>
-				<cfset log.error("Cannot create an event-mapping on event '#arguments.eventMapping#' because the mapping '#arguments.mappingName#' in module '#arguments.mappingModuleName#' cannot be found.") />
+				<cfset log.error("Cannot create an event-mapping on event '#arguments.eventName#' because the mapping '#arguments.mappingName#' in module '#arguments.mappingModuleName#' cannot be found.") />
 			</cfif>
 
 			<cfthrow type="MachII.framework.eventMappingModuleNotDefined"
@@ -483,8 +480,6 @@ Notes:
 		<cfset var result = StructNew() />
 		<cfset var log = getLog() />
 
-		<cfset result.eventName = getExceptionEventName() />
-
 		<cftry>
 			<!--- Create eventArg data --->
 			<cfset eventArgs.exception = arguments.exception />
@@ -500,7 +495,27 @@ Notes:
 				<cfset variables.clearEventQueue() />
 			</cfif>
 
-			<!--- Check for an event-mapping. --->
+			<!---
+				There are three situations on how we can handle exception event/module handling
+				1. In module with exception event and exception module
+				2. In module with exception event and no exception module defined
+				3. Base app
+			--->
+			<cfif appManager.inModule() AND appManager.getPropertyManager().isPropertyDefined("exceptionEvent")>
+				<cfset result.eventName = appManager.getPropertyManager().getProperty("exceptionEvent") />
+				
+				<!--- Use the exceptionModule property if defined otherwise fall back to the module name --->
+				<cfif appManager.getPropertyManager().isPropertyDefined("exceptionModule")>
+					<cfset result.moduleName = appManager.getPropertyManager().getProperty("exceptionModule") />
+				<cfelse>
+					<cfset result.moduleName = appManager.getModuleName() />
+				</cfif>
+			<cfelse>
+				<cfset result.eventName = appManager.getPropertyManager().getProperty("exceptionEvent") />
+				<cfset result.moduleName = appManager.getPropertyManager().getProperty("exceptionModule") />
+			</cfif>
+
+			<!--- Check for an event-mapping. --->			
 			<cfif isEventMappingDefined(result.eventName)>
 				<cfset result = getEventMapping(exceptionEventName) />
 				<cfif Len(result.moduleName)>
@@ -508,11 +523,6 @@ Notes:
 				<cfelse>
 					<cfset appManager = appManager.getModuleManager().getAppManager() />
 				</cfif>
-			<!--- If the exception event is not defined, then we know it's in the parent --->
-			<cfelseif appManager.getPropertyManager().isPropertyDefined("exceptionEvent")>
-				<cfset result.moduleName = appManager.getModuleName() />
-			<cfelse>
-				<cfset result.moduleName = "" />
 			</cfif>
 
 			<cfif log.isInfoEnabled()>
@@ -803,37 +813,68 @@ Notes:
 
 	<cffunction name="uploadFile" access="public" returntype="struct" output="false"
 		hint="Wrapper for CFFILE action=upload to better integrate uploading files">
-		<cfargument name="fileField" type="string" required="true" />
-		<cfargument name="destination" type="string" required="true" />
-		<cfargument name="nameConflict" type="string" required="false" default="error" />
-		<cfargument name="accept" type="string" required="false" default="*"
-			hint="Accepts a list of mixed MIME types or file extensions (which must start with a'.')." />
-		<cfargument name="mode" type="string" required="false" />
-		<cfargument name="fileAttributes" type="string" required="false" />
+		<cfargument name="fileField" type="string" required="true"
+			hint="The name of the field in the 'form' scope. This cannot be the name in the Event object due to how CFFILE works on CFML engines." />
+		<cfargument name="destination" type="string" required="true" 
+			hint="The full destination path to store the uploaded file. This must be a full path." />
+		<cfargument name="nameConflict" type="string" required="false" default="error"
+			hint="The action to take if there is a file name conflict (error, skip, override, makeUnique)." />
+		<cfargument name="accept" type="any" required="false" default="*"
+			hint="Accepts a list or array of mixed MIME types or file extensions (which must start with a'.')." />
+		<cfargument name="mode" type="string" required="false"
+			hint="For *nix operating systems only, the octal value to apply to the file for file permissiones such as read, write and execute." />
+		<cfargument name="fileAttributes" type="string" required="false"
+			hint="For Windows operatins systems only, the file attributes to set for the file (comma-delimited)." />
 
 		<cfset var uploadResult = StructNew() />
 		<cfset var convertedAccept = getAppManager().getUtils().getMimeTypeByFileExtension(arguments.accept) />
 
-		<!--- mode and attributes are mutually exclusive (mode = *nix only, attributes = Windows only),
-				but I suppose if someone was writing code that they wanted to have one apply on *nix
-				and the other on Windows they could potentially provide both, so we better
-				account for that --->
+		<!---
+			Mode and attributes are mutually exclusive (mode = *nix only, attributes = Windows only),
+			but I suppose if someone was writing code that they wanted to have one apply on *nix
+			and the other on Windows they could potentially provide both, so we better
+			account for that. This can be replaced with attributeCollection when all engines support it.
+		--->
+		
+		<!--- Windows and *nix --->
 		<cfif StructKeyExists(arguments, "fileAttributes") and StructKeyExists(arguments, "mode")>
-			<cffile action="upload" filefield="#arguments.fileField#" destination="#arguments.destination#"
-					nameconflict="#arguments.nameConflict#" accept="#arguments.accept#"
-					mode="#arguments.mode#" attributes="#arguments.fileAttributes#"
-					result="uploadResult" />
+			<cffile action="upload" 
+				filefield="#arguments.fileField#" 
+				destination="#arguments.destination#"
+				nameconflict="#arguments.nameConflict#" 
+				accept="#arguments.accept#"
+				mode="#arguments.mode#" 
+				attributes="#arguments.fileAttributes#"
+				result="uploadResult" />
+		
+		<!--- *nix only --->
 		<cfelseif StructKeyExists(arguments, "mode")>
-			<cffile action="upload" filefield="#arguments.fileField#" destination="#arguments.destination#"
-					nameconflict="#arguments.nameConflict#" accept="#aconvertedAccept#" mode="#arguments.mode#"
-					result="uploadResult" />
+			<cffile action="upload" 
+				filefield="#arguments.fileField#" 
+				destination="#arguments.destination#"
+				nameconflict="#arguments.nameConflict#" 
+				accept="#aconvertedAccept#" 
+				mode="#arguments.mode#"
+				result="uploadResult" />
+		
+		<!--- Windows only --->
 		<cfelseif StructKeyExists(arguments, "fileAttributes")>
-			<cffile action="upload" filefield="#arguments.fileField#" destination="#arguments.destination#"
-					nameconflict="#arguments.nameConflict#" accept="#convertedAccept#"
-					attributes="#arguments.fileAttributes#" result="uploadResult" />
+			<cffile action="upload" 
+				filefield="#arguments.fileField#" 
+				destination="#arguments.destination#"
+				nameconflict="#arguments.nameConflict#" 
+				accept="#convertedAccept#"
+				attributes="#arguments.fileAttributes#" 
+				result="uploadResult" />
+		
+		<!--- Generic --->
 		<cfelse>
-			<cffile action="upload" filefield="#arguments.fileField#" destination="#arguments.destination#"
-					nameconflict="#arguments.nameConflict#" accept="#convertedAccept#" result="uploadResult" />
+			<cffile action="upload" 
+				filefield="#arguments.fileField#" 
+				destination="#arguments.destination#"
+				nameconflict="#arguments.nameConflict#" 
+				accept="#convertedAccept#" 
+				result="uploadResult" />
 		</cfif>
 
 		<cfreturn uploadResult />
@@ -874,14 +915,6 @@ Notes:
 	</cffunction>
 	<cffunction name="getViewContext" access="private" type="MachII.framework.ViewContext" output="false">
 		<cfreturn variables.viewContext />
-	</cffunction>
-
-	<cffunction name="setExceptionEventName" access="public" returntype="void" output="false">
-		<cfargument name="exceptionEventName" type="string" required="true" />
-		<cfset variables.exceptionEventName = arguments.exceptionEventName />
-	</cffunction>
-	<cffunction name="getExceptionEventName" access="public" returntype="string" output="false">
-		<cfreturn variables.exceptionEventName />
 	</cffunction>
 
 	<cffunction name="setLog" access="private" returntype="void" output="false"

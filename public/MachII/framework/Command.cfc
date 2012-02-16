@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Ben Edwards (ben@ben-edwards.com)
-$Id: Command.cfc 2204 2010-04-27 07:36:11Z peterfarrell $
+$Id: Command.cfc 2827 2011-07-15 03:58:14Z peterjfarrell $
 
 Created version: 1.0.0
 Updated version: 1.8.0
@@ -101,6 +101,60 @@ Notes:
 		<cfloop collection="#arguments.parameters#" item="key">
 			<cfset setParameter(key, parameters[key]) />
 		</cfloop>
+	</cffunction>
+	
+	<cffunction name="resolveExpressions" access="public" returntype="any" output="false"
+		hint="Resolves M2EL a struct of parameters.">
+		<cfargument name="expressions" type="any" required="true" />
+		<cfargument name="event" type="MachII.framework.Event" required="true" />
+		<cfargument name="eventContext" type="MachII.framework.EventContext" required="true" />
+		
+		<cfset var resolvedExpressions = StructNew() />
+		
+		<cfif IsSimpleValue(arguments.expressions)>
+			<cfreturn recurseResolveExpressions(arguments.expressions, arguments.event, arguments.eventContext.getAppManager().getPropertyManager(), getExpressionEvaluator()) />
+		<cfelse>
+			<!--- Append the current parameters to the resolved version so the original values are not corrupted --->
+			<cfset StructAppend(resolvedExpressions, arguments.expressions) />
+		
+			<cfreturn recurseResolveExpressions(resolvedExpressions, arguments.event, arguments.eventContext.getAppManager().getPropertyManager(), getExpressionEvaluator()) />
+		</cfif>
+	</cffunction>
+	
+	<!---
+	PROTECTED FUNCTIONS
+	--->
+	<cffunction name="recurseResolveExpressions" access="private" returntype="any" output="false"
+		hint="Recurses through an incoming parameters for resolution.">
+		<cfargument name="node" type="any" required="true" />
+		<cfargument name="event" type="MachII.framework.Event" required="true" />
+		<cfargument name="propertyManager" type="MachII.framework.PropertyManager" required="true" />
+		<cfargument name="expressionEvaluator" type="MachII.util.ExpressionEvaluator" required="true" />
+	
+		<cfset var value = "" />
+		<cfset var i = "" />
+		
+		<cfif IsSimpleValue(arguments.node)>
+			<cfif arguments.expressionEvaluator.isExpression(arguments.node)>
+				<cfset value = arguments.expressionEvaluator.evaluateExpression(arguments.node, arguments.event, arguments.propertyManager) />
+			<cfelse>
+				<cfset value  = arguments.node />
+			</cfif>
+		<cfelseif IsStruct(arguments.node)>
+			<cfset value = StructNew() />
+			<cfloop collection="#arguments.node#" item="i">
+				<cfset value[i] = recurseResolveExpressions(arguments.node[i], arguments.event, arguments.propertyManager, arguments.expressionEvaluator) />
+			</cfloop>
+		<cfelseif IsArray(arguments.node)>
+			<cfset value = ArrayNew(1) />
+			<cfloop from="1" to="#ArrayLen(arguments.node)#" index="i">
+				<cfset value[i] = recurseResolveExpressions(arguments.node[i], arguments.event, arguments.propertyManager, arguments.expressionEvaluator) />
+			</cfloop>
+		<cfelse>
+			<cfset value = arguments.node />
+		</cfif>
+		
+		<cfreturn value />
 	</cffunction>
 
 	<!---

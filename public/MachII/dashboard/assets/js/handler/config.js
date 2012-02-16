@@ -40,7 +40,7 @@
  *  interfaces).
 	
  * Author: Peter J. Farrell (peter@mach-ii.com)
- * $Id: config.js 2693 2011-03-06 19:27:46Z kurt_wiersma $
+ * $Id: config.js 2770 2011-05-17 13:18:00Z aj_ferrigno $
  * 
  */
 try {
@@ -48,6 +48,33 @@ try {
 } catch(e) {
 	console = { log: function() {} };
 }
+
+Ajax.PeriodicalUpdaterCompleteCallback=Class.create(Ajax.Base,
+		{initialize:function($super,container,url,options){
+			$super(options);
+			this.onComplete=this.options.onComplete;
+			this.frequency=(this.options.frequency||2);
+			this.decay=(this.options.decay||1);
+			this.updater={};
+			this.container=container;
+			this.url=url;
+			this.start();}
+		,start:function(){
+			this.options.onComplete=this.updateComplete.bind(this);
+			this.onTimerEvent();}
+		,stop:function(){
+			this.updater.options.onComplete=undefined;
+			clearTimeout(this.timer);
+			(this.onComplete||Prototype.emptyFunction).apply(this,arguments);}
+		,updateComplete:function(response){
+			if(this.options.decay){this.decay=(response.responseText==this.lastText?this.decay*this.options.decay:1);this.lastText=response.responseText;}
+			this.timer=this.onTimerEvent.bind(this).delay(this.decay*this.frequency);
+			// bug with Prototype, call onComplete here if specified
+			if (this.onComplete) {
+				this.onComplete(response);
+			}}
+		,onTimerEvent:function(){
+			this.updater=new Ajax.Updater(this.container,this.url,this.options);}});
 
 var ConfigHandler = Class.create();
 
@@ -83,11 +110,12 @@ ConfigHandler.prototype = {
 		}
 
 		if (currentValue != 0) {
-			this.updater = new Ajax.PeriodicalUpdater('changedComponents'
+			this.updater = new Ajax.PeriodicalUpdaterCompleteCallback('changedComponents'
 				, this.reloadAllChangedComponentsUrl
 				, {
 					frequency: currentValue
 					, decay: 1
+					, onComplete: this.updateChangeLog
 				}
 			);
 		} else {
@@ -95,6 +123,13 @@ ConfigHandler.prototype = {
 				this.updater.stop();
 			}
 		}
+	},
+	
+	updateChangeLog: function() {
+		$$("div##changedComponentsMessage div.messageBox div p").each(function(node) {
+			$("changedComponentsLogDetails").insert({'before': '<div id="changedComponentsLogDetails">' + node.innerHTML + '</div>'})
+			$("changedComponentsLog").show();
+		});
 	},
 
 	updateChangedComponents: function() {
@@ -104,7 +139,7 @@ ConfigHandler.prototype = {
 
 		new Ajax.Updater('changedComponents'
 			, this.refreshAllChangedComponentsUrl
-			, {}
+			, { onComplete: this.updateChangeLog }
 		);
 
 		this.periodicUpdateChangedComponents();
@@ -118,7 +153,8 @@ ConfigHandler.prototype = {
 		
 		new Ajax.Updater('changedComponents'
 			, this.reloadAllChangedComponentsUrl
-			, {}
+			, { evalScripts: true
+				, onComplete: this.updateChangeLog }
 		);
 		
 		this.periodicUpdateChangedComponents();

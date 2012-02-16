@@ -40,7 +40,7 @@
 	extend certain Mach-II public interfaces (see README for list of public
 	interfaces).
 Author: Ben Edwards (ben@ben-edwards.com)
-$Id: ViewManager.cfc 2394 2010-09-12 14:54:54Z peterjfarrell $
+$Id: ViewManager.cfc 2818 2011-07-07 21:33:57Z peterjfarrell $
 
 Created version: 1.0.0
 Updated version: 1.8.0
@@ -216,8 +216,6 @@ Notes:
 	<cffunction name="configure" access="public" returntype="void" output="false"
 		hint="Prepares the manager for use.">
 
-		<cfset var viewLoaders = variables.viewLoaders />
-		<cfset var views = StructNew() />
 		<cfset var viewData = "" />
 		<cfset var i = 0 />
 		<cfset var key = "" />
@@ -241,10 +239,9 @@ Notes:
 		</cfloop>
 
 		<!--- Configure and resolve view loaders --->
-		<cfloop from="1" to="#ArrayLen(viewLoaders)#" index="i">
-			<cfset viewLoaders[i].configure() />
-			<cfset views = viewLoaders[i].discoverViews() />
-			<cfset StructAppend(variables.viewData, views, false) />
+		<cfloop from="1" to="#ArrayLen(variables.viewLoaders)#" index="i">
+			<cfset variables.viewLoaders[i].configure() />
+			<cfset StructAppend(variables.viewData, variables.viewLoaders[i].discoverViews(), false) />
 		</cfloop>
 	</cffunction>
 

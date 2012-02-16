@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Peter J. Farrell (peter@mach-ii.com)
-$Id: ThreadingAdapterBD.cfc 2341 2010-09-03 08:19:35Z peterjfarrell $
+$Id: ThreadingAdapterBD.cfc 2853 2011-09-09 04:46:04Z peterjfarrell $
 
 Created version: 1.9.0
 Updated version: 1.9.0
@@ -95,7 +95,7 @@ Notes:
 
 				<cfinvoke component="#thread.collection.component#"
 					method="#thread.collection.method#"
-					returnVariable="#thread.collection.returnVariable#" 
+					returnVariable="#thread.collection.returnVariable#"
 					argumentcollection="#thread.collection.argumentCollection#" />
 
 				<cfif IsDefined("thread.resultData")>
@@ -136,8 +136,8 @@ Notes:
 		</cfif>
 
 		<!--- ResultArgs are automatically put into the event so we just have to wait for all threads --->
-		<cfthread action="join" 
-			name="#name#" 
+		<cfthread action="join"
+			name="#name#"
 			timeout="#convertSecondsToMilliseconds(arguments.timeout)#" />
 
 		<cfset results.errors = ArrayNew(1) />

@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Peter J. Farrell (peter@mach-ii.com)
-$Id: AbstractEndpoint.cfc 2695 2011-03-10 03:46:33Z peterjfarrell $
+$Id: AbstractEndpoint.cfc 2835 2011-08-29 23:31:10Z peterjfarrell $
 
 Created version: 1.9.0
 
@@ -63,13 +63,14 @@ Notes:
 	<cfset variables.componentNameFull = "" />
 	<cfset variables.componentNameForLogging = "" />
 	<cfset variables.endpointManager = "" />
-	
+
 	<cfset variables.enableThrow = false />
 	<cfset variables.throwTemplate = "/MachII/endpoints/defaultThrowTemplate.cfm" />
 	<cfset variables.customMimeTypeMap = StructNew() />
 	<cfset variables.isPreProcessDefined = false />
 	<cfset variables.isPostProcessDefined = false />
 	<cfset variables.isOnAuthenticateDefined = false />
+	<cfset variables.isAuthenticationRequiredDefined = false />
 
 	<!---
 	INITIALIZATION / CONFIGURATION
@@ -80,7 +81,7 @@ Notes:
 			hint="A reference to the AppManager this endpoint was loaded from." />
 		<cfargument name="parameters" type="struct" required="false" default="#StructNew()#"
 			hint="A struct of configure time parameters." />
-		
+
 		<cfset var defaultEnableThrow = StructNew() />
 
 		<!--- Run setters --->
@@ -108,7 +109,7 @@ Notes:
 			<cfset defaultEnableThrow["group:_default_"] = false />
 			<cfset setEnableThrow(resolveValueByEnvironment(defaultEnableThrow, false)) />
 		</cfif>
-		
+
 		<cfif isParameterDefined("throwTemplate") AND getAssert().hasText(getParameter("throwTemplate")
 				, "Invalid throwTemplate."
 				, "Must be path to throw template.")>
@@ -168,7 +169,7 @@ Notes:
 		<cfargument name="event" type="MachII.framework.Event" required="true" />
 		<cfabort showerror="This method is abstract and must be overridden." />
 	</cffunction>
-	
+
 	<cffunction name="onAuthenticate" access="public" returntype="void" output="false"
 		hint="Runs when an endpoint authentication is required. Override to provide custom functionality.">
 		<cfargument name="event" type="MachII.framework.Event" required="true" />
@@ -180,7 +181,7 @@ Notes:
 		<cfargument name="event" type="MachII.framework.Event" required="true" />
 		<cfargument name="exception" type="MachII.util.Exception" required="true"
 			hint="The Exception that was thrown/caught by the endpoint request processor." />
-		
+
 		<!--- Optional "throw" parameter can cause the full exception to be rendered in the browser. --->
 		<cfif arguments.event.isArgDefined("throw") AND getEnableThrow()>
 			<cfset addHTTPHeaderByStatus(500) />
@@ -188,10 +189,24 @@ Notes:
 		<!--- Default exception handling --->
 		<cfelse>
 			<cfset variables.log.error(getUtils().buildMessageFromCfCatch(arguments.exception.getCaughtException()), arguments.exception.getCaughtException()) />
-			<cfset addHTTPHeaderByStatus(500) />
+
+			<!--- Do not override last HTTP status code if set by previous code --->
+			<cfif NOT getLastHttpStatusCode()>
+				<cfset addHTTPHeaderByStatus(500) />
+			</cfif>
+
 			<cfset addHTTPHeaderByName("machii.endpoint.error", "Endpoint named '#event.getArg(getProperty("endpointParameter"))#' encountered an unhandled exception.") />
 			<cfsetting enablecfoutputonly="false" /><cfoutput>Endpoint named '#event.getArg(getProperty("endpointParameter"))#' encountered an unhandled exception.</cfoutput><cfsetting enablecfoutputonly="true" />
 		</cfif>
+	</cffunction>
+
+	<!---
+	PUBLIC FUNCTIONS - ENDPOINT REQUEST HANDLING UTILS
+	---->
+	<cffunction name="isAuthenticationRequired" access="public" returntype="boolean" output="false"
+		hint="Checks if endpoint authentication is required for this request. Override to provide custom functionality.">
+		<cfargument name="event" type="MachII.framework.Event" required="true" />
+		<cfabort showerror="This method is abstract and must be overridden." />
 	</cffunction>
 
 	<!---
@@ -238,7 +253,7 @@ Notes:
 			hint="Base of the url. Defaults to the value of the urlBase property." />
 		<cfreturn getAppManager().getRequestManager().buildRouteUrl(argumentcollection=arguments) />
 	</cffunction>
-	
+
 	<cffunction name="buildEndpointUrl" access="public" returntype="string" output="false"
 		hint="Builds an endpoint specific URL.">
 		<cfabort showerror="This method is abstract and must be overridden." />
@@ -250,67 +265,7 @@ Notes:
 			hint="A struct of environment values. Key prefixed with 'group:' are treated as groups and keys can contain ',' to indicate multiple environments names or groups." />
 		<cfargument name="defaultValue" type="any" required="false"
 			hint="A default value to provide if no environment is found. An exception will be thrown if no 'defaultValue' is provide and no value can be resolved." />
-
-		<cfset var currentEnvironmentName = getAppManager().getEnvironmentName() />
-		<cfset var currentEnvironmentGroup = getAppManager().getEnvironmentGroup() />
-		<cfset var valuesByEnvironmentName = StructNew() />
-		<cfset var valuesByEnvironmentGroup = StructNew() />
-		<cfset var validEnvironmentGroupNames = getAppManager().getEnvironmentGroupNames() />
-		<cfset var scrubbedEnvironmentGroups = "" />
-		<cfset var scrubbedEnvironmentNames = "" />
-		<cfset var i = "" />
-		<cfset var key = "" />
-		<cfset var assert = getAssert() />
-		<cfset var utils = getUtils() />
-
-		<!--- Build values by name and group --->
-		<cfloop collection="#arguments.environmentValues#" item="key">
-			<!--- An environment group if it is prefixed with 'group:' --->
-			<cfif key.toLowerCase().startsWith("group:")>
-				<!--- Removed 'group:' and trim each list element --->
-				<cfset scrubbedEnvironmentGroups = utils.trimList(Right(key, Len(key) - 6)) />
-
-				<cfloop list="#scrubbedEnvironmentGroups#" index="i">
-					<cfset assert.isTrue(ListFindNoCase(validEnvironmentGroupNames, i)
-							, "An environment group named '#i#' is not a valid environment group name. Valid environment group names: '#validEnvironmentGroupNames#'.") />
-					<cfset valuesByEnvironmentGroup[i] = arguments.environmentValues[key] />
-				</cfloop>
-			<!--- An explicit environment name if it does not have a prefix --->
-			<cfelse>
-				<!--- Trim each list element --->
-				<cfset scrubbedEnvironmentNames = utils.trimList(key) />
-
-				<cfloop list="#scrubbedEnvironmentNames#" index="i">
-					<cfset valuesByEnvironmentName[i] = arguments.environmentValues[key] />
-				</cfloop>
-			</cfif>
-		</cfloop>
-
-		<!---
-			Typically, we prefer to only have one return, however in this case
-			it is easier to just short-ciruit the process.
-
-			Resolution order:
-			 * by explicit environment name
-			 * by environment group
-			 * by default value (if provided)
-			 * throw exception
-		--->
-
-		<!--- Resolve value by explicit environment name --->
-		<cfif StructKeyExists(valuesByEnvironmentName, currentEnvironmentName)>
-			<cfreturn valuesByEnvironmentName[currentEnvironmentName] />
-		</cfif>
-
-		<!--- Resolve value by explicit environment group --->
-		<cfif StructKeyExists(valuesByEnvironmentGroup, currentEnvironmentGroup)>
-			<cfreturn valuesByEnvironmentGroup[currentEnvironmentGroup] />
-		</cfif>
-
-		<!--- No environment to resolve, return default value if provided --->
-		<cfset assert.isTrue(StructKeyExists(arguments, "defaultValue")
-					, "Cannot resolve value by environment name or group and no default value was provided. Provide an explicit value by environment name, environment group or provide a default value. Current environment name: '#currentEnvironmentName#' Current environment group: '#currentEnvironmentGroup#'") />
-		<cfreturn arguments.defaultValue />
+		<cfreturn getAppManager().resolveValueByEnvironment(arguments.environmentValues, arguments.defaultValue) />
 	</cffunction>
 
 	<cffunction name="setParameter" access="public" returntype="void" output="false"
@@ -396,16 +351,16 @@ Notes:
 
 	<cffunction name="registerMimeType" access="private" returntype="void" output="false"
 		hint="Registers a custom mime type which adds to or overrides the base mime-type map known to Mach-II.">
-		<cfargument name="fileExtension" type="string" required="true" 
+		<cfargument name="fileExtension" type="string" required="true"
 			hint="The file extension to map the mime-type to." />
-		<cfargument name="mimeType" type="string" required="true" 
+		<cfargument name="mimeType" type="string" required="true"
 			hint="The mime-type associated with the file extension." />
-		
+
 		<!--- Remove a leading "." if defined on the file extension --->
 		<cfif arguments.fileExtension.startsWith(".")>
 			<cfset arguments.fileExtension = Right(arguments.fileExtension, Len(arguments.fileExtension) - 1) />
 		</cfif>
-		
+
 		<cfset variables.customMimeTypeMap[arguments.fileExtension] = arguments.mimeType />
 	</cffunction>
 
@@ -484,6 +439,7 @@ Notes:
 					value="#arguments.value#" />
 			</cfif>
 		<cfelseif arguments.statusCode NEQ 0>
+			<cfset setLastHttpStatusCode(arguments.statusCode) />
 			<cfif NOT Len(arguments.statusText)>
 				<cfset arguments.statusText = getUtils().getHTTPHeaderStatusTextByStatusCode(arguments.statusCode) />
 
@@ -519,23 +475,23 @@ Notes:
 
 	<cffunction name="addHTTPHeaderByStatus" access="public" returntype="void" output="false"
 		hint="Adds a HTTP header by statusCode/statusText.">
-		<cfargument name="statuscode" type="string" required="true" />
+		<cfargument name="statuscode" type="numeric" required="true" />
 		<cfargument name="statustext" type="string" required="false" />
 		<cfset addHTTPHeader(argumentcollection=arguments) />
 	</cffunction>
-	
+
 	<cffunction name="observeHTTPHeader" access="private" returntype="void" output="false"
 		hint="Adds a HTTP header. You must use named arguments or addHTTPHeaderByName/addHTTPHeaderByStatus helper methods.">
 
 		<!--- Individual arguments are not passed in so we just observe the argument collection --->
-		
+
 		<cfif NOT IsDefined("request._MachIIEndpoint_HTTPHeaders")>
 			<cfset request["_MachIIEndpoint_HTTPHeaders"] = ArrayNew(1) />
 		</cfif>
-		
+
 		<cfset ArrayAppend(request["_MachIIEndpoint_HTTPHeaders"], arguments) />
 	</cffunction>
-	
+
 	<cffunction name="getObservedHTTPHeaders" access="private" returntype="array" output="false"
 		hint="Gets observed HTTP headers.">
 		<cfif IsDefined("request._MachIIEndpoint_HTTPHeaders")>
@@ -547,14 +503,14 @@ Notes:
 	<cffunction name="replayHTTPHeaders" access="private" returntype="void" output="false"
 		hint="Replays cached HTTP header.">
 		<cfargument name="HTTPHeaders" type="array" required="true" />
-		
+
 		<cfset var i = 0 />
-		
+
 		<cfloop from="1" to="#ArrayLen(arguments.HTTPHeaders)#" index="i">
 			<cfset addHTTPHeader(argumentcollection=arguments.HTTPHeaders[i]) />
 		</cfloop>
 	</cffunction>
-	
+
 	<cffunction name="addHTTPHeaderCallback" access="private" returntype="void" output="false"
 		hint="Adds callback to notify when addHTMLHeadElement is run.">
 		<cfargument name="callback" type="any" required="true" />
@@ -563,7 +519,7 @@ Notes:
 		<cfif NOT IsDefined("request._MachIIEndpoint_HTTPHeaderCallbacks")>
 			<cfset request["_MachIIEndpoint_HTTPHeaderCallbacks"] = ArrayNew(1) />
 		</cfif>
-		
+
 		<cfset ArrayAppend(request._MachIIEndpoint_HTTPHeaderCallbacks, arguments) />
 	</cffunction>
 	<cffunction name="removeHTTPHeaderCallback" access="private" returntype="void" output="false"
@@ -621,7 +577,7 @@ Notes:
 
 		<cfreturn resolvedParameters />
 	</cffunction>
-	
+
 	<cffunction name="setEnableThrow" access="public" returntype="void" output="false">
 		<cfargument name="enableThrow" type="boolean" required="true" />
 		<cfset variables.enableThrow = arguments.enableThrow />
@@ -653,13 +609,29 @@ Notes:
 	<cffunction name="isPostProcessDefined" access="public" returntype="boolean" output="false">
 		<cfreturn variables.isPostProcessDefined />
 	</cffunction>
-	
+
 	<cffunction name="setIsOnAuthenticateDefined" access="public" returntype="void" output="false">
 		<cfargument name="isOnAuthenticateDefined" type="boolean" required="true" />
 		<cfset variables.isOnAuthenticateDefined = arguments.isOnAuthenticateDefined />
 	</cffunction>
 	<cffunction name="isOnAuthenticateDefined" access="public" returntype="boolean" output="false">
 		<cfreturn variables.isOnAuthenticateDefined />
+	</cffunction>
+
+	<cffunction name="setIsAuthenticationRequiredDefined" access="public" returntype="void" output="false">
+		<cfargument name="isAuthenticationRequiredDefined" type="boolean" required="true" />
+		<cfset variables.isAuthenticationRequiredDefined = arguments.isAuthenticationRequiredDefined />
+	</cffunction>
+	<cffunction name="isAuthenticationRequiredDefined" access="public" returntype="boolean" output="false">
+		<cfreturn variables.isAuthenticationRequiredDefined />
+	</cffunction>
+
+	<cffunction name="setLastHttpStatusCode" access="public" returntype="void" output="false">
+		<cfargument name="lastHttpStatusCode" type="numeric" required="true" />
+		<cfset request.event.setArg("_responseLastHttpStatusCode", arguments.lastHttpStatusCode) />
+	</cffunction>
+	<cffunction name="getLastHttpStatusCode" access="public" returntype="numeric" output="false">
+		<cfreturn request.event.getArg("_responseLastHttpStatusCode", 0) />
 	</cffunction>
 
 </cfcomponent>

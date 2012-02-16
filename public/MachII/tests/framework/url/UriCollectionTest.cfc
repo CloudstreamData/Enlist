@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Peter J. Farrell (peter@mach-ii.com)
-$Id: UriCollectionTest.cfc 2663 2011-02-15 17:35:46Z peterjfarrell $
+$Id: UriCollectionTest.cfc 2741 2011-04-05 21:12:36Z peterjfarrell $
 
 Created version: 1.9.0
 
@@ -81,7 +81,12 @@ Notes:
 				"/content/item"
 				, "POST"
 				, "saveContent"
-				, "content")) />		
+				, "content")) />
+		<cfset variables.uriCollection.addUri(CreateObject("component", "MachII.framework.url.Uri").init(
+				"/content/item"
+				, "PUT"
+				, "saveContent"
+				, "content")) />	
 		<cfset variables.uriCollection.addUri(CreateObject("component", "MachII.framework.url.Uri").init(
 				"/content/item/{key}"
 				, "GET"
@@ -90,6 +95,7 @@ Notes:
 		
 		<!--- Check for positive matches --->
 		<cfset assertTrue(IsObject(variables.uriCollection.findUriByPathInfo("/content/item", "POST"))) />
+		<cfset assertTrue(IsObject(variables.uriCollection.findUriByPathInfo("/content/item", "PUT"))) />
 		<cfset assertTrue(IsObject(variables.uriCollection.findUriByPathInfo("/content/item/anb123", "GET"))) />
 		
 		<!--- Check for negative matches --->

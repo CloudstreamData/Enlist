@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Joe Roberts (jroberts1@gmail.com)
-$Id: TimeSpanNativeCfmlCache.cfc 2652 2011-02-03 07:51:41Z peterjfarrell $
+$Id: TimeSpanNativeCfmlCache.cfc 2812 2011-06-30 07:07:38Z peterjfarrell $
 
 Created version: 1.9.0
 Updated version: 1.9.0
@@ -301,7 +301,7 @@ via reap() which is run every 3 minutes.
 	</cffunction>
 
 	<!---
-	PRIVATE FUNCTIONS - UTILS
+	PROTECTED FUNCTIONS - UTILS
 	--->
 	<cffunction name="hashKey" access="private" returntype="string" output="false"
 		hint="Creates a hash from a key name.">

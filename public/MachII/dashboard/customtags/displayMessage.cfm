@@ -41,7 +41,7 @@
 	extend certain Mach-II public interfaces (see README for list of public
 	interfaces).
 	
-$Id: displayMessage.cfm 2491 2010-09-30 04:52:46Z jason_york $
+$Id: displayMessage.cfm 2762 2011-05-05 22:06:46Z peterjfarrell $
 
 Created version: 1.0.0
 Updated version: 1.0.0
@@ -63,7 +63,7 @@ Notes:
 		<cfparam name="attributes.refresh" default="true" />
 	
 		<cfoutput>
-		<div id="messageBox_#variables.unique#">
+		<div id="messageBox_#variables.unique#" class="messageBox">
 		<div class="#variables.message.getType()#">
 			<p>#variables.message.getMessage()#</p>
 		</div>
@@ -105,11 +105,37 @@ Notes:
 					</td>
 				</tr>
 			</table>
-	
 		</cfif>
 		</div>
+
+		<view:script outputType="inline">
+			function flashTitle(newTitle) {
+				var state = false;
+				originalTitle = document.title;  // save old title
+				titleTimerId = setInterval(flash, 1500);
+			
+				function flash() {
+					// switch between old and new titles
+			   		document.title = state ? originalTitle : newTitle;
+					state = !state;
+			  	}
+			}
+			
+			function clearTitleFlash() {
+				if (typeof titleTimerId !== 'undefined') {
+					clearInterval(titleTimerId);
+					document.title = originalTitle;
+				}
+			}
+			
+			clearTitleFlash();
+
+			<cfif variables.message.isExceptionOfType("exception")>
+				flashTitle('Exception Occurred');
+			</cfif>
+		</view:script>
 	
-		<cfif variables.message.getType() NEQ "exception" AND attributes.refresh>
+		<cfif NOT variables.message.isExceptionOfType("exception") AND  attributes.refresh>
 			<view:script outputType="inline">
 				timeoutId = setInterval(function() { new Effect.BlindUp('messageBox_#variables.unique#', { queue: 'end' }); clearTimeout(timeoutId);}, 5000);
 			</view:script>

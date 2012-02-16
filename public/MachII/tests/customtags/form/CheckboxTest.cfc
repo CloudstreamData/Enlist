@@ -21,27 +21,27 @@
     conditions of the GNU General Public License cover the whole
     combination.
 
-	As a special exception, the copyright holders of this library give you 
-	permission to link this library with independent modules to produce an 
-	executable, regardless of the license terms of these independent 
-	modules, and to copy and distribute the resultant executable under 
-	the terms of your choice, provided that you also meet, for each linked 
+	As a special exception, the copyright holders of this library give you
+	permission to link this library with independent modules to produce an
+	executable, regardless of the license terms of these independent
+	modules, and to copy and distribute the resultant executable under
+	the terms of your choice, provided that you also meet, for each linked
 	independent module, the terms and conditions of the license of that
-	module.  An independent module is a module which is not derived from 
-	or based on this library and communicates with Mach-II solely through 
-	the public interfaces* (see definition below). If you modify this library, 
-	but you may extend this exception to your version of the library, 
-	but you are not obligated to do so. If you do not wish to do so, 
+	module.  An independent module is a module which is not derived from
+	or based on this library and communicates with Mach-II solely through
+	the public interfaces* (see definition below). If you modify this library,
+	but you may extend this exception to your version of the library,
+	but you are not obligated to do so. If you do not wish to do so,
 	delete this exception statement from your version.
 
 
-	* An independent module is a module which not derived from or based on 
-	this library with the exception of independent module components that 
-	extend certain Mach-II public interfaces (see README for list of public 
+	* An independent module is a module which not derived from or based on
+	this library with the exception of independent module components that
+	extend certain Mach-II public interfaces (see README for list of public
 	interfaces).
 
 Author: Peter J. Farrell(peter@mach-ii.com)
-$Id: CheckboxTest.cfc 2703 2011-03-23 03:18:25Z peterjfarrell $
+$Id: CheckboxTest.cfc 2859 2011-09-09 07:19:33Z peterjfarrell $
 
 Created version: 1.9.0
 Updated version: 1.9.0
@@ -67,7 +67,7 @@ Notes:
 			<cfset variables.included = true />
 		</cfif>
 	</cffunction>
-	
+
 	<!---
 	PUBLIC FUNCTIONS - TEST CASES
 	--->
@@ -136,7 +136,7 @@ Notes:
 		<cfset node = assertXPath('/root/form/label[@for="favoriteColor_Red"]/span', xml, "Red") />
 		<cfset node = assertXPath('/root/form/label[@for="favoriteColor_Green"]/span', xml, "Green") />
 		<cfset node = assertXPath('/root/form/label[@for="favoriteColor_Brown"]/span', xml, "Brown") />
-	</cffunction>	
+	</cffunction>
 
 	<cffunction name="testCheckboxgroupWithStructs" access="public" returntype="void" output="false"
 		hint="Test basic 'checkboxgroup' tag.">
@@ -226,9 +226,9 @@ Notes:
 		<cfset node = assertXPath('/root/form/label[@for="favoriteColor_Big_Red"]/span', xml, "Big Red") />
 		<cfset node = assertXPath('/root/form/label[@for="favoriteColor_Giant_Green"]/span', xml, "Giant Green") />
 		<cfset node = assertXPath('/root/form/label[@for="favoriteColor_Bad_Brown"]/span', xml, "Bad Brown") />
-		
+
 		<cfset bean.setFavoriteColor("red") />
-		
+
 		<!--- Test with array of structs --->
 		<cfset colors = ArrayNew(1) />
 		<cfset colors[1] = StructNew() />

@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Peter J. Farrell(peter@mach-ii.com)
-$Id: CacheStrategyManagerTest.cfc 2393 2010-09-12 13:45:58Z peterjfarrell $
+$Id: CacheStrategyManagerTest.cfc 2859 2011-09-09 07:19:33Z peterjfarrell $
 
 Created version: 1.6.0
 Updated version: 1.8.0
@@ -90,10 +90,10 @@ Notes:
 
 		<!--- Assert we got a strategy back --->
 		<cfset assertTrue(IsObject(strategy)) />
-		
+
 		<!--- Remove the strategy --->
 		<cfset variables.cacheStrategyManager.removeCacheStrategy("default") />
-		
+
 		<!--- Assert the the strategy has been removed --->
 		<cfset assertFalse(variables.cacheStrategyManager.isCacheStrategyDefined("defined")) />
 	</cffunction>

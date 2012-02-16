@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Doug Smith (doug.smith@daveramsey.com)
-$Id: UriTest.cfc 2500 2010-10-05 21:09:23Z peterjfarrell $
+$Id: UriTest.cfc 2812 2011-06-30 07:07:38Z peterjfarrell $
 
 Created version: 1.9.0
 
@@ -185,7 +185,7 @@ Notes:
 	</cffunction>
 
 	<!---
-	PRIVATE FUNCTIONS - UTILITIES
+	PROTECTED FUNCTIONS - UTILITIES
 	--->
 	<cffunction name="commonInvalidMatches" access="private" returntype="void" output="false"
 		hint="Tests the URI matching code against URLs with two tokens.">

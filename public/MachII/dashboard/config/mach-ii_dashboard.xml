@@ -41,7 +41,7 @@
 	extend certain Mach-II public interfaces (see README for list of public
 	interfaces).
 	
-$Id: mach-ii_dashboard.xml 2693 2011-03-06 19:27:46Z kurt_wiersma $
+$Id: mach-ii_dashboard.xml 2808 2011-06-28 23:04:38Z peterjfarrell $
 
 Created version: 1.1.0
 Updated version: 1.9.0
@@ -173,6 +173,7 @@ Notes:
 		<listener name="debugging" type="MachII.dashboard.listeners.DebuggingListener"/>
 		<listener name="info" type="MachII.dashboard.listeners.InfoListener"/>
 		<listener name="logging" type="MachII.dashboard.listeners.LoggingListener"/>
+		<listener name="tools.beanGenerator" type="MachII.dashboard.listeners.tools.BeanGeneratorListener" />
 		<listener name="tools.regex" type="MachII.dashboard.listeners.tools.RegExListener"/>
 		<listener name="tools.scribble" type="MachII.dashboard.listeners.tools.ScribbleListener"/>
 		<listener name="tools.wadl" type="MachII.dashboard.listeners.tools.WadlListener"/>
@@ -407,6 +408,11 @@ Notes:
 			<execute subroutine="doLayout"/>
 		</event-handler>
 		
+		<event-handler event="tools.beanGenerator.saveGeneratedBean" access="public">
+			<notify listener="tools.beanGenerator" method="saveBeanCFC"/>
+			<redirect event="tools.beanGenerator" persist="true"/>
+		</event-handler>
+		
 		<event-handler event="tools.scribble" access="public">
 			<view-page name="tools.snip_pageNavTabs" contentArg="layout.snip_pageNavTabs"/>
 			<view-page name="tools.scribble.index" contentArg="layout.content"/>
@@ -429,7 +435,6 @@ Notes:
 		</event-handler>
 		<event-handler event="tools.wadl.process" access="public">
 			<execute subroutine="tools.wadl.doc_generate"/>
-			<notify listener="tools.wadl" method="process" />
 			<view-page name="tools.wadl.view" />
 		</event-handler>
 		

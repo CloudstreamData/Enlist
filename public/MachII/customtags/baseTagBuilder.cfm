@@ -42,7 +42,7 @@
 	interfaces).
 
 Author: Peter J. Farrell (peter@mach-ii.com)
-$Id: baseTagBuilder.cfm 2672 2011-02-17 00:06:55Z peterjfarrell $
+$Id: baseTagBuilder.cfm 2848 2011-09-09 03:32:21Z peterjfarrell $
 
 Created version: 1.8.0
 Updated version: 1.8.0
@@ -514,7 +514,7 @@ PUBLIC FUNCTIONS - UTIL
 				<cfif StructKeyExists(attributes, arguments.attributeNameForUrlParametersToRemove)>
 					<cfset urlParametersToRemove = attributes[arguments.attributeNameForUrlParametersToRemove] />
 				</cfif>
-				
+
 				<cfif StructKeyExists(attributes, arguments.attributeNameForModule)>
 					<cfset builtUrl = request.eventContext.getAppManager().getRequestManager().buildCurrentUrl(attributes[arguments.attributeNameForModule], urlParameters, urlParametersToRemove) />
 				<cfelse>

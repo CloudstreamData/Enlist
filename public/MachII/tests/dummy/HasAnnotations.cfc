@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Doug Smith (doug.smith@daveramsey.com)
-$Id: HasAnnotations.cfc 2271 2010-07-29 19:49:21Z doug_smith $
+$Id: HasAnnotations.cfc 2812 2011-06-30 07:07:38Z peterjfarrell $
 
 Created version: 1.9.0
 Updated version: 1.9.0
@@ -65,7 +65,7 @@ Notes:
 	</cffunction>
 
 	<!---
-	PUBLIC METHODS
+	PUBLIC FUNCTIONS
 	--->
 
 	<cffunction name="myLocalAnnotatedMethod"

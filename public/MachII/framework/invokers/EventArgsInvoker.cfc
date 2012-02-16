@@ -41,10 +41,10 @@
 	interfaces).
 
 Author: Ben Edwards (ben@ben-edwards.com)
-$Id: EventArgsInvoker.cfc 2204 2010-04-27 07:36:11Z peterfarrell $
+$Id: EventArgsInvoker.cfc 2761 2011-05-05 21:14:51Z peterjfarrell $
 
 Created version: 1.1.0
-Update version: 1.8.0
+Update version: 1.9.0
 
 Notes:
 --->
@@ -96,6 +96,7 @@ Notes:
 				component="#arguments.listener#"
 				method="#arguments.method#"
 				argumentcollection="#arguments.event.getArgs()#"
+				event="#arguments.event#"
 				returnvariable="resultValue" /><cfsetting enablecfoutputonly="true" />
 
 			<!--- resultKey --->

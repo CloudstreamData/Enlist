@@ -41,7 +41,7 @@
 	interfaces).
 
 Author: Doug Smith (doug.smith@daveramsey.com)
-$Id: Uri.cfc 2692 2011-03-02 22:09:27Z doug_smith $
+$Id: Uri.cfc 2825 2011-07-14 10:20:46Z peterjfarrell $
 
 Created version: 1.9.0
 
@@ -64,7 +64,7 @@ For example, a uriPattern like "/service/doit/{value}"
 	CONSTANTS
 	--->
 	<!--- The ONE_TOKEN_REGEX is what will be used to match an individual token in the URL. Used when generating the full uriRegex value. --->
-	<cfset variables.ONE_TOKEN_REGEX ="([^\/\?&\.]+)" />
+	<cfset variables.ONE_TOKEN_REGEX ="([^\/\?&]+?)" />
 	<!--- HTTP_METHODS is the list of supported HTTP request methods. --->
 	<cfset variables.HTTP_METHODS = "GET,POST,PUT,DELETE,HEAD,PATCH" />
 	<cfset variables.DEFAULT_FORMAT_LIST = "htm,html,json,xml" />
@@ -117,7 +117,7 @@ For example, a uriPattern like "/service/doit/{value}"
 			hint="The current path info to parse for tokens." />
 
 		<cfset var stcTokens = StructNew() />
-		<cfset var stcMatches = REFind(variables.uriRegex, arguments.pathInfo, 1, true) />
+		<cfset var stcMatches = REFindNoCase(variables.uriRegex, arguments.pathInfo, 1, true) />
 		<cfset var intMatchCount = ArrayLen(stcMatches.LEN) />
 		<cfset var key = "" />
 		<cfset var i = 0 />
@@ -153,7 +153,7 @@ For example, a uriPattern like "/service/doit/{value}"
 	<cffunction name="matchUri" access="public" returntype="boolean" output="false"
 		hint="Returns true if the input pathInfo matches the uriPattern of this RestUri, false otherwise.">
 		<cfargument name="pathInfo" type="string" required="true" />
-		<cfreturn REFind(variables.uriRegex, arguments.pathInfo, 1, false) />
+		<cfreturn REFindNoCase(variables.uriRegex, arguments.pathInfo, 1, false) />
 	</cffunction>
 
 	<!---
@@ -255,7 +255,7 @@ For example, a uriPattern like "/service/doit/{value}"
 	<cffunction name="getFormatsForRegex" access="private" returntype="string" output="false"
 		hint="Takes a list of formats intended to be possible formats used by this URI, validates them, and returns a string that can be used a regex to find the format.">
 		<cfargument name="possibleFormatList" type="string" required="true" />
-		
+
 		<cfset var formatsForRegex = "" />
 		<cfset var currFormat = "" />
 
