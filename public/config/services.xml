@@ -45,7 +45,7 @@ Notes:
 		</constructor-arg>
 	</bean>	
 	
-	<bean id="googleUserService" factory-bean="userService" factory-method="getGoogleUserService" />
+	<!-- <bean id="googleUserService" factory-bean="userService" factory-method="getGoogleUserService" /> -->
 		
 	<!-- EVENT -->
 	<bean id="eventService" class="enlist.model.event.EventService">
@@ -130,13 +130,6 @@ Notes:
 		<property name="settingGateway"><ref bean="settingGateway" /></property>
 	</bean>
 	<bean id="settingGateway" class="enlist.model.setting.SettingGateway">
-		<property name="dao">
-			<bean id="settingDAO" class="enlist.model.GenericDAO">
-				<constructor-arg name="entityComponentPath">
-					<value>enlist.model.setting.Setting</value>
-				</constructor-arg>
-			</bean>
-		</property>
-	</bean>
-	
+		<constructor-arg name="dsn"><value>${dsn}</value></constructor-arg>
+	</bean>	
 </beans>

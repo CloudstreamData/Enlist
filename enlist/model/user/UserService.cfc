@@ -40,11 +40,11 @@ Notes:
 	--->
 	<cffunction name="init" access="public" returntype="UserService" output="false">
 
-		<cfset var googleUserFactory = CreateObject("java", "com.google.appengine.api.users.UserServiceFactory") />
+		<!--- <cfset var googleUserFactory = CreateObject("java", "com.google.appengine.api.users.UserServiceFactory") /> --->
 
 		<cfset super.init( argumentCollection = arguments ) />
 
-		<cfset variables.googleUserService = googleUserFactory.getUserService() />
+		<!--- <cfset variables.googleUserService = googleUserFactory.getUserService() /> --->
 
 		<cfreturn this />
 	</cffunction>
@@ -119,12 +119,12 @@ Notes:
 	<!---
 	ACCESSORS
 	--->
-	<cffunction name="getGoogleUserService" access="public" returntype="any" output="false">
+	<!--- <cffunction name="getGoogleUserService" access="public" returntype="any" output="false">
 		<cfreturn variables.googleUserService />
 	</cffunction>
 	<cffunction name="setGoogleUserService" access="public" returntype="void" output="false">
 		<cfargument name="googleUserService" type="any" required="true" />
 		<cfset variables.googleUserService = arguments.googleUserService />
-	</cffunction>
+	</cffunction> --->
 
 </cfcomponent>

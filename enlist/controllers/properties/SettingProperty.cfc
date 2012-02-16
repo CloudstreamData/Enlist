@@ -54,7 +54,7 @@ Notes:
 	<cffunction name="getSetting" access="public" returntype="enlist.model.setting.Setting" output="false">
 		<cfset var setting = variables.settingService.getLastSetting() />
 		<!--- if this is a new app without any settings, save the defaults --->
-		<cfif not len(setting.getID())>
+		<cfif setting.getID() eq 0>
 			<cfset variables.settingService.saveSetting(setting) />
 			<cfset setting = variables.settingService.getLastSetting() />
 		</cfif>

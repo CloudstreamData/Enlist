@@ -32,13 +32,15 @@ Notes:
 	<!---
 	PROPERTIES
 	--->
-	<cfset variables.dao = "" />
+	<cfset variables.dsn = "" />
 
 	<!---
 	INITIALIZATION / CONFIGURATION
 	--->
 	<cffunction name="init" access="public" returntype="SettingGateway" output="false"
 		hint="Initializes the gateway.">
+		<cfargument name="dsn" type="string" required="true" />
+		<cfset variables.dsn = arguments.dsn />
 		<cfreturn this />
 	</cffunction>
 
@@ -46,28 +48,109 @@ Notes:
 	PUBLIC FUNCTIONS
 	--->
 	<cffunction name="getSetting" access="public" returntype="any" output="false">
-		<cfargument name="id" type="string" required="true" />
-		<cfreturn getDAO().read( arguments.id ) />
+		<cfargument name="id" type="numeric" required="true" />
+		<cfset var setting = 0 />
+		<cfif arguments.id neq 0>
+			<cfset setting = read( arguments.id ) />
+		<cfelse>
+			<cfset setting = createObject("component", "enlist.model.setting.setting").init() />
+		</cfif>
+		<cfreturn setting />
 	</cffunction>
 
-	<cffunction name="getSettings" access="public" returntype="array" output="false">
-		<cfreturn getDAO().list() />
+	<cffunction name="getSettings" access="public" returntype="query" output="false">
+		<cfargument name="settingID" type="string" required="false" default="">
+		<cfset var qSettings = 0>
+		<cfquery name="qSettings" datasource="#variables.dsn#">
+		SELECT 	id, defaultpointvalue, orgname, orgdesc, orgaddress, sendemail
+		FROM 	setting
+		WHERE 	(1=1)
+			<cfif arguments.settingID neq "0">
+				AND id = <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.settingID#"
+							null="#yesnoformat(len(arguments.settingID) eq 0)#" />
+			</cfif>
+		</cfquery>
+		<cfreturn qSettings />
 	</cffunction>
 
 	<cffunction name="saveSetting" access="public" returntype="void" output="false">
 		<cfargument name="setting" type="enlist.model.setting.Setting" required="true">
-		<cfset getDAO().save( arguments.setting ) />
+		<cfif arguments.setting.getID() neq 0>
+			<cfset update(arguments.setting)>
+		<cfelse>
+			<cfset create(arguments.setting)>
+		</cfif>
+	</cffunction>
+	
+	<cffunction name="create" access="private" returntype="void" output="false">
+		<cfargument name="setting" type="enlist.model.setting.Setting" required="yes">
+		<cfset var data = setting.getInstanceMemento()>
+		<cfset var newsetting = 0>
+		<cftransaction>
+		<cfquery name="newsetting" datasource="#variables.dsn#">
+		INSERT INTO setting (defaultpointvalue, orgname, orgdesc, orgaddress, sendemail)
+		VALUES (
+			<cfqueryparam cfsqltype="cf_sql_integer" value="#data.defaultpointvalue#"
+				null="#yesnoformat(len(data.defaultpointvalue) eq 0)#" maxlength="11">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.orgname#"
+				null="#yesnoformat(len(data.orgname) eq 0)#" maxlength="100">,
+			<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#data.orgdesc#"
+				null="#yesnoformat(len(data.orgdesc) eq 0)#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.orgaddress#"
+				null="#yesnoformat(len(data.orgaddress) eq 0)#" maxlength="100">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.sendemail#"
+				null="#yesnoformat(len(data.sendemail) eq 0)#" maxlength="100">
+		)
+		</cfquery>
+		<cfquery name="qMaxID" datasource="#variables.dsn#">
+		SELECT LAST_INSERT_ID() as maxID
+		</cfquery>
+		</cftransaction>
+		<cfset setting.setId(qMaxID.maxID)>
+
 	</cffunction>
 
-	<!---
-	ACCESSORS
-	--->
-	<cffunction name="getDAO" returntype="enlist.model.GenericDAO" access="public" output="false">
-		<cfreturn variables.dao />
+	<cffunction name="update" access="private" returntype="void" output="false">
+		<cfargument name="setting" type="enlist.model.setting.Setting" required="yes">
+		<cfset var data = setting.getInstanceMemento()>
+		<cfset var updatesetting = 0>
+		<cfquery name="updatesetting" datasource="#variables.dsn#">
+		UPDATE setting
+		SET 
+			defaultpointvalue = 
+				<cfqueryparam cfsqltype="cf_sql_integer" value="#data.defaultpointvalue#"
+					null="#yesnoformat(len(data.defaultpointvalue) eq 0)#" maxlength="11">,
+			orgname = 
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.orgname#"
+					null="#yesnoformat(len(data.orgname) eq 0)#" maxlength="100">,
+			orgdesc = 
+				<cfqueryparam cfsqltype="cf_sql_longvarchar" value="#data.orgdesc#"
+					null="#yesnoformat(len(data.orgdesc) eq 0)#">,
+			orgaddress = 
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.orgaddress#"
+					null="#yesnoformat(len(data.orgaddress) eq 0)#" maxlength="100">,
+			sendemail = 
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.sendemail#"
+					null="#yesnoformat(len(data.sendemail) eq 0)#" maxlength="100">
+		WHERE id = <cfqueryparam cfsqltype="cf_sql_integer" value="#data.id#">
+		</cfquery>
 	</cffunction>
-	<cffunction name="setDAO" returntype="void" access="public" output="false">
-		<cfargument name="dao" type="enlist.model.GenericDAO" required="true" />
-		<cfset variables.dao = arguments.dao />
+
+	<cffunction name="read" access="private" returntype="enlist.model.setting.Setting" output="false">
+		<cfargument name="settingID" type="numeric" required="yes">
+		<cfset var data = structNew()>
+		<cfset var setting = 0>
+		<cfset var readsetting = 0>
+		<cfquery name="readsetting" datasource="#variables.dsn#">
+		SELECT id, defaultpointvalue, orgname, orgdesc, orgaddress, sendemail
+		FROM setting
+		WHERE id = <cfqueryparam cfsqltype="cf_sql_integer" value="#settingID#">
+		</cfquery>
+		<cfloop list="#readsetting.columnList#" index="field">
+			<cfset 'data.#field#' = evaluate('readsetting.#field#')>
+		</cfloop>
+		<cfset setting = createObject("component", "enlist.model.setting.setting").init(argumentcollection=data)>
+		<cfreturn setting>
 	</cffunction>
 
 </cfcomponent>

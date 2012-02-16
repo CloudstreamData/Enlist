@@ -58,7 +58,7 @@ Notes:
 			<cfset var authentication = getSecurityManager().getAuthenticationService().create()/>
 		</cfif>
 
-		<cfif getGoogleUserService().isUserLoggedIn() AND NOT authentication.hasUser()>
+		<!--- <cfif getGoogleUserService().isUserLoggedIn() AND NOT authentication.hasUser()>
 			<!--- Load in our User object based off the Google Email as the ID --->
 			<cfset var googleEmail = getGoogleUserService().getCurrentUser().getEmail() />
 			<cfset var userByGoogleEmail = getUserService().getUserByGoogleEmail( googleEmail ) />
@@ -75,7 +75,7 @@ Notes:
 				<cfset event.setArg("googleEmail",googleEmail) />
 				<cfset announceEvent("register", event.getArgs()) />
 			</cfif>
-		</cfif>
+		</cfif> --->
 	</cffunction>
 
 	<!---

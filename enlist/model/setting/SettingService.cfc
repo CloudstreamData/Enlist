@@ -58,14 +58,16 @@ Notes:
 
 	<cffunction name="getLastSetting" access="public" returntype="any" output="false">
 		<cfset var settings = variables.settingGateway.getSettings() />
-		<cfset var setting = getSetting(id='') />
-		<cfif arrayLen(settings)>
-			<cfset setting = settings[1] />
+		<cfset var setting = 0 />
+		<cfif settings.recordcount gt 0>
+			<cfset setting = variables.settingGateway.getSetting(settings.id) />
+		<cfelse>
+			<cfset setting = getSetting(0) />
 		</cfif>
 		<cfreturn setting />
 	</cffunction>
 
-	<cffunction name="getSettings" access="public" returntype="array" output="false">
+	<cffunction name="getSettings" access="public" returntype="query" output="false">
 		<cfreturn variables.settingGateway.getSettings() />
 	</cffunction>
 

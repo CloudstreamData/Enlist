@@ -73,6 +73,8 @@ Notes:
 		<property name="urlDelimiters" value="/|/|/"/>
 		<property name="urlExcludeEventParameter" value="true"/>
 		<property name="defaultEmail" value="enlist@mach-ii.com" />
+		
+		<property name="dsn" value="enlist" />
 	</properties>
 
 	<!-- LISTENERS -->
