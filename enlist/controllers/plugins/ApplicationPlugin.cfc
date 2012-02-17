@@ -28,7 +28,7 @@ Notes:
 <cfcomponent
 	displayname="ApplicationPlugin"
 	extends="MachII.framework.Plugin"
-	depends="googleUserService,sessionFacade,securityManager,userService"
+	depends="sessionFacade,securityManager,userService"
 	output="false"
 	hint="An ApplicationPlugin.">
 
