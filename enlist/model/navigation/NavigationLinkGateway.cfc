@@ -30,6 +30,8 @@ Notes:
 	output="false" 
 	extends="enlist.model.GenericDAO">
 	
+	<cfset variables.navItems = arrayNew(1) />
+	
 	<!---
 	INITIALIZATION / CONFIGURATION
 	--->
@@ -63,13 +65,7 @@ Notes:
 	</cffunction>
 	
 	<cffunction name="list" access="public" returntype="array" output="false">
-		<cfset var navArray = ArrayNew(1) />
-		
-		<cfif getKind() neq "">
-			<cfset navArray = googleQuery("select from #getKind()# order by name") />
-		</cfif>
-		
-		<cfreturn navArray />
+		<cfreturn variables.navItems />
 	</cffunction>
 
 	<cffunction name="createDefaultNavigationSet" returntype="any" access="public" output="false">
@@ -83,10 +79,15 @@ Notes:
 					navigationLink = CreateObject("component", "NavigationLink").init();
 					navigationLink.setName(ListFirst(defaultNavigation[i]));
 					navigationLink.setEventName(ListLast(defaultNavigation[i]));
-					save(navigationLink);
+					addNavItem(navigationLink);
 				}
 			}
 		</cfscript>
+	</cffunction>
+	
+	<cffunction name="addNavItem" access="private" returntype="void" output="false">
+		<cfargument name="navLink" type="NavigationLink" required="true" />
+		<cfset arrayAppend(variables.navitems, arguments.navLink) />
 	</cffunction>
 	
 </cfcomponent>
