@@ -19,7 +19,7 @@
 	making a combined work based on this library.  Thus, the terms and
 	conditions of the GNU General Public License cover the whole
 	combination.
-	
+
 $Id$
 
 Notes:
@@ -27,5 +27,9 @@ Notes:
 <cfcomponent>
 
 	<cfset this.name = "EnlistTests"/>
+
+	<cfmapping logicalpath="/enlist" relativepath="../../../enlist" />
+	<cfmapping logicalpath="/coldspring" relativepath="../../../lib/coldspring" />
+	<cfmapping logicalpath="/mxunit" relativepath="../../mxunit" />
 
 </cfcomponent>

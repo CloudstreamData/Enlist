@@ -28,7 +28,7 @@ Notes:
 --->
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
 	<cfimport prefix="form" taglib="/MachII/customtags/form" />
-	<cfimport prefix="tags" taglib="/customtags" />
+	<cfimport prefix="tags" taglib="/enlist/customtags" />
 	<view:meta type="title" content="Register" />
 	
 	<cfset copyToScope("states=${properties.usStates},${event.chapters},${event.user},${event.googleEmail}") />

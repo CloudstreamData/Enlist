@@ -28,21 +28,13 @@
 	--->
 	<cfimport prefix="form" taglib="/MachII/customtags/form" />
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
-	<cfimport prefix="tags" taglib="/customtags" />
-
-	<cfset copyToScope("${event.chapter}") />
+	<cfimport prefix="tags" taglib="/enlist/customtags" />
 	
-	<cfif NOT Len(variables.chapter.getId())>
-		<cfset variables.type = "New" />
-		<view:meta type="title" content="New Chapter" />
-	<cfelse>
-		<cfset variables.type = "Edit" />
-		<view:meta type="title" content="Edit Chapter | #variables.chapter.getDisplayName()#" />
-	</cfif>
+	<view:meta type="title" content="Edit Application Settings" />
 	
 	<view:script>
 		$(document).ready(function(){
-			$("#chapterForm").validate();
+			$("#settingForm").validate();
 		});
 	</view:script>
 </cfsilent>
@@ -50,30 +42,42 @@
 <tags:displaymessage />
 <tags:displayerror />
 
-<h3>#variables.type# Chapter</h3>
+<h3>Edit Application Settings</h3>
 
-<form:form actionEvent="chapter.save" bind="chapter" id="chapterForm">
+<form:form actionEvent="setting.save" bind="setting" id="settingForm">
 	<table>
 		<tr>
-			<th>Name</th>
-			<td><form:input path="name" size="40" maxlength="200" class="required" /></td>
+			<th>Organization Name:</th>
+			<td><form:input path="orgName" size="40" maxlength="200" class="required" /></td>
 		</tr>
 		<tr>
-			<th>Location</th>
-			<td><form:input path="location" size="40" maxlength="200" class="required" /></td>
+			<th>Description:</th>
+			<td><form:textarea path="orgDesc" class="required" /></td>
 		</tr>
 		<tr>
-			<th>Status</th>
+			<th nowrap="nowrap">Address:</th>
+			<td><form:textarea path="orgAddress" class="required" /></td>
+		</tr>
+		<tr>
+			<th nowrap="nowrap">Points Name:</th>
+			<td><form:input path="pointName" size="10" maxlength="200"  class="required" /></td>
+		</tr>
+		<tr>
+			<th nowrap="nowrap">Default Point Value:</th>
+			<td><form:input path="defaultPointValue" size="10" maxlength="200" class="required" /></td>
+		</tr>
+		<tr>
+			<th nowrap="nowrap">Send Emails:</th>
 			<td>
-				<form:select path="statusCode">
-					<form:option value="Active" />
-					<form:option value="Archive" />
+				<form:select path="sendEmail">
+					<form:option value="true" label="Yes" />
+					<form:option value="false" label="No" />
 				</form:select>
 			</td>
 		</tr>
 		<tr>
 			<td><form:hidden name="id" path="id" /></td>
-			<td colspan="3"><form:button type="submit" name="save" value="Save Chapter" /></td>
+			<td colspan="3"><form:button type="submit" name="save" value="Save Setting" /></td>
 		</tr>
 	</table>
 </form:form>

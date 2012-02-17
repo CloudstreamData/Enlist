@@ -38,6 +38,7 @@ $Id$
 	<cfset this.setDomainCookies = false />
 	<cfset this.sessionTimeOut = CreateTimeSpan(0,0,30,0) />
 	<cfset this.applicationTimeOut = CreateTimeSpan(1,0,0,0) />
+	<cfset this.datasource = "enlist" />
 
 	<!---
 	OPENBD SPECIFIC
@@ -49,7 +50,7 @@ $Id$
 	<!---
 	PROPERTIES - MACH-II SPECIFIC
 	--->
-	<cfset MACHII_CONFIG_PATH = ExpandPath("/config/mach-ii.xml") />
+	<cfset MACHII_CONFIG_PATH = ExpandPath("/enlist/config/mach-ii.xml") />
 
 	<!---
 		Most of the rest of the properties, methods, etc. have "intelligent defaults"
@@ -68,6 +69,23 @@ $Id$
 	<!---
 	PUBLIC FUNCTIONS
 	--->
+	<cffunction name="onApplicationStart" access="public" returntype="void" output="false"
+		hint="Overrides the Mach-II bootstrapper and then calls the super method.">
+
+		<!--- Setup datasource and create db schema --->
+		<cfset DatasourceCreate("enlist"
+			, {
+				drivername: "org.h2.Driver"
+				, hoststring: "jdbc:h2:" & ExpandPath('./') & "/WEB-INF/bluedragon/h2databases/enlist;AUTO_SERVER=TRUE;IGNORECASE=false;MODE=MySQL"
+				, initstring: "RUNSCRIPT FROM '#ExpandPath("../docs/sql")#/mysql_createDB.sql'\\;"
+				, databasename: "enlist"
+				, username: "enlist"
+				, password: "enlist"
+			}) />
+
+		<cfset super.init() />
+	</cffunction>
+
 	<cffunction name="onRequestStart" access="public" returntype="void" output="true"
 		hint="Overrides the Mach-II bootstrapper and then calls the super method.">
 		<cfargument name="targetPage" type="string" required="true" />

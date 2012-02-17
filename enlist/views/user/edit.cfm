@@ -28,7 +28,7 @@ Notes:
 --->
 	<cfimport prefix="form" taglib="/MachII/customtags/form" />
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
-	<cfimport prefix="tags" taglib="/customtags" />
+	<cfimport prefix="tags" taglib="/enlist/customtags" />
 	<cfset copyToScope("${event.user},${event.chapters},states=${properties.usStates},roles=${properties.userRoles},statuses=${properties.userStatuses}") />
 
 	<cfif NOT Len(variables.user.getId())>

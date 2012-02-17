@@ -28,7 +28,7 @@
 	--->
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
 	<cfimport prefix="form" taglib="/MachII/customtags/form" />
-	<cfimport prefix="tags" taglib="/customtags" />
+	<cfimport prefix="tags" taglib="/enlist/customtags" />
 	<cfset copyToScope("${event.chapters},states=${properties.usStates},roles=${properties.userRoles},statuses=${properties.userStatuses}") />
 	
 	<view:meta type="title" content="Search Users" />
