@@ -68,10 +68,10 @@ Notes:
 		<property name="parameterPrecedence" value="form" />
 		<property name="maxEvents" value="10" />
 		<property name="exceptionEvent" value="sys.exception" />
-		<property name="urlBase" value="/index.cfm" />
+		<!-- <property name="urlBase" value="/index.cfm" />
 		<property name="urlParseSES" value="true"/>
 		<property name="urlDelimiters" value="/|/|/"/>
-		<property name="urlExcludeEventParameter" value="true"/>
+		<property name="urlExcludeEventParameter" value="true"/> -->
 		<property name="defaultEmail" value="enlist@mach-ii.com" />
 		
 		<property name="dsn" value="enlist" />
@@ -257,7 +257,7 @@ Notes:
 		</event-handler>
 		<event-handler event="chapter.edit" access="public">
 			<call-method bean="chapterService" method="getChapter" resultArg="chapter">
-				<arg name="chapterID" value="${event.id:''}" />
+				<arg name="chapterID" value="${event.id:0}" />
 			</call-method>
 			<view-page name="chapter.edit" contentArg="layout.content"/>
 			<execute subroutine="doMainLayout"/>
@@ -391,7 +391,12 @@ Notes:
 	
 	<!-- PAGE-VIEWS -->
 	<page-views>
-		<view-loader type="PatternViewLoader" />
+		<view-loader type="PatternViewLoader">
+			 <parameters>
+            	<!-- <parameter name="pattern" value="/../enlist/views/**/*.cfm" /> -->
+            	<parameter name="pattern" value="/views/**/*.cfm" />
+            </parameters>
+		</view-loader>
 	</page-views>
 	
 </mach-ii>

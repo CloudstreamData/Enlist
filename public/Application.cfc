@@ -51,6 +51,7 @@ $Id$
 	PROPERTIES - MACH-II SPECIFIC
 	--->
 	<cfset MACHII_CONFIG_PATH = ExpandPath("/enlist/config/mach-ii.xml") />
+	<cfset MACHII_HANDLE_ONLOAD = false />
 
 	<!---
 		Most of the rest of the properties, methods, etc. have "intelligent defaults"

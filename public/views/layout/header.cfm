@@ -27,19 +27,19 @@ $Id: header.cfm 181 2011-06-16 04:56:27Z peterjfarrell $
 Notes:
 --->
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
-	<cfset copyToScope("eventName=${event.getName()},${properties.udfs},${properties.googleUserService}") />
+	<cfset copyToScope("eventName=${event.getName()},${properties.udfs}") />
 </cfsilent>
 <cfoutput>
 <h2><view:a event="home" title="Back to Home">Enlist</view:a></h2>
 <div id="menu">
 	<ul>
 		<li><view:a event="home" class="#variables.udfs.highlightLevel("home", variables.eventName)#">Home</view:a></li>
-	<cfif variables.googleUserService.isUserLoggedIn()>
-		<li><a href="#variables.googleUserService.createLogoutUrl(BuildUrl('logout'))#" id="logout">Logout</a></li>
+	<!--- <cfif variables.googleUserService.isUserLoggedIn()> --->
+		<li><a href="" id="logout">Logout</a></li>
 		<li><view:a event="register">Register</view:a></li>
-	<cfelse>
-		<li><a href="#variables.googleUserService.createLoginUrl(BuildUrl(getProperty("defaultEvent")))#">Login</a></li>
-	</cfif>
+	<!--- <cfelse> --->
+		<li><a href="">Login</a></li>
+	<!--- </cfif> --->
 	</ul>
 </div>
 </cfoutput>
