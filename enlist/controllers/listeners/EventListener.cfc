@@ -51,7 +51,7 @@ Notes:
 
 		<cfscript>
 			if (not arguments.event.isArgDefined("theEvent")) {
-				return getEventService().getEvent(arguments.event.getArg("id", ""));
+				return getEventService().getEvent(arguments.event.getArg("id", 0));
 			} else {
 				return arguments.event.getArg("theEvent");
 			}

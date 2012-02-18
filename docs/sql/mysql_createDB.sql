@@ -19,3 +19,13 @@ CREATE TABLE IF NOT EXISTS `chapter` (
   `statusCode` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `event` (
+  `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NULL ,
+  `startDate` DATETIME NULL ,
+  `endDate` DATETIME NULL ,
+  `location` VARCHAR(100) NULL ,
+  `status` VARCHAR(50) NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;

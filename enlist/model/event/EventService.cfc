@@ -40,17 +40,25 @@ Notes:
 
 		<cfreturn this />
 	</cffunction>
+	
+	<cffunction name="setEventGateway" access="public" returntype="void" output="false">
+		<cfargument name="EventGateway" type="enlist.model.event.EventGateway" required="yes" />
+		<cfset variables.EventGateway = arguments.EventGateway />
+	</cffunction>
+	<cffunction name="getEventGateway" access="public" returntype="enlist.model.event.EventGateway" output="false">
+		<cfreturn variables.EventGateway />
+	</cffunction>
 
 	<!---
 	PUBLIC FUNCTIONS
 	--->
 	<cffunction name="getEvent" access="public" returntype="enlist.model.event.Event" output="false">
-		<cfargument name="eventID" type="string" required="false" default="" />
-		<cfreturn getGateway().read(arguments.eventID) />
+		<cfargument name="eventID" type="numeric" required="false" default="0" />
+		<cfreturn getEventGateway().read(arguments.eventID) />
 	</cffunction>
 
-	<cffunction name="getEvents" access="public" returntype="array" output="false">
-		<cfreturn getGateway().list() />
+	<cffunction name="getEvents" access="public" returntype="query" output="false">
+		<cfreturn getEventGateway().getEvents() />
 	</cffunction>
 
 	<cffunction name="getEventsAsStruct" output="false" access="public" returntype="struct"
@@ -70,7 +78,7 @@ Notes:
 		<cfargument name="event" type="enlist.model.event.Event" required="true">
 		<cfset var errors = arguments.event.validate() />
 		<cfif (structIsEmpty(errors))>
-			<cfset getGateway().save(arguments.event) />
+			<cfset getEventGateway().saveEvent(arguments.event) />
 		</cfif>
 		<cfreturn errors />
 	</cffunction>

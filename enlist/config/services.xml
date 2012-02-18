@@ -49,25 +49,21 @@ Notes:
 		
 	<!-- EVENT -->
 	<bean id="eventService" class="enlist.model.event.EventService">
-		<property name="gateway"><ref bean="eventGateway" /></property>
+		<property name="eventGateway"><ref bean="eventGateway" /></property>
 	</bean>
-	<bean id="eventGateway" class="enlist.model.BaseGateway">
+	<bean id="eventGateway" class="enlist.model.event.EventGateway" />
+  
+	<!-- ACTIVITY -->
+	<bean id="activityService" class="enlist.model.event.activity.ActivityService">
+		<property name="gateway"><ref bean="activityGateway" /></property>
+	</bean>
+	<bean id="activityGateway" class="enlist.model.event.activity.ActivityGateway">
+		<property name="eventService"><ref bean="eventService" /></property>
+		<property name="userService"><ref bean="userService" /></property>
 		<constructor-arg name="entityComponentPath">
-			<value>enlist.model.event.Event</value>
+			<value>enlist.model.event.activity.Activity</value>
 		</constructor-arg>
 	</bean>
-  
-  <!-- ACTIVITY -->
-  <bean id="activityService" class="enlist.model.event.activity.ActivityService">
-    <property name="gateway"><ref bean="activityGateway" /></property>
-  </bean>
-  <bean id="activityGateway" class="enlist.model.event.activity.ActivityGateway">
-    <property name="eventService"><ref bean="eventService" /></property>
-    <property name="userService"><ref bean="userService" /></property>
-    <constructor-arg name="entityComponentPath">
-    	<value>enlist.model.event.activity.Activity</value>
-    </constructor-arg>
-  </bean>
     	
 	<!-- CHAPTER -->
 	<bean id="chapterService" class="enlist.model.chapter.ChapterService">

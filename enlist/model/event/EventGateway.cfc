@@ -47,18 +47,126 @@ Notes:
 	--->
 	<cffunction name="getEvent" access="public" returntype="enlist.model.event.Event" output="false">
 		<cfargument name="eventID" type="string" required="false" default="">
-		<cfreturn getDAO().read( arguments.eventID ) />
+		<cfreturn read( arguments.eventID ) />
 	</cffunction> 
 	
-	<cffunction name="getEvents" access="public" returntype="array" output="false">
-		<cfreturn getDAO().list() />
+	<cffunction name="getEvents" access="public" returntype="query" output="false">
+		<cfargument name="Event_id" required="no" type="numeric" default="0">
+		<cfargument name="name" required="no" type="string" default="">
+		<cfargument name="startdate" required="no" type="string" default="">
+		<cfargument name="enddate" required="no" type="string" default="">
+		<cfargument name="location" required="no" type="string" default="">
+		<cfargument name="status" required="no" type="string" default="">
+		<cfset var qEvents = 0>
+		<cfquery name="qEvents">
+		SELECT id, name, startdate, enddate, location, status
+		FROM event
+		WHERE (1=1)
+			<cfif arguments.Event_id neq "0">
+				AND id = <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.Event_id#"
+								null="#yesnoformat(len(arguments.Event_id) eq 0)#"></cfif>
+			<cfif arguments.name neq "">
+				AND name like <cfqueryparam cfsqltype="cf_sql_varchar" value="%#arguments.name#%"
+									null="#yesnoformat(len(arguments.name) eq 0)#" maxlength="100"></cfif>
+			<cfif arguments.startdate neq "">
+				AND startdate = <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.startdate#"
+									null="#yesnoformat(len(arguments.startdate) eq 0)#"></cfif>
+			<cfif arguments.enddate neq "">
+				AND enddate = <cfqueryparam cfsqltype="cf_sql_timestamp" value="#arguments.enddate#"
+									null="#yesnoformat(len(arguments.enddate) eq 0)#"></cfif>
+			<cfif arguments.location neq "">
+				AND location = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.location#"
+									null="#yesnoformat(len(arguments.location) eq 0)#" maxlength="100"></cfif>
+			<cfif arguments.status neq "">
+				AND status = <cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.status#"
+								null="#yesnoformat(len(arguments.status) eq 0)#" maxlength="50"></cfif>
+		</cfquery>
+		<cfreturn qEvents>
 	</cffunction>
 
 	<cffunction name="saveEvent" access="public" returntype="void" output="false">
 		<cfargument name="event" type="enlist.model.event.Event" required="true">
-		<cfset getDAO().save( arguments.event ) />
-	</cffunction> 
-	
+		<cfif arguments.Event.getID() neq 0>
+			<cfset update(arguments.Event)>
+		<cfelse>
+			<cfset create(arguments.Event)>
+		</cfif>
+	</cffunction>
+
+	<cffunction name="create" access="private" returntype="void" output="false">
+		<cfargument name="Event" type="enlist.model.event.Event" required="yes">
+		<cfset var data = Event.getInstanceMemento()>
+		<cfset var newEvent = 0>
+		<cftransaction>
+		<cfquery name="newEvent">
+		INSERT INTO event (name, startdate, enddate, location, status)
+		VALUES (
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.name#"
+				null="#yesnoformat(len(data.name) eq 0)#" maxlength="100">,
+			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#data.startdate#"
+				null="#yesnoformat(len(data.startdate) eq 0)#">,
+			<cfqueryparam cfsqltype="cf_sql_timestamp" value="#data.enddate#"
+				null="#yesnoformat(len(data.enddate) eq 0)#">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.location#"
+				null="#yesnoformat(len(data.location) eq 0)#" maxlength="100">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.status#"
+				null="#yesnoformat(len(data.status) eq 0)#" maxlength="50">
+		)
+		</cfquery>
+		<cfquery name="qMaxID">
+		SELECT LAST_INSERT_ID() as maxID from event
+		</cfquery>
+		</cftransaction>
+		<cfset Event.setId(qMaxID.maxID)>
+	</cffunction>
+
+	<cffunction name="update" access="private" returntype="void" output="false">
+		<cfargument name="Event" type="enlist.model.event.Event" required="yes">
+		<cfset var data = Event.getInstanceMemento()>
+		<cfset var updateEvent = 0>
+		<cfquery name="updateEvent">
+		UPDATE event
+		SET 
+			name = 
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.name#"
+					null="#yesnoformat(len(data.name) eq 0)#" maxlength="100">,
+			startdate = 
+				<cfqueryparam cfsqltype="cf_sql_timestamp" value="#data.startdate#"
+					null="#yesnoformat(len(data.startdate) eq 0)#">,
+			enddate = 
+				<cfqueryparam cfsqltype="cf_sql_timestamp" value="#data.enddate#"
+					null="#yesnoformat(len(data.enddate) eq 0)#">,
+			location = 
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.location#"
+					null="#yesnoformat(len(data.location) eq 0)#" maxlength="100">,
+			status = 
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.status#"
+					null="#yesnoformat(len(data.status) eq 0)#" maxlength="50">
+		WHERE id = <cfqueryparam cfsqltype="cf_sql_integer" value="#data.id#">
+		</cfquery>
+	</cffunction>
+
+	<cffunction name="read" access="public" returntype="enlist.model.event.Event" output="false">
+		<cfargument name="EventID" type="numeric" required="yes">
+		<cfset var data = structNew()>
+		<cfset var Event = 0>
+		<cfset var readEvent = 0>
+		<cfif arguments.eventID neq 0>
+			<cfquery name="readEvent">
+			SELECT id, name, startdate, enddate, location, status
+			FROM event
+			WHERE id = <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.EventID#" />
+			</cfquery>
+			<cfloop list="#readEvent.columnList#" index="field">
+				<cfset 'data.#field#' = evaluate('readEvent.#field#')>
+			</cfloop>
+			<cfset Event = createObject("component", "enlist.model.event.Event").init(argumentcollection=data)>
+		<cfelse>
+			<cfset Event = createObject("component", "enlist.model.event.Event").init()>
+		</cfif>
+		<cfreturn Event>
+	</cffunction>
+		
 	<!---
 	ACCESSORS
 	--->

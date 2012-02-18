@@ -44,10 +44,9 @@
 		);
 	</view:script>
 </cfsilent>
-<cfoutput>
 <p><view:a event="event.edit">Create a new event</view:a></p>
 
-<h3>#variables.title#</h3>
+<cfoutput><h3>#variables.title#</h3></cfoutput>
 
 <table id="eventList" class="tablesorter">
 	<thead>
@@ -61,21 +60,20 @@
 		</tr>
 	</thead>
 	<tbody>
-		<cfloop array="#variables.events#" index="thisEvent">
+		<cfoutput query="events">
 			<tr>
-				<td>#variables.thisEvent.getStatus()#</td>
-				<td>#variables.thisEvent.getName()#</td>
-				<td>#variables.thisEvent.getStartDate()#</td>
-				<td>#variables.thisEvent.getEndDate()#</td>
-				<td>#variables.thisEvent.getLocation()#</td>
+				<td>#status#</td>
+				<td>#name#</td>
+				<td>#dateFormat(startDate, "m/d/yyyy")#</td>
+				<td>#dateFormat(endDate, "m/d/yyyy")#</td>
+				<td>#location#</td>
 				<td>
-					<view:a event="event.edit" p:id="#variables.thisEvent.getID()#">Edit</view:a> | 
-					<view:a event="activity.doSearch" p:eventId="#variables.thisEvent.getID()#">Activities</view:a>
+					<view:a event="event.edit" p:id="#id#">Edit</view:a> | 
+					<view:a event="activity.doSearch" p:eventId="#id#">Activities</view:a>
 				</td>
 			</tr>	
-		</cfloop>
+		</cfoutput>
 	</tbody>
 </table>
 
 <p><view:a event="event.edit">Create a new event</view:a></p>
-</cfoutput>
