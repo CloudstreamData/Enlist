@@ -28,36 +28,89 @@ Notes:
 <cfcomponent output="false">
 
 	<cffunction name="getChapter" access="public" returntype="enlist.model.chapter.Chapter" output="false">
-		<cfargument name="chapterID" type="string" required="false" default="">
+		<cfargument name="chapterID" type="numeric" required="false" default="0">
 
-		<cfset var chapters = 0 />
 		<cfset var chapter = 0 />
+		<cfset var chapterQry = 0 />
+		<cfset var data = structNew() />
 
-		<cfif NOT Len(arguments.chapterID)>
+		<cfif arguments.chapterID eq 0>
 			<cfset chapter = createObject("component", "enlist.model.chapter.Chapter").init() />
 		<cfelse>
-			<cfset chapters = GoogleQuery("select from chapter where id == '#arguments.chapterID#'") />
-			<cfset chapter = chapters[1] />
+			<cfquery name="chapterQry">
+			select 	id, name, location, statusCode
+			from	chapter
+			where 	id = <cfqueryparam cfsqltype="cf_sql_integer" value="#arguments.chapterID#" />
+			</cfquery>
+			<cfloop list="#chapterQry.columnList#" index="field">
+				<cfset 'data.#field#' = evaluate('chapterQry.#field#')>
+			</cfloop>
+			<cfset chapter = createObject("component", "enlist.model.chapter.Chapter").init(argumentcollection=data) />
 		</cfif>
 
 		<cfreturn chapter />
 	</cffunction>
 
-	<cffunction name="getChapters" access="public" returntype="array" output="false">
-		<cfreturn googleQuery("select from chapter") />
+	<cffunction name="getChapters" access="public" returntype="query" output="false">
+		<cfset var chapters = 0>
+		<cfquery name="chapters">
+		select 	id, name, location, statusCode
+		from	chapter
+		order by name
+		</cfquery>
+		<cfreturn chapters />
 	</cffunction>
 
 	<cffunction name="saveChapter" access="public" returntype="void" output="false">
 		<cfargument name="chapter" type="enlist.model.chapter.Chapter" required="true">
-
-		<cfset var key = "" />
-
-		<cfif chapter.getID() eq "">
-			<cfset chapter.setID(createUUID()) />
+		<cfif arguments.chapter.getID() neq 0>
+			<cfset update(arguments.chapter)>
 		<cfelse>
-			<cfset googleDelete(arguments.chapter) />
+			<cfset create(arguments.chapter)>
 		</cfif>
-		<cfset key = arguments.chapter.googleWrite("chapter") />
+	</cffunction>
+	
+	<cffunction name="create" access="private" returntype="void" output="false">
+		<cfargument name="chapter" type="enlist.model.chapter.chapter" required="yes">
+		<cfset var data = chapter.getInstanceMemento()>
+		<cfset var newchapter = 0>
+		<cftransaction>
+		<cfquery name="newchapter">
+		INSERT INTO chapter (name, location, statuscode)
+		VALUES (
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.name#"
+				null="#yesnoformat(len(data.name) eq 0)#" maxlength="100">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.location#"
+				null="#yesnoformat(len(data.location) eq 0)#" maxlength="100">,
+			<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.statuscode#"
+				null="#yesnoformat(len(data.statuscode) eq 0)#" maxlength="50">
+		)
+		</cfquery>
+		<cfquery name="qMaxID">
+		SELECT LAST_INSERT_ID() as maxID
+		</cfquery>
+		</cftransaction>
+		<cfset chapter.setId(qMaxID.maxID)>
+	</cffunction>
+
+	<cffunction name="update" access="private" returntype="void" output="false">
+		<cfargument name="chapter" type="enlist.model.chapter.chapter" required="yes">
+		<cfset var data = chapter.getInstanceMemento()>
+		<cfset var updatechapter = 0>
+		<cfquery name="updatechapter">
+		UPDATE chapter
+		SET 
+			name = 
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.name#"
+					null="#yesnoformat(len(data.name) eq 0)#" maxlength="100">,
+			location = 
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.location#"
+					null="#yesnoformat(len(data.location) eq 0)#" maxlength="100">,
+			statuscode = 
+				<cfqueryparam cfsqltype="cf_sql_varchar" value="#data.statuscode#"
+					null="#yesnoformat(len(data.statuscode) eq 0)#" maxlength="50">
+		WHERE id = <cfqueryparam cfsqltype="cf_sql_integer" value="#data.id#">
+		</cfquery>
 	</cffunction>
 
 </cfcomponent>

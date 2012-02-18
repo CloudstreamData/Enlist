@@ -32,7 +32,7 @@ Notes:
 	<!---
 	PROPERTIES
 	--->
-	<cfset variables.id = "" />
+	<cfset variables.id = 0 />
 	<cfset variables.name = "" />
 	<cfset variables.location = "" />
 	<cfset variables.statusCode = "" />
@@ -41,7 +41,7 @@ Notes:
 	INITIALIZATION / CONFIGURATION
 	--->
 	<cffunction name="init" access="public" returntype="enlist.model.chapter.Chapter" output="false">
-		<cfargument name="id" type="string" required="false" default="" />
+		<cfargument name="id" type="numeric" required="false" default="0" />
 		<cfargument name="name" type="string" required="false" default="" />
 		<cfargument name="location" type="string" required="false" default="" />
 		<cfargument name="statusCode" type="string" required="false" default="" />
@@ -101,11 +101,11 @@ Notes:
 	<!---
 	ACCESSORS
 	--->
- 	<cffunction name="getId" access="public" returntype="string" output="false">
+ 	<cffunction name="getId" access="public" returntype="numeric" output="false">
 		<cfreturn variables.id />
 	</cffunction>
 	<cffunction name="setId" access="public" returntype="void" output="false">
-		<cfargument name="id" type="string" required="true" />
+		<cfargument name="id" type="numeric" required="true" />
 		<cfset variables.id = arguments.id />
 	</cffunction>
 

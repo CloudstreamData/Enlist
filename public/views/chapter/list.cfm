@@ -28,7 +28,7 @@
 	--->
 	<cfimport prefix="form" taglib="/MachII/customtags/form" />
 	<cfimport prefix="view" taglib="/MachII/customtags/view" />
-	<cfimport prefix="tags" taglib="/customtags" />
+	<cfimport prefix="tags" taglib="/enlist/customtags" />
 
 	<cfset copyToScope("${event.chapters}") />
 	
@@ -43,12 +43,12 @@
 		<th>Location</th>
 		<th>Status</th>
 	</tr>
-<cfloop from="1" to="#arrayLen(chapters)#" index="i">
+<cfloop query="chapters">
 	<tr>
-		<td>#chapters[i].getName()#</td>
-		<td>#chapters[i].getLocation()#</td>
-		<td>#chapters[i].getStatusCode()#</td>
-		<td><view:a event="chapter.edit" p:id="#chapters[i].getID()#">Edit</view:a></td>
+		<td>#name#</td>
+		<td>#location#</td>
+		<td>#StatusCode#</td>
+		<td><view:a event="chapter.edit" p:id="#id#">Edit</view:a></td>
 	</tr>
 </cfloop>
 </table>

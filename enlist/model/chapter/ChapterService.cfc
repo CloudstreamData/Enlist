@@ -56,7 +56,7 @@ Notes:
 		<cfreturn getChapterGateway().getChapter(arguments.chapterID) />
 	</cffunction>
 
-	<cffunction name="getChapters" access="public" returntype="array" output="false">
+	<cffunction name="getChapters" access="public" returntype="query" output="false">
 		<cfreturn getChapterGateway().getChapters() />
 	</cffunction>
 
